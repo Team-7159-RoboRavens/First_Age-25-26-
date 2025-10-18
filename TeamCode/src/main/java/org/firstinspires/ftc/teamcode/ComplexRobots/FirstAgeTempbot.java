@@ -170,7 +170,7 @@ public class FirstAgeTempbot extends MecanumDrive {
                 limelightData.accurate = false;
             }
 
-            opMode.telemetry.update();
+//            opMode.telemetry.update();
     }
 
 

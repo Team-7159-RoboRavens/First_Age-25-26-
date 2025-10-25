@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -21,6 +23,8 @@ static double joystickLinearity = 4;
     public void loop(FirstAgeTempbot robot, OpMode opMode) {
 
         MotorPowers mp = getMotorPowers(
+                robot,
+                robot.lazyImu.get(),
                 opMode.gamepad1.dpad_up,
                 opMode.gamepad1.dpad_down,
                 opMode.gamepad1.dpad_left,
@@ -37,6 +41,8 @@ static double joystickLinearity = 4;
     }
 
     public static MotorPowers getMotorPowers(
+            FirstAgeTempbot robot,
+            IMU imu,
             boolean dpad_up,
             boolean dpad_down,
             boolean dpad_left,
@@ -106,8 +112,9 @@ static double joystickLinearity = 4;
         if (x) {
             maxMotorPower *= 0.5;
         }
-
-        return HolonomicDrive.robotOrientedDrive(right, forward, turn, maxMotorPower);
+        robot.lazyImu.get();
+        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading);
     }
 
 }

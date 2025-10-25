@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonmous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Medium Pedro")
+//@Autonomous(name = "Medium Pedro")
 public class bigPedro {
 
 

@@ -8,7 +8,7 @@ import com.pedropathing.paths.PathBuilder;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Simple Pedro")
+//@Autonomous(name = "Simple Pedro")
 public class SimplePedro {
 
     public SimplePedro() {

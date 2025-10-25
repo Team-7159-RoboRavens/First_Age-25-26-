@@ -108,7 +108,7 @@ static double joystickLinearity = 4;
         }
 
 //        return md.toMotorPowers();
-        return HolonomicDrive.robotOrientedDrive(right, forward, turn, maxMotorPower);;
+        return HolonomicDrive.robotOrientedDrive(right, forward, turn, maxMotorPower);
     }
 
 }

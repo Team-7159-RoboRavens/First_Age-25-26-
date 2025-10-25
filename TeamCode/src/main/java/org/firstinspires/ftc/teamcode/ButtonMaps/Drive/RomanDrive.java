@@ -98,7 +98,7 @@ static double joystickLinearity = 4;
             if (left_stick_x < -joystickDeadZone) {
                 strafeSpeed = -Math.pow((left_stick_x+joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity);
             }
-            forward += forwardSpeed;
+            forward -= forwardSpeed;
             right += strafeSpeed;
         }
 
@@ -107,7 +107,6 @@ static double joystickLinearity = 4;
             maxMotorPower *= 0.5;
         }
 
-//        return md.toMotorPowers();
         return HolonomicDrive.robotOrientedDrive(right, forward, turn, maxMotorPower);
     }
 

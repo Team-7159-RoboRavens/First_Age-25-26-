@@ -41,4 +41,17 @@ public class HolonomicDrive {
         opMode.telemetry.addData("HoloDrive frontLeft", frontLeftPower);
         return new MotorPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
     }
+    public MotorPowers fieldOrientedDrive(double x, double y, double turn, double maxMotorPower, double robotAngle) {
+        double rotX = x * Math.cos(robotAngle) - y * Math.sin(robotAngle);
+        double rotY = x * Math.sin(robotAngle) + y * Math.cos(robotAngle);
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(turn), 1);
+        double frontLeftPower = maxMotorPower * (rotY + rotX - turn) / denominator;
+        double backLeftPower = maxMotorPower * (rotY - rotX - turn) / denominator;
+        double frontRightPower = maxMotorPower * (rotY - rotX + turn) / denominator;
+        double backRightPower = maxMotorPower * (rotY + rotX + turn) / denominator;
+        return new MotorPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+    }
+    public MotorPowers robotOrientedDrive(double x, double y, double turn, double maxMotorPower){
+        return fieldOrientedDrive(x, y, turn, maxMotorPower, 0);
+    }
 }

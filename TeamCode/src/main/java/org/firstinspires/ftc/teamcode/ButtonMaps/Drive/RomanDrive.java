@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
+import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -18,6 +19,7 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 4;
     @Override
     public void loop(FirstAgeTempbot robot, OpMode opMode) {
+
         MotorPowers mp = getMotorPowers(
                 opMode.gamepad1.dpad_up,
                 opMode.gamepad1.dpad_down,
@@ -46,41 +48,37 @@ static double joystickLinearity = 4;
             double left_stick_y,
             double left_stick_x,
             boolean x) {
-//        MecanumDrive md = new MecanumDrive();
+        double right = 0;
+        double forward = 0;
+        double turn = 0;
+        double maxMotorPower = 1;
         if (dpad_up) {
-//            md.setForward(1);
+            forward ++;
         }
         if (dpad_down) {
-//            md.setForward(-1);
+            forward --;
         }
         if (dpad_left) {
-//            md.setRight(-1);
+            right --;
         }
         if (dpad_right) {
-//            md.setRight(1);
+            right ++;
         }
 
         //Turn Left or Right
         if (left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
-//            double turnSpeed = Math.pow((right_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity) - Math.pow((left_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity); //look mommy an afront to coders everywhere (it also works first try :333)
-//            md.setMovement(0, 0, turnSpeed);
-        }
-/*
-        //Turn Right
-        if (right_trigger > triggerDeadZone) {
-            md.setMovement(0, 0, right_trigger);
+            double turnSpeed = Math.pow((right_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity) - Math.pow((left_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity); //look mommy an afront to coders everywhere (it also works first try :333)
+            turn += turnSpeed;
         }
 
-        //When left trigger is pressed, go backward
-        if (left_trigger > 0.3) {
-            md.setMovement(-1 * left_trigger, 0, 0);
+        //When left bumper is pressed, go backward
+        if (left_bumper) {
+            forward --;
         }
-        //When right trigger is pressed move forward
-        if (right_trigger > 0.3) {
-            md.setMovement(right_trigger, 0, 0);
+        //When right bumper is pressed move forward
+        if (right_bumper) {
+            forward++;
         }
-        md.applyMultiplier(0.8);
-*/
         //the MOAMF (Mother Of All Movement Functions
         //Allows Joystick and triggers to control where the robot goes
         if (Math.abs(left_stick_y) > joystickDeadZone || Math.abs(left_stick_x) > joystickDeadZone || left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
@@ -100,16 +98,17 @@ static double joystickLinearity = 4;
             if (left_stick_x < -joystickDeadZone) {
                 strafeSpeed = -Math.pow((left_stick_x+joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity);
             }
-//            md.setMovement(-forwardSpeed, strafeSpeed, turnSpeed);
+            forward += forwardSpeed;
+            right += strafeSpeed;
         }
 
         //Slow strafe while holding x
         if (x) {
-//            md.applyMultiplier(0.5);
+            maxMotorPower *= 0.5;
         }
 
 //        return md.toMotorPowers();
-        return null;
+        return HolonomicDrive.robotOrientedDrive(right, forward, turn, maxMotorPower);;
     }
 
 }

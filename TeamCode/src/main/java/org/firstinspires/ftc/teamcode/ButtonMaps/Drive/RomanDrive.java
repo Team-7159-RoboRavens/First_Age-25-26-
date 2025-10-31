@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.limelightData;
 
 @Config
 public class RomanDrive extends AbstractButtonMap {
@@ -19,9 +20,11 @@ static double triggerDeadZone = .1;
 static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
 static double joystickDeadZone = .1;
 static double joystickLinearity = 4;
+static double aimingPower = .1;
+static double aimingThreshold = .07;
+
     @Override
     public void loop(FirstAgeTempbot robot, OpMode opMode) {
-
         MotorPowers mp = getMotorPowers(
                 robot,
                 robot.lazyImu.get(),
@@ -36,9 +39,25 @@ static double joystickLinearity = 4;
                 opMode.gamepad1.left_stick_y,
                 opMode.gamepad1.left_stick_x,
                 opMode.gamepad1.x);
+
+        if (limelightData.aiming){
+            if (limelightData.accurate) {
+                opMode.telemetry.addLine("Aiming");
+                mp.leftFront -= limelightData.directionToTag()[0] * aimingPower;
+                mp.leftBack -= limelightData.directionToTag()[0] * aimingPower;
+                mp.rightFront += limelightData.directionToTag()[0] * aimingPower;
+                mp.rightBack += limelightData.directionToTag()[0] * aimingPower;
+            }
+            if (Math.abs(limelightData.directionToTag()[0]) < aimingThreshold) {
+                limelightData.aiming = false;
+                opMode.telemetry.addLine("Aimed");
+            }
+        }
+
         opMode.telemetry.update();
         robot.setMotorPowers(mp);
     }
+
 
     public static MotorPowers getMotorPowers(
             FirstAgeTempbot robot,
@@ -107,6 +126,9 @@ static double joystickLinearity = 4;
             forward -= forwardSpeed;
             right += strafeSpeed;
         }
+
+
+
 
         //Slow strafe while holding x
         if (x) {

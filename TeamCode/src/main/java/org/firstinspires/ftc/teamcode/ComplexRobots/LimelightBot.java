@@ -11,10 +11,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.limelightData;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.MecanumDriveNoMotors;
 
 import java.util.List;
@@ -144,6 +143,8 @@ public class LimelightBot extends MecanumDriveNoMotors {
                             limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
+                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("y              opMode.telemetry.addData(\"X: \", fr.getTargetXDegrees());: ", fr.getTargetYDegrees());
 
                         }
 

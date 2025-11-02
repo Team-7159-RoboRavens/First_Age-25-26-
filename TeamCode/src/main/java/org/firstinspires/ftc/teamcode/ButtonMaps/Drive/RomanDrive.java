@@ -107,6 +107,7 @@ static double aimingThreshold = .07;
         //the MOAMF (Mother Of All Movement Functions
         //Allows Joystick and triggers to control where the robot goes
         if (Math.abs(left_stick_y) > joystickDeadZone || Math.abs(left_stick_x) > joystickDeadZone || left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
+            double angle = Math.atan2(left_stick_y, left_stick_x);
             double scalingFactor = Math.max(1, Math.abs(left_stick_x * 1.1));
             double turnSpeed = Math.pow((right_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity) - Math.pow((left_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
             double forwardSpeed = 0;

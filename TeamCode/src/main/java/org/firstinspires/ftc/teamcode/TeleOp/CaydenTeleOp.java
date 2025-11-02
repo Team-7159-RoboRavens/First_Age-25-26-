@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.LimelightArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.CaydenPolarDrive;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 
@@ -16,7 +17,6 @@ public class CaydenTeleOp extends OpMode {
 
     //Button Maps
     AbstractButtonMap driveButtonMap;
-    AbstractButtonMap armButtonMap;
 
     @Override
     public void init() {
@@ -24,7 +24,6 @@ public class CaydenTeleOp extends OpMode {
         telemetry.update();
         robot = new FirstAgeTempbot(hardwareMap, new Pose2d(0,0,0), this);
         driveButtonMap = new CaydenPolarDrive();
-        armButtonMap = new FirstAgeArm();
         telemetry.addLine("Ready!");
         telemetry.update();
     }
@@ -32,7 +31,6 @@ public class CaydenTeleOp extends OpMode {
     @Override
     public void loop() {
         driveButtonMap.loop(robot, this);
-        armButtonMap.loop(robot, this);
         telemetry.update();
     }
 }

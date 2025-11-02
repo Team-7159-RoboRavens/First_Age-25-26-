@@ -16,7 +16,6 @@ public class TempbotTeleOpBlue extends OpMode {
 
     //Button Maps
     AbstractButtonMap driveButtonMap;
-    AbstractButtonMap armButtonMap;
 
     @Override
     public void init() {
@@ -24,7 +23,6 @@ public class TempbotTeleOpBlue extends OpMode {
         telemetry.update();
         robot = new FirstAgeTempbot(hardwareMap, new Pose2d(0,0,0), this);
         driveButtonMap = new TempBotDrive();
-        armButtonMap = new FirstAgeArm();
         telemetry.addLine("Ready.");
         telemetry.update();
     }
@@ -33,7 +31,6 @@ public class TempbotTeleOpBlue extends OpMode {
     @Override
     public void loop() {
         driveButtonMap.loop(robot, this);
-        armButtonMap.loop(robot, this);
         //This should be the april tag id for the blue tower.
         robot.runLimelight(25);
         telemetry.update();

@@ -17,13 +17,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double timeSince;
     private double timeBuffer = 200;
-    private double servoSpeed = .5;
+    private double baseShotPower = .5;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
         //Automatically Aim if there is a tag
-        if (opMode.gamepad2.x && opMode.getRuntime() - timeSince > timeBuffer) {
+        if (opMode.gamepad2.x) {
             if (limelightData.accurate) {
                 timeSince = opMode.getRuntime();
                 limelightData.aiming = true;
@@ -37,10 +37,15 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
 
         }
-
+        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
             robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
-            robot.Servo2.setPower(opMode.gamepad2.left_stick_y);
+            robot.Servo2.setPower(-opMode.gamepad2.left_stick_y);
             opMode.telemetry.addData("Servos Going", opMode.gamepad2.left_stick_y);
+        }
+        else{
+            robot.Servo1.setPower(0);
+            robot.Servo2.setPower(0);
+        }
 
         if (opMode.gamepad2.a) {
             robot.Servo1.setPower(0);
@@ -48,6 +53,36 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             opMode.telemetry.addLine("Servos stop");
 
         }
+
+        if (opMode.gamepad2.dpad_down) {
+            if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+                opMode.telemetry.addLine("Shoot medium-short");
+                robot.ShootMotor.setPower(baseShotPower * 1.15);
+            }
+            else {
+                opMode.telemetry.addLine("Shoot Short");
+                robot.ShootMotor.setPower(baseShotPower);
+            }
+        }
+        else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+            if (opMode.gamepad2.dpad_up) {
+                opMode.telemetry.addLine("Shoot medium-long");
+                robot.ShootMotor.setPower(baseShotPower * 1.55);
+            }
+            else {
+                opMode.telemetry.addLine("Shoot medium");
+                robot.ShootMotor.setPower(baseShotPower * 1.3);
+            }
+        }
+        else if (opMode.gamepad2.dpad_up) {
+            opMode.telemetry.addLine("Shoot long");
+            robot.ShootMotor.setPower(baseShotPower * 1.7);
+        }
+        else {
+            opMode.telemetry.addLine("No shoot");
+            robot.ShootMotor.setPower(0);
+        }
+
 
         //Aim manually with the left joystick
         if (Math.abs(opMode.gamepad2.left_stick_y) > 0.2 || Math.abs(opMode.gamepad2.left_stick_x) > 0.2) {

@@ -7,10 +7,7 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -21,28 +18,23 @@ import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
 
-//This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
-
-@Config
-public class ServoTempBot extends MecanumDrive {
-    enum Direction {
-        UP,DOWN
-    }
+public class CoachEricBot extends FirstAgeTempbot {
     OpMode opMode;
-        public final DcMotorEx ShootMotor;
+    //    public final DcMotorEx ShootMotor1;
     //    public final DcMotorEx ShootMotor2;
-        public final CRServo Servo1;
-        public final CRServo Servo2;
-    //    public final Servo intakeServo;
+    //    public final Servo aimServo;
+    //    public final Servo angleServo;
+    public final Servo intakeServo;
 
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public ServoTempBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
-        super(hardwareMap, pose);
+    public CoachEricBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
+        super(hardwareMap, pose, opMode);
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        intakeServo = hardwareMap.get(Servo.class, "servo0");
 
 
 //        limelight.pipelineSwitch(0);
@@ -57,15 +49,13 @@ public class ServoTempBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-        Servo1 = hardwareMap.get(CRServo.class, "Servo1");
-        Servo2 = hardwareMap.get(CRServo.class, "Servo2");
+//        turnServo = hardwareMap.get(Servo.class, "turnServo");
+//        aimServo = hardwareMap.get(Servo.class, "aimServo");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
         //Initialize Motors
-        ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
-        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        ShootMotor1 = hardwareMap.get(DcMotorEx.class, "ShootMotor1");
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
 
 
@@ -73,7 +63,7 @@ public class ServoTempBot extends MecanumDrive {
         //Initialize Output Servo
 //        turnServo.scaleRange(-1,1);
 //        aimServo.scaleRange(-1,0);
-//        intakeServo.scaleRange(-1,0);
+        intakeServo.scaleRange(-1,0);
 //        angleServo.scaleRange(-1,0);
     }
 

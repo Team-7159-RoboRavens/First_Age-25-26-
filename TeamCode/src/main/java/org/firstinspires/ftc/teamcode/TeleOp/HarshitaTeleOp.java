@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.HarshitaBM;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
@@ -25,7 +26,7 @@ public class HarshitaTeleOp extends OpMode {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
         robot = new ServoTempBot(hardwareMap, new Pose2d(0,0,0), this);
-        driveButtonMap = new HarshitaBM();
+        driveButtonMap = new LiamPolarDrive();
         armButtonmap = new FirstAgeArm();
         telemetry.addLine("Ready.");
         telemetry.update();
@@ -35,6 +36,7 @@ public class HarshitaTeleOp extends OpMode {
     public void loop() {
         driveButtonMap.loop(robot, this);
         armButtonmap.loop(robot, this);
+        robot.runLimelight(24);
         telemetry.update();
     }
 }

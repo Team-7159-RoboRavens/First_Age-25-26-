@@ -7,36 +7,39 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
 
 //This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
 
 @Config
-public class FirstAgeTempbot extends MecanumDrive {
+public class ServoTempBot extends MecanumDrive {
     enum Direction {
         UP,DOWN
     }
     OpMode opMode;
-    //    public final DcMotorEx ShootMotor1;
+        public final DcMotorEx ShootMotor;
     //    public final DcMotorEx ShootMotor2;
-    //    public final Servo aimServo;
-    //    public final Servo angleServo;
+        public final CRServo Servo1;
+        public final CRServo Servo2;
     //    public final Servo intakeServo;
 
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public FirstAgeTempbot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
+    public ServoTempBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
         super(hardwareMap, pose);
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -54,13 +57,15 @@ public class FirstAgeTempbot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-//        turnServo = hardwareMap.get(Servo.class, "turnServo");
-//        aimServo = hardwareMap.get(Servo.class, "aimServo");
+        Servo1 = hardwareMap.get(CRServo.class, "Servo1");
+        Servo2 = hardwareMap.get(CRServo.class, "Servo2");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
         //Initialize Motors
-//        ShootMotor1 = hardwareMap.get(DcMotorEx.class, "ShootMotor1");
+        ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
+        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
 
 

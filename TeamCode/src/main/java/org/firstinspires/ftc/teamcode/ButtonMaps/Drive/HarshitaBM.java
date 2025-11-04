@@ -7,10 +7,12 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.DPadControl;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
+import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 
 @Config
-public class HarshitaBM extends AbstractButtonMap {
+public class HarshitaBM extends ServoAbstractButtonMap {
     private MotorPowers mp; // = new MotorPowers(0);
     double multiplier = 1; 
     // multiplier mainly for dpad speed control
@@ -19,7 +21,7 @@ public class HarshitaBM extends AbstractButtonMap {
     // dead zone for trigger and joystick
 
     @Override
-    public void loop(FirstAgeTempbot robot, OpMode opMode) {
+    public void loop(ServoTempBot robot, OpMode opMode) {
         mp = new MotorPowers(0); 
 
         if (opMode.gamepad1.right_bumper) multiplier += 0.2; // increase speed by 0.2 when right bumper is pressed

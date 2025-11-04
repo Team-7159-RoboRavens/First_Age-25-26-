@@ -3,11 +3,9 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.limelightData;
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMapLimelight;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.LimelightBot;
 
 @Config
@@ -27,12 +25,19 @@ public class LimelightArm extends AbstractButtonMapLimelight {
                 timeSince = opMode.getRuntime();
 //                robot.setServosTo(-1, 1, limelightData.directionToTag()[0], robot.aimServo);
 //                robot.setServosTo(-1, 1, limelightData.directionToTag()[1], robot.angleServo);
+                limelightData.aiming = true;
+
                 opMode.telemetry.addLine("Aiming");
             }
             else{
                 opMode.telemetry.addLine("No Aiming");
+                limelightData.aiming = false;
+
             }
 
+        }
+        if (!limelightData.accurate) {
+            limelightData.aiming = false;
         }
 
         //Aim manually with the left joystick

@@ -9,6 +9,7 @@ public class limelightData {
     public static double aprilYDegrees;
     public static boolean accurate = false;
     public static boolean aiming = false;
+    public static double distance;
 
 
     //This simply changes all the variables at once.

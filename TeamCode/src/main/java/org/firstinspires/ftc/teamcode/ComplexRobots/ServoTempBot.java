@@ -143,6 +143,28 @@ public class ServoTempBot extends MecanumDrive {
                         limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
+                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("y              opMode.telemetry.addData(\"X: \", fr.getTargetXDegrees());: ", fr.getTargetYDegrees());
+
+
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
+
+                            // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
+                            double limelightMountAngleDegrees = 0;
+
+                            // distance from the center of the Limelight lens to the floor (To be Measured)
+                            double limelightLensHeightCm = 52.0;
+
+                            // distance from the target to the floor
+                            double goalHeightCm = 75;
+
+                            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+                            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+                            //calculate distance
+                            double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
+                            limelightData.distance = distanceFromLimelightToGoalCm;
+                            opMode.telemetry.addData("Distance: ", distanceFromLimelightToGoalCm);
                         }
                     }
 

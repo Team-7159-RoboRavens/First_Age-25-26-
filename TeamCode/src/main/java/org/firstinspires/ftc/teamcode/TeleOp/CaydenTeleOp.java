@@ -28,7 +28,40 @@ public class CaydenTeleOp extends OpMode {
         telemetry.addLine("Ready!");
         telemetry.update();
     }
+    @Override
+    public void loop(FirstAgeTempbot robot, OpMode opMode) {
+        MotorPowers mp = getMotorPowers(
+                robot,
+                robot.lazyImu.get(),
+                opMode.gamepad1.dpad_up,
+                opMode.gamepad1.dpad_down,
+                opMode.gamepad1.dpad_left,
+                opMode.gamepad1.dpad_right,
+                opMode.gamepad1.left_bumper,
+                opMode.gamepad1.right_bumper,
+                opMode.gamepad1.left_trigger,
+                opMode.gamepad1.right_trigger,
+                opMode.gamepad1.left_stick_y,
+                opMode.gamepad1.left_stick_x,
+                opMode.gamepad1.x);
 
+        if (limelightData.aiming){
+            if (limelightData.accurate) {
+                opMode.telemetry.addLine("Aiming");
+                mp.leftFront -= limelightData.directionToTag()[0] * aimingPower;
+                mp.leftBack -= limelightData.directionToTag()[0] * aimingPower;
+                mp.rightFront += limelightData.directionToTag()[0] * aimingPower;
+                mp.rightBack += limelightData.directionToTag()[0] * aimingPower;
+            }
+            if (Math.abs(limelightData.directionToTag()[0]) < aimingThreshold) {
+                limelightData.aiming = false;
+                opMode.telemetry.addLine("Aimed");
+            }
+        }
+
+        opMode.telemetry.update();
+        robot.setMotorPowers(mp);
+    }
     @Override
     public void loop() {
         robot.setServosTo(1, 1, 1, robot.intakeServo);

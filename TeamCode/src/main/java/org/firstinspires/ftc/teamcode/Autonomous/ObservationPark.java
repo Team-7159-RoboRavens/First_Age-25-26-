@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonmous;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;

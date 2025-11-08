@@ -1,4 +1,4 @@
-//package org.firstinspires.ftc.teamcode.Autonmous;
+//package org.firstinspires.ftc.teamcode.Autonomous;
 //
 //import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
 //

@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-
-
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 
 @Autonomous
@@ -87,6 +85,23 @@ public class smallTimedPedro extends LinearOpMode {
             }
         }
 
+    public void aim(double desiredAngle,double millisDelay,double motorPower){
+        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentangle + desiredAngle));
+        while(angleOffset-millisDelay*1 > 0){
+            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentangle + desiredAngle));
+            boolean rotateRight = false;
+            if ((currentAngle - desiredAngle) < (currentangle + desiredAngle)){
+                rotateRight = true;
+            }
+            if(rotateRight){
 
-}
+                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
+            }
+            else{
+                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
+            }
+//              currentAngle = odometry.currentAngle;
+        }
+    }
+    
 

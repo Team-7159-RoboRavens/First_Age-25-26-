@@ -32,7 +32,7 @@ public class ServoTempBot extends MecanumDrive {
         public final DcMotorEx ShootMotor;
     //    public final DcMotorEx ShootMotor2;
         public final CRServo Servo1;
-        public final CRServo Servo2;
+//        public final CRServo Servo2;
     //    public final Servo intakeServo;
 
 
@@ -57,8 +57,8 @@ public class ServoTempBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-        Servo1 = hardwareMap.get(CRServo.class, "Servo1");
-        Servo2 = hardwareMap.get(CRServo.class, "Servo2");
+        Servo1 = hardwareMap.get(CRServo.class, "servo1");
+//        Servo2 = hardwareMap.get(CRServo.class, "Servo2");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
@@ -128,6 +128,7 @@ public class ServoTempBot extends MecanumDrive {
                     opMode.telemetry.addData("Botpose", botpose.toString());
                     if (limelightData.accurate) {
                         opMode.telemetry.addLine("Correct: ");
+                        opMode.telemetry.addData("Aiming ", limelightData.aiming);
                     }
                     else
                         opMode.telemetry.addLine("Bad");
@@ -144,16 +145,18 @@ public class ServoTempBot extends MecanumDrive {
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              opMode.telemetry.addData(\"X: \", fr.getTargetXDegrees());: ", fr.getTargetYDegrees());
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees());
+                                    opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 
                             double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 0;
+                            double limelightMountAngleDegrees = 30;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
-                            double limelightLensHeightCm = 52.0;
+                            double limelightLensHeightCm = 28.0;
 
                             // distance from the target to the floor
                             double goalHeightCm = 75;

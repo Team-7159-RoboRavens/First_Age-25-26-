@@ -17,7 +17,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double timeSince;
     private double timeBuffer = 200;
+
+    //These magic numbers are not final and should be iteratively tested.
     private double baseShotPower = .5;
+    private double limelightPowerMultiplier = .23;
+    private double limelightBaseDistance = 134;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -37,21 +41,22 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
 
         }
-        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
-            robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
-            robot.Servo2.setPower(-opMode.gamepad2.left_stick_y);
-            opMode.telemetry.addData("Servos Going", opMode.gamepad2.left_stick_y);
-        }
-        else{
-            robot.Servo1.setPower(0);
-            robot.Servo2.setPower(0);
-        }
-
+//        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
+//            robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
+//            robot.Servo2.setPower(-opMode.gamepad2.left_stick_y);
+//            opMode.telemetry.addData("Servos Going", opMode.gamepad2.left_stick_y);
+//        }
+//        else{
+//            robot.Servo1.setPower(0);
+//            robot.Servo2.setPower(0);
+//        }
+//
         if (opMode.gamepad2.a) {
+            robot.Servo1.setPower(.6);
+            opMode.telemetry.addLine("Servos");
+        }
+        else {
             robot.Servo1.setPower(0);
-            robot.Servo2.setPower(0);
-            opMode.telemetry.addLine("Servos stop");
-
         }
 
         if (opMode.gamepad2.dpad_down) {
@@ -77,14 +82,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else if (opMode.gamepad2.dpad_up) {
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
-            //The 200 is simply a placeholder until a real amount is tested
-            robot.ShootMotor.setPower(limelightData.accurate ? limelightData.distance / 200 : baseShotPower * 1.5);
+            //All of these variables are yet to be tested and should be iterated on
+            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * (limelightData.distance - limelightBaseDistance) / limelightBaseDistance + (1.3 * baseShotPower) : baseShotPower * 1.5);
             if (!limelightData.accurate)
                 opMode.telemetry.addLine("Shoot far");
 
         }
         else {
-            opMode.telemetry.addLine("No shoot");
             robot.ShootMotor.setPower(0);
         }
 
@@ -101,6 +105,5 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 
 
 
-        opMode.telemetry.update();
     }
 }

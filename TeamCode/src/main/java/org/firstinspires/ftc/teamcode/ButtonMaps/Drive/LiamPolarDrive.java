@@ -22,7 +22,7 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .1;
 static double joystickLinearity = 10;
 
-static double aimingPower = .1;
+static double aimingPower = .3;
 static double aimingThreshold = .07;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -41,16 +41,15 @@ static double aimingThreshold = .07;
                 opMode.gamepad1.left_stick_y,
                 opMode.gamepad1.left_stick_x,
                 opMode.gamepad1.x);
-        opMode.telemetry.update();
-        robot.setMotorPowers(mp);
 
         if (opMode.gamepad2.x){
             if (limelightData.accurate) {
+                limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront -= limelightData.directionToTag()[0] * aimingPower;
-                mp.leftBack -= limelightData.directionToTag()[0] * aimingPower;
-                mp.rightFront += limelightData.directionToTag()[0] * aimingPower;
-                mp.rightBack += limelightData.directionToTag()[0] * aimingPower;
+                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
+                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
+                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
             }
             else
                 opMode.telemetry.addLine("Can't Aim");
@@ -59,6 +58,7 @@ static double aimingThreshold = .07;
                 opMode.telemetry.addLine("Aimed");
             }
         }
+        robot.setMotorPowers(mp);
     }
 
     public static MotorPowers getMotorPowers(

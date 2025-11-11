@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.pedropathing.ftc.localization.Encoder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -23,7 +26,7 @@ public class smallTimedPedro extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
-        robot = new FirstAgeTempbot(hardwareMap);  //idk whats wrong here pls fix it
+        robot = new FirstAgeTempbot(hardwareMap, new Pose2d(new Vector2d(0,0),0), this);  //idk whats wrong here pls fix it
 
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -85,6 +88,5 @@ public class smallTimedPedro extends LinearOpMode {
         }
 
 
-    }
-
 }
+

@@ -29,8 +29,8 @@ public class HarshitaBM extends ServoAbstractButtonMap {
 
         DPadControl.dpadStrafe(opMode, multiplier); // strafe when dpad is pressed
 
-        if (opMode.gamepad1.left_trigger>deadZone)mp = HolonomicDrive.robotOrientedDrive(0,0,1,multiplier); // turn in place left when left trigger is pressed
-        if (opMode.gamepad1.right_trigger>deadZone)mp = HolonomicDrive.robotOrientedDrive(0,0,-1,multiplier); // turn in place right when right trigger is pressed
+        if (opMode.gamepad1.left_trigger>deadZone)mp = HolonomicDrive.robotOrientedDrive(0,0,1,multiplier, opMode); // turn in place left when left trigger is pressed
+        if (opMode.gamepad1.right_trigger>deadZone)mp = HolonomicDrive.robotOrientedDrive(0,0,-1,multiplier, opMode); // turn in place right when right trigger is pressed
 
         // NOTE: work on this later
         // Make it drive like a car when right joystick is used

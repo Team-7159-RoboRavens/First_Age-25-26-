@@ -34,7 +34,8 @@ static double joystickLinearity = 10;
                 opMode.gamepad1.right_trigger,
                 opMode.gamepad1.left_stick_y,
                 opMode.gamepad1.left_stick_x,
-                opMode.gamepad1.x);
+                opMode.gamepad1.x,
+                opMode);
         opMode.telemetry.update();
         robot.setMotorPowers(mp);
     }
@@ -52,7 +53,8 @@ static double joystickLinearity = 10;
             double right_trigger,
             double left_stick_y,
             double left_stick_x,
-            boolean x) {
+            boolean x,
+            OpMode opMode) {
         double right = 0;
         double forward = 0;
         double turn = 0;
@@ -108,7 +110,7 @@ static double joystickLinearity = 10;
         }
         robot.lazyImu.get();
         double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading);
+        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
     }
 
 }

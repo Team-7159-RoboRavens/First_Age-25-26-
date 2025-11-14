@@ -20,14 +20,15 @@ public class LiamPolarDrive extends ServoAbstractButtonMap {
 static double triggerDeadZone = .1;
 static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
 static double joystickDeadZone = .1;
-static double joystickLinearity = 10;
+static double joystickLinearity = 3;
 
 static double aimingPower = .3;
 static double aimingThreshold = .07;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
-        MotorPowers mp = getMotorPowers(
+        MotorPowers mp;
+        mp = getMotorPowers(
                 robot,
                 robot.lazyImu.get(),
                 opMode.gamepad1.dpad_up,
@@ -40,7 +41,8 @@ static double aimingThreshold = .07;
                 opMode.gamepad1.right_trigger,
                 opMode.gamepad1.left_stick_y,
                 opMode.gamepad1.left_stick_x,
-                opMode.gamepad1.x);
+                opMode.gamepad1.x,
+                opMode);
 
         if (opMode.gamepad2.x){
             if (limelightData.accurate) {
@@ -59,6 +61,8 @@ static double aimingThreshold = .07;
             }
         }
         robot.setMotorPowers(mp);
+        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        opMode.telemetry.addLine("angle: "+robotHeading);
     }
 
     public static MotorPowers getMotorPowers(
@@ -74,7 +78,8 @@ static double aimingThreshold = .07;
             double right_trigger,
             double left_stick_y,
             double left_stick_x,
-            boolean x) {
+            boolean x,
+            OpMode opMode) {
         double right = 0;
         double forward = 0;
         double turn = 0;
@@ -83,10 +88,10 @@ static double aimingThreshold = .07;
             forward ++;
         }
         if (dpad_down) {
-            forward --;
+            forward -= 1;
         }
         if (dpad_left) {
-            right --;
+            right -= 1;
         }
         if (dpad_right) {
             right ++;
@@ -112,16 +117,26 @@ static double aimingThreshold = .07;
         // Scales speed so that after DeadZone, it is increasing at a exponential
         // ,rate, so when the joystick is fully pressed the speed is 1
         if (Math.abs(left_stick_y) > joystickDeadZone || Math.abs(left_stick_x) > joystickDeadZone || left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
-            //Calculates speed by scaling hypotenuse through desired map
-            double angle = Math.atan2(left_stick_y, left_stick_x);
-            // Calculates Hypotenuse of triangle
-            double scaleFactor = Math.sqrt(Math.pow(left_stick_x, 2) + Math.pow(left_stick_y, 2));
-            //
-            double ajustedScale = Math.pow((scaleFactor-joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity);
-            double forwardSpeed = ajustedScale * Math.sin(angle);
-            double strafeSpeed = ajustedScale * Math.cos(angle);
+//            double angle = Math.atan2(left_stick_y, left_stick_x);
+//            double scalingFactor = Math.max(1, Math.abs(left_stick_x * 1.1));
+            double turnSpeed = Math.pow((right_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity) - Math.pow((left_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
+            double forwardSpeed = 0;
+            double strafeSpeed = 0;
+            if (left_stick_y > joystickDeadZone) {
+                forwardSpeed = Math.pow((left_stick_y-joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity);
+            }
+            if (left_stick_x > joystickDeadZone) {
+                strafeSpeed = Math.pow((left_stick_x-joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity);
+            }
+            if (left_stick_y < -joystickDeadZone) {
+                forwardSpeed = -Math.abs(Math.pow((left_stick_y+joystickDeadZone), joystickLinearity)/Math.pow((1-joystickDeadZone), joystickLinearity)); //congrats you got the the end of this line of code, would you like to see more :3
+            }
+            if (left_stick_x < -joystickDeadZone) {
+                strafeSpeed = -Math.abs(Math.pow((left_stick_x + joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity));
+            }
             forward -= forwardSpeed;
             right += strafeSpeed;
+            turn = turnSpeed;
         }
 
         //Slow strafe while holding x
@@ -129,8 +144,16 @@ static double aimingThreshold = .07;
             maxMotorPower *= 0.5;
         }
         robot.lazyImu.get();
+        opMode.telemetry.addLine("forward: "+forward);
+        opMode.telemetry.addLine("right: "+right);
+        opMode.telemetry.addLine("turn: "+turn);
+
+        opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
+        opMode.telemetry.addLine("right: "+right);
+        opMode.telemetry.addLine("turn: "+turn);
         double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading);
+        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
+
     }
 
 }

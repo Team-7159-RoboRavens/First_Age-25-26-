@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 
 @Autonomous
@@ -24,7 +25,7 @@ public class smallTimedPedro extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
-        robot = new FirstAgeTempbot(hardwareMap, new Pose2d(new Vector2d(0,0),0), this);  //idk whats wrong here pls fix it
+        robot = new FirstAgeTempbot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
 
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -45,63 +46,63 @@ public class smallTimedPedro extends LinearOpMode {
     }
 
 
-
     //defines what to do for each movement: moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
-    public void strafeMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower){
-        if(direction == Direction.LEFT){
-            while((System.currentTimeMillis() - startTime) < millisDelay){
+    public void strafeMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower) {
+        if (direction == Direction.LEFT) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(-motorPower, motorPower, motorPower, -motorPower);
             }
-        } else if(direction == Direction.RIGHT){
-            while((System.currentTimeMillis() - startTime) < millisDelay){
+        } else if (direction == Direction.RIGHT) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
             }
         }
     }
 
     //sets y direction for the robot, moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
-    public void driveAllMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower){
-        if(direction == Direction.FORWARD){
-            while((System.currentTimeMillis() - startTime) < millisDelay){
+    public void driveAllMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower) {
+        if (direction == Direction.FORWARD) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setAllMotorPowers(motorPower);
             }
-        } else if(direction == Direction.BACKWARD){
-            while((System.currentTimeMillis() - startTime) < millisDelay){
+        } else if (direction == Direction.BACKWARD) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setAllMotorPowers(-motorPower);
             }
         }
     }
 
-    public void rotateTo(Direction direction, int millisDelay, long startTime, double motorPower){
+    public void rotateTo(Direction direction, int millisDelay, long startTime, double motorPower) {
         robot.setAllMotorPowers(motorPower);
-        if(direction == Direction.POSITIVE){
-            while((System.currentTimeMillis() - startTime) < millisDelay){
+        if (direction == Direction.POSITIVE) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
             }
-        } else if(direction == Direction.NEGATIVE){
-                while((System.currentTimeMillis() - startTime) < millisDelay){
-                    robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
-                }
-            }
-        }
-
-    public void aim(double desiredAngle,double millisDelay,double motorPower){
-        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentangle + desiredAngle));
-        while(angleOffset-millisDelay*1 > 0){
-            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentangle + desiredAngle));
-            boolean rotateRight = false;
-            if ((currentAngle - desiredAngle) < (currentangle + desiredAngle)){
-                rotateRight = true;
-            }
-            if(rotateRight){
-
-                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
-            }
-            else{
+        } else if (direction == Direction.NEGATIVE) {
+            while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
             }
-//              currentAngle = odometry.currentAngle;
         }
     }
+
+    public void aim(double desiredAngle, double millisDelay, double motorPower) {
+        double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
+        while (angleOffset - millisDelay * 1 > 0) {
+            currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
+            boolean rotateRight = false;
+            if ((currentAngle - desiredAngle) < (currentAngle + desiredAngle)) {
+                rotateRight = true;
+            }
+            if (rotateRight) {
+
+                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
+            } else {
+                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
+            }
+        }
+    }
+}
     
 

@@ -41,6 +41,7 @@ public class smallTimedPedro extends LinearOpMode {
         driveAllMotorsTo(Direction.FORWARD, 2000, System.currentTimeMillis(), 0.5);
         rotateTo(Direction.NEGATIVE, 1000, System.currentTimeMillis(), 0.5);
         driveAllMotorsTo(Direction.FORWARD, 6000, System.currentTimeMillis(), 0.5);
+        aim( 90,50, 5);
 //        robot.specimenClaw.setPosition(0.5);
 
     }

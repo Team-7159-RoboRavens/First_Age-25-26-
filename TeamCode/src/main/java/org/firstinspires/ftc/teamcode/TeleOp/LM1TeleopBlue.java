@@ -4,16 +4,13 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
-import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.HarshitaBM;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 
-@TeleOp(name="Harshita TeleOp")
-public class HarshitaTeleOp extends OpMode {
+@TeleOp(name="LM1TeleopBlue")
+public class LM1TeleopBlue extends OpMode {
     //Global Variables
     ServoTempBot robot;
 
@@ -36,7 +33,7 @@ public class HarshitaTeleOp extends OpMode {
     public void loop() {
         driveButtonMap.loop(robot, this);
         armButtonmap.loop(robot, this);
-        robot.runLimelight(24);
+        robot.runLimelight(25);
         telemetry.update();
     }
 }

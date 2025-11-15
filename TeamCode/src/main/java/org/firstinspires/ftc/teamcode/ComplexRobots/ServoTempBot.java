@@ -141,7 +141,7 @@ public class ServoTempBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 104 * 4, fr.getTargetYDegrees());
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
@@ -153,7 +153,7 @@ public class ServoTempBot extends MecanumDrive {
                             double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 30;
+                            double limelightMountAngleDegrees = 26;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

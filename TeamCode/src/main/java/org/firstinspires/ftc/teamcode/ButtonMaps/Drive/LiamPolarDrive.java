@@ -23,7 +23,7 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = .3;
-static double aimingThreshold = .07;
+static double aimingThreshold = .02;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 

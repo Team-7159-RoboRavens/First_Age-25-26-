@@ -20,8 +20,8 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 
     //These magic numbers are not final and should be iteratively tested.
     private double baseShotPower = .5;
-    private double limelightPowerMultiplier = .23;
-    private double limelightBaseDistance = 134;
+    private double limelightPowerMultiplier =.5;
+    private double limelightBaseDistance = 100;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -50,9 +50,9 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 //            robot.Servo1.setPower(0);
 //            robot.Servo2.setPower(0);
 //        }
-//
+
         if (opMode.gamepad2.a) {
-            robot.Servo1.setPower(.6);
+            robot.Servo1.setPower(-.6);
             opMode.telemetry.addLine("Servos");
         }
         else {
@@ -80,10 +80,12 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
         }
         else if (opMode.gamepad2.dpad_up) {
+            robot.Servo1.setPower(-.6);
+            opMode.telemetry.addLine("Servos");
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * (limelightData.distance - limelightBaseDistance) / limelightBaseDistance + (1.3 * baseShotPower) : baseShotPower * 1.5);
+            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow((limelightData.distance - limelightBaseDistance), .8) / limelightBaseDistance + (1.4 * baseShotPower) : baseShotPower * 1.5);
             if (!limelightData.accurate)
                 opMode.telemetry.addLine("Shoot far");
 

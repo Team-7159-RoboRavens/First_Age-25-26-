@@ -9,8 +9,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 
-@TeleOp(name="LM1TeleopBlue")
-public class LM1TeleopBlue extends OpMode {
+public abstract class LM1TeleOpShared extends OpMode {
     //Global Variables
     ServoTempBot robot;
 
@@ -26,14 +25,6 @@ public class LM1TeleopBlue extends OpMode {
         driveButtonMap = new LiamPolarDrive();
         armButtonmap = new FirstAgeArm();
         telemetry.addLine("Ready.");
-        telemetry.update();
-    }
-
-    @Override
-    public void loop() {
-        driveButtonMap.loop(robot, this);
-        armButtonmap.loop(robot, this);
-        robot.runLimelight(25);
         telemetry.update();
     }
 }

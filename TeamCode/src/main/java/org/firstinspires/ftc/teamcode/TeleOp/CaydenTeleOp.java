@@ -1,8 +1,5 @@
 //package org.firstinspires.ftc.teamcode.TeleOp;
 //
-//import static org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive.aimingPower;
-//import static org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive.aimingThreshold;
-//
 //import com.acmerobotics.roadrunner.Pose2d;
 //import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 //import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -11,10 +8,8 @@
 //import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 //import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.LimelightArm;
 //import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.CaydenPolarDrive;
-//import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 //import org.firstinspires.ftc.teamcode.ComplexRobots.CoachEricBot;
 //import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
-//import org.firstinspires.ftc.teamcode.limelightData;
 //
 //@TeleOp(name = "Cayden TeleOp")
 //public class CaydenTeleOp extends OpMode {
@@ -53,13 +48,11 @@
 //        if (limelightData.aiming){
 //            if (limelightData.accurate) {
 //                opMode.telemetry.addLine("Aiming");
-//                double aimingPower = .5;
 //                mp.leftFront -= limelightData.directionToTag()[0] * aimingPower;
 //                mp.leftBack -= limelightData.directionToTag()[0] * aimingPower;
 //                mp.rightFront += limelightData.directionToTag()[0] * aimingPower;
 //                mp.rightBack += limelightData.directionToTag()[0] * aimingPower;
 //            }
-//            double aimingThreshold = .1;
 //            if (Math.abs(limelightData.directionToTag()[0]) < aimingThreshold) {
 //                limelightData.aiming = false;
 //                opMode.telemetry.addLine("Aimed");

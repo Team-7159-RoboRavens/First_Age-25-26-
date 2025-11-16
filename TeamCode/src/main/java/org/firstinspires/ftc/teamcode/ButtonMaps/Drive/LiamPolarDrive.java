@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 
-import com.acmerobotics.dashboard.config.Config;
+//import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Config
+//@Config
 public class LiamPolarDrive extends ServoAbstractButtonMap {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
@@ -23,7 +23,7 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
-static double aimingPower = .05;
+static double aimingPower = .3;
 static double aimingThreshold = .05;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -49,11 +49,11 @@ static double aimingThreshold = .05;
             if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-//                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
-//                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
-//                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
-//                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
-                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
+                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
+                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
+                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
+//                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
             }

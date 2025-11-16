@@ -15,13 +15,15 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     //TODO: Change back to private final when done with dash
     private MotorPowers mp;// = new MotorPowers(0);
     private double servoPosition;
+    private double stage = 0;
     private double timeSince;
     private double timeBuffer = 200;
 
     //These magic numbers are not final and should be iteratively tested.
-    private double baseShotPower = .5;
-    private double limelightPowerMultiplier =.1;
-    private double limelightBaseDistance = 100;
+    public static double baseShotPower = .5;
+    public static double limelightPowerMultiplier = 1.12069;
+    public static double limelightBaseDistance = 100;
+    public static double nonLinearPower = 1.0025;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -39,7 +41,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
                 opMode.telemetry.addLine("No Tag");
                 limelightData.aiming = false;
             }
-
         }
 //        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
 //            robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
@@ -62,11 +63,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         if (opMode.gamepad2.dpad_down) {
             if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                 opMode.telemetry.addLine("Shoot medium-short");
-                robot.ShootMotor.setPower(baseShotPower * 1.15);
+                robot.ShootMotor.setPower(baseShotPower * 1.45);
             }
             else {
                 opMode.telemetry.addLine("Shoot Short");
-                robot.ShootMotor.setPower(baseShotPower);
+                robot.ShootMotor.setPower(baseShotPower * 1.35);
             }
         }
         else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -76,7 +77,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
             else {
                 opMode.telemetry.addLine("Shoot medium");
-                robot.ShootMotor.setPower(baseShotPower * 1.3);
+                robot.ShootMotor.setPower(baseShotPower * 1.5);
             }
         }
         else if (opMode.gamepad2.dpad_up) {
@@ -85,7 +86,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow((limelightData.distance - limelightBaseDistance), .5) / limelightBaseDistance + (1.4 * baseShotPower) : baseShotPower * 1.5);
+            robot.ShootMotor.setPower(limelightData.accurate ?  limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (!limelightData.accurate)
                 opMode.telemetry.addLine("Shoot far");
 

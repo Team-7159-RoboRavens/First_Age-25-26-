@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -22,8 +23,8 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
-static double aimingPower = .3;
-static double aimingThreshold = .02;
+static double aimingPower = .05;
+static double aimingThreshold = .05;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
@@ -48,17 +49,20 @@ static double aimingThreshold = .02;
             if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
-                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
-                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
-            }
-            else
-                opMode.telemetry.addLine("Can't Aim");
-            if (Math.abs(limelightData.directionToTag()[0]) < aimingThreshold) {
+//                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
+//                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
+//                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
+//                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
+                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
             }
+//            else
+//                opMode.telemetry.addLine("Can't Aim");
+//            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold) {
+//                limelightData.aiming = false;
+//                opMode.telemetry.addLine("Aimed");
+//            }
         }
         robot.setMotorPowers(mp);
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);

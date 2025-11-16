@@ -17,7 +17,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 200;
+    private double timeBuffer = 700;
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .5;
@@ -81,7 +81,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
         }
         else if (opMode.gamepad2.dpad_up) {
-            robot.Servo1.setPower(-.6);
+            if (stage == 0) {
+                timeSince = System.currentTimeMillis();
+            }
+            stage = 1;
+            if (timeSince + timeBuffer < System.currentTimeMillis()) {
+                robot.Servo1.setPower(-.6);
+            }
             opMode.telemetry.addLine("Servos");
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
@@ -93,6 +99,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
         else {
             robot.ShootMotor.setPower(0);
+            stage = 0;
         }
 
 

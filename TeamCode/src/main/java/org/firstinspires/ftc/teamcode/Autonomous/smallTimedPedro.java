@@ -119,7 +119,11 @@ public class smallTimedPedro extends LinearOpMode {
         robot.setMotorPower(0,0,0,0);
     }
     public static void rotate(double degrees, ServoTempBot robot2){
-        aim(robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + degrees, 50, 1, robot2);
+        double target = robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + degrees;
+        if (target > 360){
+            target -= 360;
+        }
+        aim(target, 50, 1, robot2);
     }
     static public void timeout(double input) {
         double startTime = System.currentTimeMillis();

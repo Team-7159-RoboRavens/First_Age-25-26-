@@ -47,7 +47,7 @@ static double aimingThreshold = .05;
                 opMode);
 
         //Reset FOD
-        if (opMode.gamepad1.options) {
+        if (opMode.gamepad1.back) {
             robot.lazyImu.get().resetYaw();
         }
 

@@ -20,10 +20,10 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double timeBuffer = 3000;
 
     //These magic numbers are not final and should be iteratively tested.
-    public static double baseShotPower = .46;
-    public static double limelightPowerMultiplier = 1.15 ;
+    public static double baseShotPower = .45;
+    public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
-    public static double nonLinearPower = 1.0022;
+    public static double nonLinearPower = 1.0028;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -53,16 +53,23 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 //        }
 
         if (opMode.gamepad2.a) {
-            robot.Servo1.setPower(-.6);
+            robot.Servo1.setPower(-.8);
             opMode.telemetry.addLine("Servos forward");
         }
         else if (opMode.gamepad2.b) {
-            robot.Servo1.setPower(.6);
+            robot.Servo1.setPower(.8);
             opMode.telemetry.addLine("Servos Back");
         }
         else {
             robot.Servo1.setPower(0);
         }
+
+        if (opMode.gamepad2.y) {
+            robot.Servo2.setPosition(-.8);
+            opMode.telemetry.addLine("Servos forward");
+        }
+
+
 
         if (opMode.gamepad2.dpad_down) {
             if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -87,12 +94,14 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else if (opMode.gamepad2.dpad_up) {
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
+                robot.Servo2.setPosition(.8);
             }
             stage = 1;
             if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.6);
+                robot.Servo2.setPosition(0);
+                opMode.telemetry.addLine("Servos");
             }
-            opMode.telemetry.addLine("Servos");
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
@@ -104,6 +113,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else {
             robot.ShootMotor.setPower(0);
             stage = 0;
+            robot.Servo2.setPosition(.8);
         }
 
 

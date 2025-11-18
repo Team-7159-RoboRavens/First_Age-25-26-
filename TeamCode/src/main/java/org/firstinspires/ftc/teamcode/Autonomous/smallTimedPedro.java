@@ -122,7 +122,7 @@ public class smallTimedPedro extends LinearOpMode {
         if (target > 360){
             target -= 360;
         }
-        aim(target, 50, 1, robot2);
+        aim(target, 50,  1, robot2);
     }
     static public void timeout(double input) {
         double startTime = System.currentTimeMillis();

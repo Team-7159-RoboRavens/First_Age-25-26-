@@ -11,10 +11,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.limelightData;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.MecanumDriveNoMotors;
 
 import java.util.List;
@@ -138,12 +137,35 @@ public class LimelightBot extends MecanumDriveNoMotors {
                     }
                     boolean temp = false;
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
+
 //                        opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
                             temp = true;
                             limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
+                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("y              opMode.telemetry.addData(\"X: \", fr.getTargetXDegrees());: ", fr.getTargetYDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
+
+                            // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
+                            double limelightMountAngleDegrees = 0;
+
+                            // distance from the center of the Limelight lens to the floor (To be Measured)
+                            double limelightLensHeightCm = 20.0;
+
+                            // distance from the target to the floor
+                            double goalHeightCm = 47;
+
+                            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+                            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+                            //calculate distance
+                            double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
+                            limelightData.distance = distanceFromLimelightToGoalCm;
+                            opMode.telemetry.addData("Distance: ", distanceFromLimelightToGoalCm);
+
+
 
                         }
 

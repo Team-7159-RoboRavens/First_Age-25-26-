@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonmous;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.acmerobotics.roadrunner.ftc.Encoder;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

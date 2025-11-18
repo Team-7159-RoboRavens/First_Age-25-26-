@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
 // This class is just for storing data from the limelight
 public class limelightData {
 //The ID is meant to
@@ -9,6 +8,9 @@ public class limelightData {
     public static double aprilXDegrees;
     public static double aprilYDegrees;
     public static boolean accurate = false;
+    public static boolean aiming = false;
+    public static double distance;
+
 
     //This simply changes all the variables at once.
     public static void setParams(int I, String F, double X, double Y) {
@@ -20,6 +22,6 @@ public class limelightData {
 
     //This should return the direction and scalar of the april tag, change to be the mean value of degrees.
     public static double[] directionToTag() {
-        return new double[]{(60 - aprilXDegrees) / 60, (60 - aprilYDegrees) / 60};
+        return new double[]{(aprilXDegrees) / 20, (aprilYDegrees) / 20};
     }
 }

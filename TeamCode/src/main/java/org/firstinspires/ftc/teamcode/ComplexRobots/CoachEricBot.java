@@ -11,35 +11,30 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
 
-//This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
-
-@Config
-public class FirstAgeTempbot extends MecanumDrive {
-    enum Direction {
-        UP,DOWN
-    }
+public class CoachEricBot extends FirstAgeTempbot {
     OpMode opMode;
     //    public final DcMotorEx ShootMotor1;
     //    public final DcMotorEx ShootMotor2;
     //    public final Servo aimServo;
     //    public final Servo angleServo;
-    //    public final Servo intakeServo;
+    public final Servo intakeServo;
 
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public FirstAgeTempbot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
-        super(hardwareMap, pose);
+    public CoachEricBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
+        super(hardwareMap, pose, opMode);
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        intakeServo = hardwareMap.get(Servo.class, "servo0");
 
 
 //        limelight.pipelineSwitch(0);
@@ -68,7 +63,7 @@ public class FirstAgeTempbot extends MecanumDrive {
         //Initialize Output Servo
 //        turnServo.scaleRange(-1,1);
 //        aimServo.scaleRange(-1,0);
-//        intakeServo.scaleRange(-1,0);
+        intakeServo.scaleRange(-1,0);
 //        angleServo.scaleRange(-1,0);
     }
 

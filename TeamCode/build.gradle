@@ -31,12 +31,13 @@ repositories {
 
 dependencies {
     implementation project(':FtcRobotController')
-    testImplementation(platform('org.junit:junit-bom:6.0.0'))
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.6'
+    testImplementation(platform('org.junit:junit-bom:6.0.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
-    testImplementation "org.mockito:mockito-core:5.+"
+    testImplementation "org.mockito:mockito-core:5.20.0"
     implementation "com.acmerobotics.roadrunner:ftc:0.1.14"
     implementation "com.acmerobotics.roadrunner:core:1.0.0"
     implementation "com.acmerobotics.roadrunner:actions:1.0.0"
-//    implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
+    implementation "com.acmerobotics.dashboard:dashboard:0.5.1"
 }

@@ -38,24 +38,22 @@ public class smallTimedPedro extends LinearOpMode {
         waitForStart();
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
-//        rotateTo(Direction.POSITIVE, 1000, System.currentTimeMillis(), 0.5);
-//        driveAllMotorsTo(Direction.FORWARD, 2000, System.currentTimeMillis(), 0.5);
-//        rotateTo(Direction.NEGATIVE, 1000, System.currentTimeMillis(), 0.5);
-//        driveAllMotorsTo(Direction.FORWARD, 6000, System.currentTimeMillis(), 0.5);
+        driveAllMotorsTo(Direction.FORWARD, 2000, System.currentTimeMillis(), 0.5);
+        sleep(5000);
+        rotateTo(Direction.POSITIVE, 1000, System.currentTimeMillis(), 0.5);
+        driveAllMotorsTo(Direction.FORWARD, 6000, System.currentTimeMillis(), 0.5);
+
         aim( 0,50, 1, robot);
         sleep(1000);
         aim( 180,50, 1, robot);
         sleep(1000);
-
         aim( 90,50, 1, robot);
-        sleep(1000);
+//        sleep(1000);
+//        aim( 180,50, 1, robot);
+//        sleep(1000);
+//        aim( 45,50, 1, robot);
 
-        aim( 180,50, 1, robot);
-        sleep(1000);
-
-
-        aim( 45,50, 1, robot);
-
+        driveAllMotorsTo(Direction.BACKWARD, 6000, System.currentTimeMillis(), 0.5);
     }
 
 
@@ -85,6 +83,7 @@ public class smallTimedPedro extends LinearOpMode {
         }
     }
 
+    //negative is right, positive is left
     public void rotateTo(Direction direction, int millisDelay, long startTime, double motorPower) {
         robot.setAllMotorPowers(motorPower);
         if (direction == Direction.POSITIVE) {

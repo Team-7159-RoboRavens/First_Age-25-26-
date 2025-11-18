@@ -42,8 +42,15 @@ static double aimingThreshold = .05;
                 opMode.gamepad1.right_trigger,
                 opMode.gamepad1.left_stick_y,
                 opMode.gamepad1.left_stick_x,
+                opMode.gamepad1.right_stick_x,
                 opMode.gamepad1.x,
                 opMode);
+
+        //Reset FOD
+        if (opMode.gamepad1.options) {
+            robot.lazyImu.get().resetYaw();
+        }
+
 
         if (opMode.gamepad2.x){
             if (limelightData.accurate) {
@@ -82,6 +89,7 @@ static double aimingThreshold = .05;
             double right_trigger,
             double left_stick_y,
             double left_stick_x,
+            double right_stick_x,
             boolean x,
             OpMode opMode) {
         double right = 0;
@@ -104,6 +112,11 @@ static double aimingThreshold = .05;
         //Turn Left or Right
         if (left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
             double turnSpeed = Math.pow((right_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity) - Math.pow((left_trigger-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity); //look mommy an afront to coders everywhere (it also works first try :333)
+            turn += turnSpeed;
+        }
+
+        if (Math.abs(right_stick_x) > joystickDeadZone) {
+            double turnSpeed = -Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
             turn += turnSpeed;
         }
 

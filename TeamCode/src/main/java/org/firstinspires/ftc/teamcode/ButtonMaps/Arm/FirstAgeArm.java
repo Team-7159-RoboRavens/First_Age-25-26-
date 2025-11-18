@@ -17,13 +17,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 2300;
+    private double timeBuffer = 3000;
 
     //These magic numbers are not final and should be iteratively tested.
-    public static double baseShotPower = .45;
+    public static double baseShotPower = .46;
     public static double limelightPowerMultiplier = 1.15 ;
     public static double limelightBaseDistance = 100;
-    public static double nonLinearPower = 1.0025;
+    public static double nonLinearPower = 1.0022;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -54,7 +54,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 
         if (opMode.gamepad2.a) {
             robot.Servo1.setPower(-.6);
-            opMode.telemetry.addLine("Servos");
+            opMode.telemetry.addLine("Servos forward");
+        }
+        else if (opMode.gamepad2.b) {
+            robot.Servo1.setPower(.6);
+            opMode.telemetry.addLine("Servos Back");
         }
         else {
             robot.Servo1.setPower(0);
@@ -86,13 +90,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
             stage = 1;
             if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.5);
+                robot.Servo1.setPower(-.6);
             }
             opMode.telemetry.addLine("Servos");
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightData.accurate ?  limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
+            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (!limelightData.accurate)
                 opMode.telemetry.addLine("Shoot far");
 

@@ -37,24 +37,18 @@ public class smallTimedPedro extends LinearOpMode {
         //robot waits patiently
         waitForStart();
 
-//        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
-//        rotateTo(Direction.POSITIVE, 1000, System.currentTimeMillis(), 0.5);
-//        driveAllMotorsTo(Direction.FORWARD, 2000, System.currentTimeMillis(), 0.5);
-//        rotateTo(Direction.NEGATIVE, 1000, System.currentTimeMillis(), 0.5);
-//        driveAllMotorsTo(Direction.FORWARD, 6000, System.currentTimeMillis(), 0.5);
+        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
         aim( 0,50, 1, robot);
         sleep(1000);
-        aim( 180,50, 1, robot);
+        driveAllMotorsTo(Direction.FORWARD, 250, System.currentTimeMillis(), 0.5);
         sleep(1000);
-
-        aim( 90,50, 1, robot);
+        strafeMotorsTo(Direction.RIGHT, 250, System.currentTimeMillis(), 0.5);
         sleep(1000);
-
-        aim( 180,50, 1, robot);
+        rotate(180, robot);
         sleep(1000);
-
-
-        aim( 45,50, 1, robot);
+        driveAllMotorsTo(Direction.FORWARD, 250, System.currentTimeMillis(), 0.5);
+        sleep(1000);
+        strafeMotorsTo(Direction.RIGHT, 250, System.currentTimeMillis(), 0.5);
 
     }
 

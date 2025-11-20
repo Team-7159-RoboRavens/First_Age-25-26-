@@ -146,7 +146,7 @@ public class ServoTempBot extends MecanumDrive {
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
                             opMode.telemetry.addData("y              ", fr.getTargetYDegrees());
-                                    opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 

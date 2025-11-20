@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.limelightData;
 
 @Autonomous
 public class smallTimedPedro extends LinearOpMode {
@@ -128,6 +129,15 @@ public class smallTimedPedro extends LinearOpMode {
         double startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() < startTime + input) {
             System.out.println(System.currentTimeMillis());
+        }
+    }
+
+    public static boolean aimLimelight(ServoTempBot robot2) {
+        if (limelightData.accurate) {
+            aim((robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180) * limelightData.aprilXDegrees, 50, .7, robot2);
+            return true;
+        } else {
+            return false;
         }
     }
 }

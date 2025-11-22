@@ -10,12 +10,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Autonomous(name = "smallTimedPedro")
-public class smallTimedPedro extends LinearOpMode {
+@Autonomous(name = "triangleTimedBlue")
+public class triangleTimedBlue extends LinearOpMode {
 
     ServoTempBot robot;
     public static double baseShotPower = .45;
@@ -40,6 +39,7 @@ public class smallTimedPedro extends LinearOpMode {
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //robot waits patiently
         waitForStart();
@@ -51,7 +51,13 @@ public class smallTimedPedro extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        rotateTo(Direction.NEGATIVE, 290, System.currentTimeMillis(), .5);
+        driveAllMotorsTo(Direction.FORWARD, 210, System.currentTimeMillis(), .8);
+        robot.setMotorPower(0,0,0,0);
+        sleep(500);
+        strafeMotorsTo(Direction.RIGHT, 506, System.currentTimeMillis(), .8);
+        robot.setMotorPower(0,0,0,0);
+        sleep(500);
+        rotateTo(Direction.POSITIVE, 336, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -64,6 +70,7 @@ public class smallTimedPedro extends LinearOpMode {
         long timeSince = System.currentTimeMillis();
         int stage = 0;
         double timeBuffer = 3000;
+        double timeBuffer2 = 4600;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 16000) {
             if (stage == 0) {
@@ -72,21 +79,30 @@ public class smallTimedPedro extends LinearOpMode {
                 robot.Servo2.setPosition(.9);
             }
             stage = 1;
-            if (timeSince + timeBuffer < System.currentTimeMillis()) {
+            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
+                robot.Servo2.setPosition(.9);
+                robot.Servo1.setPower(-.1);
+            }
+            else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
+
+
             telemetry.addLine("Shoot limelight");
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 220) * baseShotPower);
+            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 186) * baseShotPower);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 
         }
         robot.ShootMotor.setPower(0);
+        robot.Servo2.setPosition(.9);
+        rotateTo(Direction.NEGATIVE, 242, System.currentTimeMillis(), .5);
+        strafeMotorsTo(Direction.LEFT, 600, System.currentTimeMillis(), .8);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -107,6 +123,7 @@ public class smallTimedPedro extends LinearOpMode {
                 robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
             }
         }
+        robot.setMotorPower(0,0,0,0);
     }
 
     //sets y direction for the robot, moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
@@ -120,6 +137,7 @@ public class smallTimedPedro extends LinearOpMode {
                 robot.setAllMotorPowers(-motorPower);
             }
         }
+        robot.setMotorPower(0,0,0,0);
     }
 
     //negative is right, positive is left
@@ -184,5 +202,5 @@ public class smallTimedPedro extends LinearOpMode {
         }
     }
 }
-    
+
 

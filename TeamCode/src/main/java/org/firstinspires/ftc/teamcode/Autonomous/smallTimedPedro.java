@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
@@ -45,10 +46,22 @@ public class smallTimedPedro extends LinearOpMode {
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
 //        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
-        aim( 50,50, 1, robot);
+        robot.Servo2.setPosition(0);
+        aim( 28,.3, 1, robot, telemetry);
+//        telemetry.addLine("Aiming");
+//        telemetry.update();
+//        sleep(500);
+//        rotateTo(Direction.NEGATIVE, 10, System.currentTimeMillis(), .3);
+//        time
+//        while () {
+//
+//        }
+        telemetry.addLine("rotating");
+        telemetry.update();
 //        robot.runLimelight(24);
 //        aimLimelight(robot);
-        long timeSince = 0;
+
+        long timeSince = System.currentTimeMillis();
         int stage = 0;
         double timeBuffer = 3000;
         double timeSet = System.currentTimeMillis();
@@ -65,6 +78,7 @@ public class smallTimedPedro extends LinearOpMode {
                 telemetry.addLine("Servos");
             }
             telemetry.addLine("Shoot limelight");
+            telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
             robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 190) * baseShotPower);
@@ -72,6 +86,7 @@ public class smallTimedPedro extends LinearOpMode {
 //                telemetry.addLine("Shoot far");
 
         }
+        robot.ShootMotor.setPower(0);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -121,10 +136,13 @@ public class smallTimedPedro extends LinearOpMode {
         }
     }
 
-    public static void aim(double desiredAngle, double millisDelay, double motorPower, ServoTempBot robot) {
+    public static void aim(double desiredAngle, double millisDelay, double motorPower, ServoTempBot robot, Telemetry telemetry) {
         double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
+        telemetry.addData("Angle ", currentAngle);
         desiredAngle -= 180;
         double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
+        telemetry.addData("Angle Offset ", angleOffset);
+        telemetry.update();
         while (angleOffset - millisDelay * 1 > 0) {
             currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
@@ -146,7 +164,7 @@ public class smallTimedPedro extends LinearOpMode {
         if (target > 360){
             target -= 360;
         }
-        aim(target, 50,  1, robot2);
+//        aim(target, 50,  1, robot2,);
     }
     static public void timeout(double input) {
         double startTime = System.currentTimeMillis();
@@ -157,7 +175,7 @@ public class smallTimedPedro extends LinearOpMode {
 
     public static boolean aimLimelight(ServoTempBot robot2) {
         if (limelightData.accurate) {
-            aim((robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180) * limelightData.aprilXDegrees, 50, .7, robot2);
+//            aim((robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180) * limelightData.aprilXDegrees, 50, .7, robot2);
             return true;
         } else {
             return false;

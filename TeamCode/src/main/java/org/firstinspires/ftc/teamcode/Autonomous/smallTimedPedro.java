@@ -13,10 +13,15 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Autonomous
+@Autonomous(name = "smallTimedPedro")
 public class smallTimedPedro extends LinearOpMode {
 
     ServoTempBot robot;
+    public static double baseShotPower = .45;
+    public static double limelightPowerMultiplier = 1.18 ;
+    public static double limelightBaseDistance = 100;
+    public static double nonLinearPower = 1.0028;
+
 
     //encoder tracks motor pos, set it to 0
     public Encoder par0;
@@ -39,22 +44,40 @@ public class smallTimedPedro extends LinearOpMode {
         waitForStart();
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
-        driveAllMotorsTo(Direction.FORWARD, 2000, System.currentTimeMillis(), 0.5);
-        sleep(5000);
-        rotateTo(Direction.POSITIVE, 1000, System.currentTimeMillis(), 0.5);
-        driveAllMotorsTo(Direction.FORWARD, 6000, System.currentTimeMillis(), 0.5);
+//        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
+        aim( 50,50, 1, robot);
+//        robot.runLimelight(24);
+//        aimLimelight(robot);
+        long timeSince = 0;
+        int stage = 0;
+        double timeBuffer = 3000;
+        double timeSet = System.currentTimeMillis();
+        while (System.currentTimeMillis() < timeSet + 13000) {
+            if (stage == 0) {
+                timeSet = System.currentTimeMillis();
+                timeSince = System.currentTimeMillis();
+                robot.Servo2.setPosition(0);
+            }
+            stage = 1;
+            if (timeSince + timeBuffer < System.currentTimeMillis()) {
+                robot.Servo1.setPower(-.6);
+                robot.Servo2.setPosition(-.8);
+                telemetry.addLine("Servos");
+            }
+            telemetry.addLine("Shoot limelight");
+            //This is meant to shoot according to the distance to the april tag if the limelight is accurate
+            //All of these variables are yet to be tested and should be iterated on
+            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 190) * baseShotPower);
+//            if (!limelightData.accurate)
+//                telemetry.addLine("Shoot far");
 
-        aim( 0,50, 1, robot);
-        sleep(1000);
-        aim( 180,50, 1, robot);
-        sleep(1000);
-        aim( 90,50, 1, robot);
+        }
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
 //        aim( 45,50, 1, robot);
 
-        driveAllMotorsTo(Direction.BACKWARD, 6000, System.currentTimeMillis(), 0.5);
+//        driveAllMotorsTo(Direction.BACKWARD, 6000, System.currentTimeMillis(), 0.5);
     }
 
 

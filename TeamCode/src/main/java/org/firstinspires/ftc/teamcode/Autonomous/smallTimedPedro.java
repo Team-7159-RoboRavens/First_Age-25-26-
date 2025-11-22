@@ -46,12 +46,12 @@ public class smallTimedPedro extends LinearOpMode {
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
 //        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
-        robot.Servo2.setPosition(0);
-        aim( 28,.3, 1, robot, telemetry);
+        robot.Servo2.setPosition(.9);
+//        aim( -20,.1, .3, robot, telemetry);
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-//        rotateTo(Direction.NEGATIVE, 10, System.currentTimeMillis(), .3);
+        rotateTo(Direction.NEGATIVE, 290, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -65,23 +65,23 @@ public class smallTimedPedro extends LinearOpMode {
         int stage = 0;
         double timeBuffer = 3000;
         double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 13000) {
+        while (System.currentTimeMillis() < timeSet + 16000) {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(0);
+                robot.Servo2.setPosition(.9);
             }
             stage = 1;
             if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.6);
-                robot.Servo2.setPosition(-.8);
+                robot.Servo1.setPower(-.5);
+                robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
             telemetry.addLine("Shoot limelight");
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 190) * baseShotPower);
+            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 220) * baseShotPower);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 
@@ -124,7 +124,7 @@ public class smallTimedPedro extends LinearOpMode {
 
     //negative is right, positive is left
     public void rotateTo(Direction direction, int millisDelay, long startTime, double motorPower) {
-        robot.setAllMotorPowers(motorPower);
+//        robot.setAllMotorPowers(motorPower);
         if (direction == Direction.POSITIVE) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
@@ -134,12 +134,14 @@ public class smallTimedPedro extends LinearOpMode {
                 robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
             }
         }
+        robot.setMotorPower(0,0,0,0);
+
     }
 
     public static void aim(double desiredAngle, double millisDelay, double motorPower, ServoTempBot robot, Telemetry telemetry) {
         double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
         telemetry.addData("Angle ", currentAngle);
-        desiredAngle -= 180;
+//        desiredAngle -= 180;
         double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
         telemetry.addData("Angle Offset ", angleOffset);
         telemetry.update();

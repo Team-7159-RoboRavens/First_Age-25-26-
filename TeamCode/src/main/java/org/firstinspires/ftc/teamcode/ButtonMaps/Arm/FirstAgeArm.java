@@ -65,7 +65,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
 
         if (opMode.gamepad2.y) {
-            robot.Servo2.setPosition(-.8);
+            robot.Servo2.setPosition(.4);
             opMode.telemetry.addLine("Servos forward");
         }
 
@@ -94,12 +94,12 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else if (opMode.gamepad2.dpad_up) {
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(0);
+                robot.Servo2.setPosition(.9);
             }
             stage = 1;
             if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.6);
-                robot.Servo2.setPosition(-.8);
+                robot.Servo2.setPosition(.4);
                 opMode.telemetry.addLine("Servos");
             }
             opMode.telemetry.addLine("Shoot limelight");
@@ -113,7 +113,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else {
             robot.ShootMotor.setPower(0);
             stage = 0;
-            robot.Servo2.setPosition(.8);
+            robot.Servo2.setPosition(.9);
         }
 
 

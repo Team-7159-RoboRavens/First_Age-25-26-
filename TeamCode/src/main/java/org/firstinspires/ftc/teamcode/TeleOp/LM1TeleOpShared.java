@@ -22,6 +22,7 @@ public abstract class LM1TeleOpShared extends OpMode {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
         robot = new ServoTempBot(hardwareMap, new Pose2d(0,0,0), this);
+        robot.Servo2.setPosition(.8);
         driveButtonMap = new LiamPolarDrive();
         armButtonmap = new FirstAgeArm();
         telemetry.addLine("Ready.");

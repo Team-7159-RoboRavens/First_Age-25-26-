@@ -46,7 +46,7 @@ public class triangleTimedRed extends LinearOpMode {
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
 //        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
-        robot.Servo2.setPosition(.9);
+        robot.Servo2.setPosition(.7);
 //        aim( -20,.1, .3, robot, telemetry);
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
@@ -80,7 +80,7 @@ public class triangleTimedRed extends LinearOpMode {
             }
             stage = 1;
             if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.9);
+                robot.Servo2.setPosition(.7);
                 robot.Servo1.setPower(-.1);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
@@ -101,7 +101,7 @@ public class triangleTimedRed extends LinearOpMode {
 
         }
         robot.ShootMotor.setPower(0);
-        robot.Servo2.setPosition(.9);
+        robot.Servo2.setPosition(.7);
         rotateTo(Direction.POSITIVE, 242, System.currentTimeMillis(), .5);
         strafeMotorsTo(Direction.RIGHT, 556, System.currentTimeMillis(), .8);
 //        sleep(1000);

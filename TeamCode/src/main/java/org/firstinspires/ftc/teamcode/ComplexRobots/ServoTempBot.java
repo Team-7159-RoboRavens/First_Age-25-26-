@@ -33,7 +33,7 @@ public class ServoTempBot extends MecanumDrive {
     //    public final DcMotorEx ShootMotor2;
         public final CRServo Servo1;
         public final Servo Servo2;
-    //    public final Servo intakeServo;
+        public final CRServo Servo3;
 
 
 //    public final Servo turnServo;
@@ -59,6 +59,7 @@ public class ServoTempBot extends MecanumDrive {
         //Initialize Servos
         Servo1 = hardwareMap.get(CRServo.class, "servo1");
         Servo2 = hardwareMap.get(Servo.class, "servo2");
+        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
@@ -141,7 +142,7 @@ public class ServoTempBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + 4 + limelightData.distance / 20, fr.getTargetYDegrees());
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees());
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());

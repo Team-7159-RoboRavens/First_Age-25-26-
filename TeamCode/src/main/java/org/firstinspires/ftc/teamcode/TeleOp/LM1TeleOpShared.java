@@ -26,6 +26,5 @@ public abstract class LM1TeleOpShared extends OpMode {
         driveButtonMap = new LiamPolarDrive();
         armButtonmap = new FirstAgeArm();
         telemetry.addLine("Ready.");
-        telemetry.update();
     }
 }

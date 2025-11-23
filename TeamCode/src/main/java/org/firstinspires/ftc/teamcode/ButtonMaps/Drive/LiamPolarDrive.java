@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
+//import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -23,7 +23,7 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
-static double aimingPower = .3;
+static double aimingPower = .6;
 static double aimingThreshold = .05;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -53,13 +53,17 @@ static double aimingThreshold = .05;
 
 
         if (opMode.gamepad2.x){
-            if (limelightData.accurate) {
+            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold) {
+                limelightData.aiming = false;
+                opMode.telemetry.addLine("Aimed");
+            }
+            else if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.leftBack += limelightData.aprilXDegrees / 20  * aimingPower;
-                mp.rightFront -= limelightData.aprilXDegrees / 20  * aimingPower;
-                mp.rightBack -= limelightData.aprilXDegrees / 20  * aimingPower;
+                mp.leftFront += limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.leftBack += limelightData.aprilXDegrees / 20  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.rightFront -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower + .1;
+                mp.rightBack -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
 //                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");

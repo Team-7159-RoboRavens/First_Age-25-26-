@@ -51,13 +51,13 @@ public class triangleTimedBlue extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 210, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(Direction.FORWARD, 220, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
         strafeMotorsTo(Direction.RIGHT, 506, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(Direction.POSITIVE, 336, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 352, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -72,7 +72,7 @@ public class triangleTimedBlue extends LinearOpMode {
         double timeBuffer = 3000;
         double timeBuffer2 = 4600;
         double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 16000) {
+        while (System.currentTimeMillis() < timeSet + 22000) {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
@@ -85,6 +85,7 @@ public class triangleTimedBlue extends LinearOpMode {
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
+                robot.Servo3.setPower(.5);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
@@ -94,7 +95,7 @@ public class triangleTimedBlue extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 186) * baseShotPower);
+            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 168) * baseShotPower);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 
@@ -102,7 +103,7 @@ public class triangleTimedBlue extends LinearOpMode {
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.9);
         rotateTo(Direction.NEGATIVE, 242, System.currentTimeMillis(), .5);
-        strafeMotorsTo(Direction.LEFT, 600, System.currentTimeMillis(), .8);
+        strafeMotorsTo(Direction.LEFT, 550, System.currentTimeMillis(), .8);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);

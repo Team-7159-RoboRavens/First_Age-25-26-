@@ -23,8 +23,8 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
-static double aimingPower = .6;
-static double aimingThreshold = .05;
+static double aimingPower = 1;
+static double aimingThreshold = .045;
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
@@ -70,10 +70,6 @@ static double aimingThreshold = .05;
             }
 //            else
 //                opMode.telemetry.addLine("Can't Aim");
-//            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold) {
-//                limelightData.aiming = false;
-//                opMode.telemetry.addLine("Aimed");
-//            }
         }
         robot.setMotorPowers(mp);
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -101,7 +97,7 @@ static double aimingThreshold = .05;
         double turn = 0;
         double maxMotorPower = 1;
         if (dpad_up) {
-            forward ++;
+            forward += 1;
         }
         if (dpad_down) {
             forward -= 1;
@@ -110,7 +106,7 @@ static double aimingThreshold = .05;
             right -= 1;
         }
         if (dpad_right) {
-            right ++;
+            right += 1;
         }
 
         //Turn Left or Right

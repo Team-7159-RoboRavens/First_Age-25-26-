@@ -1,20 +1,21 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.pedropathing.ftc.localization.Encoder;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Autonomous(name = "triangleTimedRed")
-public class triangleTimedRed extends LinearOpMode {
+@Autonomous(name = "GoForward")
+public class GoForward extends LinearOpMode {
 
     ServoTempBot robot;
     public static double baseShotPower = .45;
@@ -51,59 +52,8 @@ public class triangleTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 220, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(Direction.FORWARD, 300, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
-        sleep(500);
-        strafeMotorsTo(Direction.LEFT, 506, System.currentTimeMillis(), .8);
-        robot.setMotorPower(0,0,0,0);
-        sleep(500);
-        rotateTo(Direction.NEGATIVE, 352, System.currentTimeMillis(), .5);
-//        time
-//        while () {
-//
-//        }
-        telemetry.addLine("rotating");
-        telemetry.update();
-//        robot.runLimelight(24);
-//        aimLimelight(robot);
-
-        long timeSince = System.currentTimeMillis();
-        int stage = 0;
-        double timeBuffer = 3000;
-        double timeBuffer2 = 4600;
-        double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 17000) {
-            if (stage == 0) {
-                timeSet = System.currentTimeMillis();
-                timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(.9);
-            }
-            stage = 1;
-            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.7);
-                robot.Servo1.setPower(-.1);
-            }
-            else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.5);
-                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(.4);
-                telemetry.addLine("Servos");
-            }
-
-
-            telemetry.addLine("Shoot limelight");
-            telemetry.update();
-            //This is meant to shoot according to the distance to the april tag if the limelight is accurate
-            //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 168) * baseShotPower);
-//            if (!limelightData.accurate)
-//                telemetry.addLine("Shoot far");
-
-        }
-        robot.ShootMotor.setPower(0);
-        robot.Servo2.setPosition(.7);
-        rotateTo(Direction.POSITIVE, 242, System.currentTimeMillis(), .5);
-        strafeMotorsTo(Direction.RIGHT, 556, System.currentTimeMillis(), .8);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -203,5 +153,5 @@ public class triangleTimedRed extends LinearOpMode {
         }
     }
 }
-    
+
 

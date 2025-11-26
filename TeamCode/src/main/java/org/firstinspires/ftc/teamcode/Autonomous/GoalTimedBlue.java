@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.limelightData;
 public class GoalTimedBlue extends LinearOpMode {
 
     ServoTempBot robot;
-    public static double baseShotPower = .45;
+    public static double baseShotPower = .418;
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
@@ -52,14 +52,14 @@ public class GoalTimedBlue extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 1100, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 1150, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedBlue.Direction.LEFT, 200, System.currentTimeMillis(), .8);
+        strafeMotorsTo(GoalTimedBlue.Direction.LEFT, 400, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
         robot.setMotorPower(0,0,0,0);
-        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 1320, System.currentTimeMillis(), .5);
+        rotateTo(GoalTimedBlue.Direction.POSITIVE, 1040, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -74,7 +74,7 @@ public class GoalTimedBlue extends LinearOpMode {
         double timeBuffer = 3000;
         double timeBuffer2 = 4600;
         double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 22000) {
+        while (System.currentTimeMillis() < timeSet + 17000) {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
@@ -106,13 +106,18 @@ public class GoalTimedBlue extends LinearOpMode {
         robot.Servo2.setPosition(.7);
         robot.Servo3.setPower(0);
         sleep(500);
-        rotateTo(GoalTimedBlue.Direction.POSITIVE, 320, System.currentTimeMillis(), .5);
-        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
-        robot.setAllMotorPowers(0);
-        sleep(500);
-        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 562, System.currentTimeMillis(), .5);
-        sleep(500);
-        driveAllMotorsTo(GoalTimedBlue.Direction.BACKWARD, 1800, System.currentTimeMillis(), .6);
+        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 700, System.currentTimeMillis(), .8);
+
+//        rotateTo(GoalTimedBlue.Direction.POSITIVE, 320, System.currentTimeMillis(), .5);
+//        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
+//        robot.setAllMotorPowers(0);
+//        sleep(500);
+//        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 562, System.currentTimeMillis(), .5);
+//        sleep(500);
+//        strafeMotorsTo(GoalTimedBlue.Direction.RIGHT, 1800, System.currentTimeMillis(), .6);
+//        sleep(500);
+//        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 400, System.currentTimeMillis(), .5);
+
 
 //        sleep(1000);
 //        aim( 180,50, 1, robot);

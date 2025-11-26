@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.limelightData;
 public class triangleTimedBlue extends LinearOpMode {
 
     ServoTempBot robot;
-    public static double baseShotPower = .45;
+    public static double baseShotPower = .438;
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
@@ -57,7 +57,7 @@ public class triangleTimedBlue extends LinearOpMode {
         strafeMotorsTo(Direction.RIGHT, 506, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(Direction.POSITIVE, 352, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 60, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -72,7 +72,7 @@ public class triangleTimedBlue extends LinearOpMode {
         double timeBuffer = 3000;
         double timeBuffer2 = 4600;
         double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 22000) {
+        while (System.currentTimeMillis() < timeSet + 17000) {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
@@ -102,7 +102,7 @@ public class triangleTimedBlue extends LinearOpMode {
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        rotateTo(Direction.NEGATIVE, 242, System.currentTimeMillis(), .5);
+        rotateTo(Direction.NEGATIVE, 142, System.currentTimeMillis(), .5);
         strafeMotorsTo(Direction.LEFT, 550, System.currentTimeMillis(), .8);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);

@@ -15,7 +15,7 @@ public class LM1TeleOpBlue extends LM1TeleOpShared {
     public void loop() {
         driveButtonMap.loop(robot, this);
         armButtonmap.loop(robot, this);
-        robot.runLimelight(25);
+        robot.runLimelight(20);
         telemetry.update();
     }
 }

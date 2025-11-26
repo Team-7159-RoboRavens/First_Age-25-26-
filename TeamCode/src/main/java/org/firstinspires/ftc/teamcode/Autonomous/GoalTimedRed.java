@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.limelightData;
 public class GoalTimedRed extends LinearOpMode {
 
     ServoTempBot robot;
-    public static double baseShotPower = .45;
+    public static double baseShotPower = .418;
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
@@ -55,11 +55,11 @@ public class GoalTimedRed extends LinearOpMode {
         driveAllMotorsTo(Direction.FORWARD, 1100, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 200, System.currentTimeMillis(), .8);
+        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 400, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
         robot.setMotorPower(0,0,0,0);
-        rotateTo(Direction.NEGATIVE, 1320, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 1050, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -74,7 +74,7 @@ public class GoalTimedRed extends LinearOpMode {
         double timeBuffer = 3000;
         double timeBuffer2 = 4600;
         double timeSet = System.currentTimeMillis();
-        while (System.currentTimeMillis() < timeSet + 21000) {
+        while (System.currentTimeMillis() < timeSet + 17000) {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
@@ -105,12 +105,10 @@ public class GoalTimedRed extends LinearOpMode {
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
         robot.Servo3.setPower(0);
-        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
-        robot.setAllMotorPowers(0);
-        sleep(500);
-        rotateTo(GoalTimedRed.Direction.POSITIVE, 562, System.currentTimeMillis(), .5);
-        sleep(500);
-        driveAllMotorsTo(GoalTimedRed.Direction.BACKWARD, 1600, System.currentTimeMillis(), .6);
+        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 700, System.currentTimeMillis(), .8);
+
+//        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
+//        sleep(500);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);

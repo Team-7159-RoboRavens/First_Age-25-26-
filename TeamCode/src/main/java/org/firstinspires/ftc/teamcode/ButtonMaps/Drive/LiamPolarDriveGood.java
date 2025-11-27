@@ -1,23 +1,22 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 
 //import com.acmerobotics.dashboard.config.Config;
+
 import static org.firstinspires.ftc.teamcode.ButtonMaps.DPadControl.dpadStrafe;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-//import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
+import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 //@Config
-public class LiamPolarDrive extends ServoAbstractButtonMap {
+public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
@@ -28,7 +27,7 @@ static double joystickLinearity = 3;
 static double aimingPower = 1;
 static double aimingThreshold = .045;
     @Override
-    public void loop(ServoTempBot robot, OpMode opMode) {
+    public void loop(ServoGoodBot robot, OpMode opMode) {
 
         MotorPowers mp;
         mp = getMotorPowers(
@@ -85,7 +84,7 @@ static double aimingThreshold = .045;
     }
 
     public static MotorPowers getMotorPowers(
-            ServoTempBot robot,
+            ServoGoodBot robot,
             IMU imu,
             boolean dpad_up,
             boolean dpad_down,

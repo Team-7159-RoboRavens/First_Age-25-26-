@@ -3,15 +3,15 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
+import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 
-@Config
-public class FirstAgeArm extends ServoAbstractButtonMap {
+public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     //TODO: Change back to private final when done with dash
     private MotorPowers mp;// = new MotorPowers(0);
     private double servoPosition;
@@ -28,7 +28,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     public static double targetVel;
 
     @Override
-    public void loop(ServoTempBot robot, OpMode opMode) {
+    public void loop(ServoGoodBot robot, OpMode opMode) {
+
+//        if (opMode.gamepad2.options) {
+//            robot.intakeMotor.setPower(.8);
+//        }
 
         shootVel = robot.ShootMotor.getVelocity();
         opMode.telemetry.addData("Velocity ", shootVel);
@@ -59,21 +63,25 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 //        }
 
         if (opMode.gamepad2.a) {
-            robot.Servo1.setPower(-.8);
-            opMode.telemetry.addLine("Servos forward");
-        }
-        else if (opMode.gamepad2.b) {
-            robot.Servo1.setPower(.8);
-            opMode.telemetry.addLine("Servos Back");
+            robot.intakeMotor.setPower(.8);
         }
         else {
-            robot.Servo1.setPower(0);
+            robot.intakeMotor.setPower(0);
         }
+        if (opMode.gamepad2.b) {
+            robot.Servo1.setPosition(.8);
+            opMode.telemetry.addLine("Servos Back");
+        }
+        else if (opMode.gamepad2.x) {
+            robot.Servo1.setPosition(-.8);
+            opMode.telemetry.addLine("Servos  x        else {
+//            robot.Servo1.setPower(0);
+//        }
 
-        if (opMode.gamepad2.y) {
-            robot.Servo2.setPosition(.4);
-            opMode.telemetry.addLine("Servos forward");
-        }
+//        if (opMode.gamepad2.y) {
+//            robot.Servo2.setPosition(.4);
+//            opMode.telemetry.addLine("Servos forward");
+//        }
 
 
 
@@ -99,22 +107,22 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
         else if (opMode.gamepad2.dpad_up) {
 
-            if (stage == 0) {
-                timeSince = System.currentTimeMillis();
-                robot.Servo3.setPower(0);
-                robot.Servo2.setPosition(.7);
-            }
-            stage = 1;
-            if (timeSince + 4600 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.7);
-                robot.Servo1.setPower(-.1);
-            }
-            else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.8);
-                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(.4);
-                opMode.telemetry.addLine("Servos");
-            }
+//            if (stage == 0) {
+//                timeSince = System.currentTimeMillis();
+//                robot.Servo3.setPower(0);
+//                robot.Servo2.setPosition(.7);
+//            }
+//            stage = 1;
+//            if (timeSince + 4600 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
+//                robot.Servo2.setPosition(.7);
+//                robot.Servo1.setPower(-.1);
+//            }
+//            else if (timeSince + timeBuffer < System.currentTimeMillis()) {
+//                robot.Servo1.setPower(-.8);
+//                robot.Servo3.setPower(.5);
+//                robot.Servo2.setPosition(.4);
+//                opMode.telemetry.addLine("Servos");
+//            }
             opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
@@ -128,8 +136,8 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         else {
             robot.ShootMotor.setPower(0);
             stage = 0;
-            robot.Servo3.setPower(0);
-            robot.Servo2.setPosition(.7);
+//            robot.Servo3.setPower(0);
+//            robot.Servo2.setPosition(.7);
         }
 
 

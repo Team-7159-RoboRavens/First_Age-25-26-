@@ -10,6 +10,8 @@ public class limelightData {
     public static boolean accurate = false;
     public static boolean aiming = false;
     public static double distance;
+    public static int pattern;
+
 
 
     //This simply changes all the variables at once.

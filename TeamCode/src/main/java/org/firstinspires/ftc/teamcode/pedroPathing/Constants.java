@@ -61,7 +61,7 @@ public class Constants {
 //            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-            .forwardEncoder_HardwareMapName("leftFront")
+            .forwardEncoder_HardwareMapName("rightBack")
             .forwardEncoderDirection(Encoder.FORWARD)
             .forwardPodY(-6.1)
             .strafeEncoder_HardwareMapName("rightFront")

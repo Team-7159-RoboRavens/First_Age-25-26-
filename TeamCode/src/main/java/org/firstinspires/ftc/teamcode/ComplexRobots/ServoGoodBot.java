@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
@@ -25,21 +24,22 @@ import java.util.List;
 //This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
 
 @Config
-public class ServoTempBot extends MecanumDrive {
+public class ServoGoodBot extends MecanumDrive {
     enum Direction {
         UP,DOWN
     }
     OpMode opMode;
         public final DcMotorEx ShootMotor;
     //    public final DcMotorEx ShootMotor2;
-        public final CRServo Servo1;
-        public final Servo Servo2;
-        public final CRServo Servo3;
+//        public final CRServo Servo1;
+        public final Servo Servo1;
+//        public final CRServo Servo3;
+        public final DcMotorEx intakeMotor;
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public ServoTempBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
+    public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
         super(hardwareMap, pose);
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -57,9 +57,9 @@ public class ServoTempBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-        Servo1 = hardwareMap.get(CRServo.class, "servo1");
-        Servo2 = hardwareMap.get(Servo.class, "servo2");
-        Servo3 = hardwareMap.get(CRServo.class, "servo3");
+//        Servo1 = hardwareMap.get(CRServo.class, "servo1");
+        Servo1 = hardwareMap.get(Servo.class, "servo1");
+//        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 
@@ -67,12 +67,15 @@ public class ServoTempBot extends MecanumDrive {
         ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
         ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         // Reset the motor encoder so that it reads zero ticks
         ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
 
 
@@ -152,17 +155,17 @@ public class ServoTempBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
                             double limelightMountAngleDegrees = 26;
@@ -211,9 +214,9 @@ public class ServoTempBot extends MecanumDrive {
     }
 
 
-    public void setServosTo(double min, double max, double value, Servo servo) {
-        double scaledVal = (value - min) / (max - min);
-        servo.setPosition(scaledVal);
-    }
+//    public void setServosTo(double min, double max, double value, Servo servo) {
+//        double scaledVal = (value - min) / (max - min);
+//        servo.setPosition(scaledVal);
+//    }
 }
 

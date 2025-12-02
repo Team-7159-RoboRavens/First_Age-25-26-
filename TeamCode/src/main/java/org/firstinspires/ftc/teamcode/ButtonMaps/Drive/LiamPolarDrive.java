@@ -124,7 +124,7 @@ static double aimingThreshold = .045;
         }
 
         if (Math.abs(right_stick_x) > joystickDeadZone) {
-            double turnSpeed = -Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
+            double turnSpeed = Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
             turn += turnSpeed;
         }
 
@@ -161,7 +161,7 @@ static double aimingThreshold = .045;
             }
             forward -= forwardSpeed;
             right += strafeSpeed;
-            turn = turnSpeed;
+            turn += turnSpeed;
         }
 
         //Slow strafe while holding x

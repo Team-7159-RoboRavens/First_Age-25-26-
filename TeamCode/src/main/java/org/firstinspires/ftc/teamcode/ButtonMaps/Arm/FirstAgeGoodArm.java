@@ -74,9 +74,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
         }
         else if (opMode.gamepad2.x) {
             robot.Servo1.setPosition(-.8);
-            opMode.telemetry.addLine("Servos  x        else {
+            opMode.telemetry.addLine("Servos  x ");
 //            robot.Servo1.setPower(0);
-//        }
+        }
 
 //        if (opMode.gamepad2.y) {
 //            robot.Servo2.setPosition(.4);
@@ -84,28 +84,23 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 //        }
 
 
-
-        if (opMode.gamepad2.dpad_down) {
-            if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
-                opMode.telemetry.addLine("Shoot medium-short");
-                robot.ShootMotor.setPower(baseShotPower * 1.45);
-            }
-            else {
-                opMode.telemetry.addLine("Shoot Short");
-                robot.ShootMotor.setPower(baseShotPower * 1.35);
-            }
-        }
-        else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
-            if (opMode.gamepad2.dpad_up) {
-                opMode.telemetry.addLine("Shoot medium-long");
-                robot.ShootMotor.setPower(baseShotPower * 1.55);
-            }
-            else {
-                opMode.telemetry.addLine("Shoot medium");
-                robot.ShootMotor.setPower(baseShotPower * 1.5);
-            }
-        }
-        else if (opMode.gamepad2.dpad_up) {
+            if (opMode.gamepad2.dpad_down) {
+                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+                    opMode.telemetry.addLine("Shoot medium-short");
+                    robot.ShootMotor.setPower(baseShotPower * 1.45);
+                } else {
+                    opMode.telemetry.addLine("Shoot Short");
+                    robot.ShootMotor.setPower(baseShotPower * 1.35);
+                }
+            } else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+                if (opMode.gamepad2.dpad_up) {
+                    opMode.telemetry.addLine("Shoot medium-long");
+                    robot.ShootMotor.setPower(baseShotPower * 1.55);
+                } else {
+                    opMode.telemetry.addLine("Shoot medium");
+                    robot.ShootMotor.setPower(baseShotPower * 1.5);
+                }
+            } else if (opMode.gamepad2.dpad_up) {
 
 //            if (stage == 0) {
 //                timeSince = System.currentTimeMillis();
@@ -123,32 +118,29 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 //                robot.Servo2.setPosition(.4);
 //                opMode.telemetry.addLine("Servos");
 //            }
-            opMode.telemetry.addLine("Shoot limelight");
-            //This is meant to shoot according to the distance to the april tag if the limelight is accurate
-            //All of these variables are yet to be tested and should be iterated on
+                opMode.telemetry.addLine("Shoot limelight");
+                //This is meant to shoot according to the distance to the april tag if the limelight is accurate
+                //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
-            if (limelightData.accurate)
-                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
-            if (!limelightData.accurate)
-                opMode.telemetry.addLine("Shoot far");
+                if (limelightData.accurate)
+                    robot.ShootMotor.setPower((targetVel - shootVel) / 60);
+                if (!limelightData.accurate)
+                    opMode.telemetry.addLine("Shoot far");
 
-        }
-        else {
-            robot.ShootMotor.setPower(0);
-            stage = 0;
+            } else {
+                robot.ShootMotor.setPower(0);
+                stage = 0;
 //            robot.Servo3.setPower(0);
 //            robot.Servo2.setPosition(.7);
-        }
+            }
 
 
-        //Aim manually with the left joystick
-        if (Math.abs(opMode.gamepad2.left_stick_y) > 0.2 || Math.abs(opMode.gamepad2.left_stick_x) > 0.2) {
-            //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_x, robot.aimServo);
-            //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_y, robot.angleServo);
-            opMode.telemetry.addLine("Aiming manually, x/y: " + opMode.gamepad2.left_stick_x + opMode.gamepad2.left_stick_y);
-        }
-
-
+            //Aim manually with the left joystick
+            if (Math.abs(opMode.gamepad2.left_stick_y) > 0.2 || Math.abs(opMode.gamepad2.left_stick_x) > 0.2) {
+                //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_x, robot.aimServo);
+                //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_y, robot.angleServo);
+                opMode.telemetry.addLine("Aiming manually, x/y: " + opMode.gamepad2.left_stick_x + opMode.gamepad2.left_stick_y);
+            }
 
 
 

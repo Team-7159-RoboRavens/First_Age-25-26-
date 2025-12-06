@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .forwardZeroPowerAcceleration(-35.348)
-            .lateralZeroPowerAcceleration(-57.528)
-            .mass(6.35);
+//            .forwardZeroPowerAcceleration(-35.348)
+//            .lateralZeroPowerAcceleration(-57.528)
+            .mass(5.35);
 
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
@@ -38,8 +38,8 @@ public class Constants {
 
     public static MecanumConstants mecanumConstants = new MecanumConstants()
             .maxPower(1)
-            .xVelocity(69.011)
-            .yVelocity(35.663)
+//            .xVelocity(69.011)
+//            .yVelocity(35.663)
             .rightFrontMotorName("rightFront")
             .leftFrontMotorName("leftFront")
             .rightRearMotorName("rightBack")
@@ -61,17 +61,17 @@ public class Constants {
 //            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-            .forwardEncoder_HardwareMapName("rightBack")
+            .forwardEncoder_HardwareMapName("rightFront")
             .forwardEncoderDirection(Encoder.FORWARD)
             .forwardPodY(-6.1)
-            .strafeEncoder_HardwareMapName("rightFront")
+            .strafeEncoder_HardwareMapName("leftFront")
             .strafeEncoderDirection(Encoder.REVERSE)
-            .strafePodX(2.8)
+            .strafePodX(3.6)
             .IMU_HardwareMapName("imu")
             .IMU_Orientation(
                     new RevHubOrientationOnRobot(
                             RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                            RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
                     )
             );
 

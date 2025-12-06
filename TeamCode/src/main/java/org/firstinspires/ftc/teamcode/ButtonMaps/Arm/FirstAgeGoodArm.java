@@ -63,17 +63,17 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 //        }
 
         if (opMode.gamepad2.a) {
-            robot.intakeMotor.setPower(.8);
+//            robot.intakeMotor.setPower(.8);
         }
         else {
-            robot.intakeMotor.setPower(0);
+//            robot.intakeMotor.setPower(0);
         }
         if (opMode.gamepad2.b) {
-            robot.Servo1.setPosition(.8);
+//            robot.Servo1.setPosition(.8);
             opMode.telemetry.addLine("Servos Back");
         }
         else if (opMode.gamepad2.x) {
-            robot.Servo1.setPosition(-.8);
+//            robot.Servo1.setPosition(-.8);
             opMode.telemetry.addLine("Servos  x ");
 //            robot.Servo1.setPower(0);
         }

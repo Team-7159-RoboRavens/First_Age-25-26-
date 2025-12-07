@@ -22,7 +22,7 @@ public class LiamPolarDrive extends ServoAbstractButtonMap {
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
 static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
-static double joystickDeadZone = .1;
+static double joystickDeadZone = .15;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;

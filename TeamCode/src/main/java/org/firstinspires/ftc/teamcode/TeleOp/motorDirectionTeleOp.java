@@ -7,21 +7,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.HarshitaBM;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.motorDirectionDebugger;
+import org.firstinspires.ftc.teamcode.ButtonMaps.WheelTestAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
+import org.firstinspires.ftc.teamcode.ComplexRobots.WheelTestBot;
 
 @TeleOp(name="Motor Direction Debugger")
 public class motorDirectionTeleOp extends OpMode {
     //Global Variables
-    FirstAgeTempbot robot;
+    WheelTestBot robot;
 
     //Button Maps
-    AbstractButtonMap driveButtonMap;
+    WheelTestAbstractButtonMap driveButtonMap;
 
     @Override
     public void init() {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
-        robot = new FirstAgeTempbot(hardwareMap, new Pose2d(0,0,0), this);
+        robot = new WheelTestBot(hardwareMap, new Pose2d(0,0,0), this);
         driveButtonMap = new motorDirectionDebugger();
         telemetry.addLine("Ready.");
         telemetry.update();

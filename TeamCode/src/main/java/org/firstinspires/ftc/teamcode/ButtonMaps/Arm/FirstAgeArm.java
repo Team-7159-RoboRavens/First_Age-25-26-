@@ -26,12 +26,17 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     public static double nonLinearPower = 1.0028;
     public static double shootVel;
     public static double targetVel;
+    //This stores the motor power of the velocity at the target velocity.
+
+    public static double onSpeed = 0;
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
         shootVel = robot.ShootMotor.getVelocity();
         opMode.telemetry.addData("Velocity ", shootVel);
+        opMode.telemetry.addData("target velocity = ", targetVel);
+
         targetVel = velocityShot(limelightData.distance);
 
         //Automatically Aim if there is a tag
@@ -119,10 +124,18 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
-            if (limelightData.accurate)
-                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
-            if (!limelightData.accurate)
+            if (limelightData.accurate) {
+                if (Math.abs(targetVel - shootVel) <= 20) {
+                    robot.ShootMotor.setPower(onSpeed);
+                }
+                else {
+                    onSpeed = (targetVel - shootVel) / 60;
+                    robot.ShootMotor.setPower((targetVel - shootVel) / 60);
+                }
+            }
+            if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");
+            }
 
         }
         else {

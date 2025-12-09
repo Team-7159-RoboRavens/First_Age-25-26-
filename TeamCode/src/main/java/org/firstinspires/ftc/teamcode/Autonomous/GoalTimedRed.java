@@ -24,6 +24,7 @@ public class GoalTimedRed extends LinearOpMode {
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
+    private static double onSpeed = 0;
 
 
     //encoder tracks motor pos, set it to 0
@@ -54,14 +55,14 @@ public class GoalTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 810, System.currentTimeMillis(), .85);
+        driveAllMotorsTo(Direction.FORWARD, 900, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
 //        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 300, System.currentTimeMillis(), .8);
 //        robot.setMotorPower(0,0,0,0);
 //        sleep(500);
         robot.setMotorPower(0,0,0,0);
-        rotateTo(Direction.POSITIVE, 1150, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 1350, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -77,10 +78,17 @@ public class GoalTimedRed extends LinearOpMode {
         double timeBuffer2 = 6600;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 17000) {
-            double targetVel = velocityShot(130);
+            double targetVel = velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
-            robot.ShootMotor.setPower((targetVel-shootVel) / 60);
-            telemetry.addData;
+            if (Math.abs(targetVel - shootVel) <= 20) {
+                robot.ShootMotor.setPower(onSpeed);
+            }
+            else {
+                onSpeed = (targetVel - shootVel) / 60;
+                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
+            }
+            telemetry.addData("676767 ", shootVel);
+            telemetry.addData("target velocity = ", targetVel);
 
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();

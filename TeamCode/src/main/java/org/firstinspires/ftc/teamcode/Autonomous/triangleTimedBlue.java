@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm.velocityShot;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.pedropathing.ftc.localization.Encoder;
@@ -21,6 +23,7 @@ public class triangleTimedBlue extends LinearOpMode {
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
+    public static double onSpeed = 0;
 
 
     //encoder tracks motor pos, set it to 0
@@ -95,7 +98,16 @@ public class triangleTimedBlue extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 168) * baseShotPower);
+            double targetVel = velocityShot(168);
+            double shootVel = robot.ShootMotor.getVelocity();
+
+            if (Math.abs(targetVel - shootVel) <= 20) {
+                robot.ShootMotor.setPower(onSpeed);
+            }
+            else {
+                onSpeed = (targetVel - shootVel) / 60;
+                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
+            }
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

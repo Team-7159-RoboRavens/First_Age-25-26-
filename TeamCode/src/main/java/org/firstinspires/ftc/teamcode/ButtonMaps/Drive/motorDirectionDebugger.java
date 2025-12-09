@@ -28,7 +28,7 @@ public class motorDirectionDebugger extends WheelTestAbstractButtonMap {
         }
 
         if (Math.abs(opMode.gamepad1.right_stick_x) > 0.1 || Math.abs(opMode.gamepad1.right_stick_y) > 0.1) {
-            double speed = Math.sqrt(opMode.gamepad1.right_stick_y * opMode.gamepad1.right_stick_y + opMode.gamepad1.right_stick_x * opMode.gamepad1.right_stick_x);
+            double speed = .6 * Math.sqrt(opMode.gamepad1.right_stick_y * opMode.gamepad1.right_stick_y + opMode.gamepad1.right_stick_x * opMode.gamepad1.right_stick_x);
             double speedX = speed - 2 * opMode.gamepad1.right_stick_x * opMode.gamepad1.right_stick_x;
             double speedY = speed - 2 * opMode.gamepad1.right_stick_y * opMode.gamepad1.right_stick_y;
             if (opMode.gamepad1.right_stick_x >= 0 && opMode.gamepad1.right_stick_y <= 0) {
@@ -57,6 +57,9 @@ public class motorDirectionDebugger extends WheelTestAbstractButtonMap {
         opMode.telemetry.addData("RightFront ", mp.rightFront);
         opMode.telemetry.addData("LeftBack ", mp.leftBack);
         opMode.telemetry.addData("RightBack ", mp.rightBack);
+        opMode.telemetry.addData("LeftFront Vel", robot.leftFront.getVelocity());
+        opMode.telemetry.addData("LeftBack Vel", robot.leftBack.getVelocity());
+
         opMode.telemetry.update();
 
         robot.setMotorPowers(mp);

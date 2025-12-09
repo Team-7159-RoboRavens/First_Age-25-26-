@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
+import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm.velocityShot;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.pedropathing.ftc.localization.Encoder;
@@ -52,14 +54,14 @@ public class GoalTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 1100, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(Direction.FORWARD, 810, System.currentTimeMillis(), .85);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 400, System.currentTimeMillis(), .8);
+//        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 300, System.currentTimeMillis(), .8);
+//        robot.setMotorPower(0,0,0,0);
+//        sleep(500);
         robot.setMotorPower(0,0,0,0);
-        sleep(500);
-        robot.setMotorPower(0,0,0,0);
-        rotateTo(Direction.POSITIVE, 1050, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 1150, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -71,23 +73,28 @@ public class GoalTimedRed extends LinearOpMode {
 
         long timeSince = System.currentTimeMillis();
         int stage = 0;
-        double timeBuffer = 3000;
-        double timeBuffer2 = 4600;
+        double timeBuffer = 5000;
+        double timeBuffer2 = 6600;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 17000) {
+            double targetVel = velocityShot(130);
+            double shootVel = robot.ShootMotor.getVelocity();
+            robot.ShootMotor.setPower((targetVel-shootVel) / 60);
+            telemetry.addData;
+
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
                 robot.Servo2.setPosition(.7);
             }
             stage = 1;
-            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
+            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 9000 > System.currentTimeMillis()) {
                 robot.Servo2.setPosition(.7);
-                robot.Servo1.setPower(-.1);
+                robot.Servo1.setPower(-.07);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.7);
-                robot.Servo3.setPower(.9);
+                robot.Servo3.setPower(.8);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
@@ -97,7 +104,6 @@ public class GoalTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            robot.ShootMotor.setPower(limelightPowerMultiplier * Math.pow(nonLinearPower, 128) * baseShotPower);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 
@@ -105,7 +111,7 @@ public class GoalTimedRed extends LinearOpMode {
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
         robot.Servo3.setPower(0);
-        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 700, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 600, System.currentTimeMillis(), .8);
 
 //        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
 //        sleep(500);
@@ -166,18 +172,36 @@ public class GoalTimedRed extends LinearOpMode {
         double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
         telemetry.addData("Angle ", currentAngle);
 //        desiredAngle -= 180;
-        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
+        double rightDegrees = desiredAngle - currentAngle;
+        if (rightDegrees < 0){
+            rightDegrees += 180;
+        }
+
+        double leftDegrees = currentAngle - desiredAngle;
+        if (leftDegrees < 0){
+            leftDegrees += 180;
+        }
+
+
+        double angleOffset = Math.min(leftDegrees, rightDegrees);
         telemetry.addData("Angle Offset ", angleOffset);
         telemetry.update();
         while (angleOffset - millisDelay * 1 > 0) {
             currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
             boolean rotateRight = false;
-            if ((currentAngle - desiredAngle) < (currentAngle + desiredAngle)) {
+            rightDegrees = desiredAngle - currentAngle;
+            if (rightDegrees < 0) {
+                rightDegrees += 180;
+            }
+            leftDegrees = currentAngle - desiredAngle;
+            if (leftDegrees < 0){
+                leftDegrees += 180;
+            }
+            angleOffset = Math.min(leftDegrees, rightDegrees);
+            if (rightDegrees < leftDegrees) {
                 rotateRight = true;
             }
             if (rotateRight) {
-
                 robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
             } else {
                 robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);

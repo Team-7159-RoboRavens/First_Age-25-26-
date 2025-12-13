@@ -38,9 +38,10 @@ import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//import org.firstinspires.ftc.teamcode.limelightData;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.teamcode.limelightData;
+//import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
 
@@ -142,10 +143,10 @@ public class SensorLimelight3A extends LinearOpMode {
                     int index = 0;
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
-                        if (index == 0) {
-                            limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
-                            limelightData.accurate = true;
-                        }
+//                        if (index == 0) {
+////                            limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+////                            limelightData.accurate = true;
+//                        }
                         index++;
                     }
 

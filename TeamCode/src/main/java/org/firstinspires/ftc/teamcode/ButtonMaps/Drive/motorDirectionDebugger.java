@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
+import org.firstinspires.ftc.teamcode.ButtonMaps.WheelTestAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
+import org.firstinspires.ftc.teamcode.ComplexRobots.WheelTestBot;
 
-public class motorDirectionDebugger extends AbstractButtonMap {
-    MotorPowers mp = new MotorPowers(0);
+public class motorDirectionDebugger extends WheelTestAbstractButtonMap {
     @Override
-    public void loop(FirstAgeTempbot robot, OpMode opMode) {
+    public void loop(WheelTestBot robot, OpMode opMode) {
+        MotorPowers mp = new MotorPowers(0);
 
         if (opMode.gamepad1.a) {
             mp.leftFront = 1;
@@ -25,8 +27,41 @@ public class motorDirectionDebugger extends AbstractButtonMap {
             mp.rightBack = 1;
         }
 
+        if (Math.abs(opMode.gamepad1.right_stick_x) > 0.1 || Math.abs(opMode.gamepad1.right_stick_y) > 0.1) {
+            double speed = .6 * Math.sqrt(opMode.gamepad1.right_stick_y * opMode.gamepad1.right_stick_y + opMode.gamepad1.right_stick_x * opMode.gamepad1.right_stick_x);
+            double speedX = speed - 2 * opMode.gamepad1.right_stick_x * opMode.gamepad1.right_stick_x;
+            double speedY = speed - 2 * opMode.gamepad1.right_stick_y * opMode.gamepad1.right_stick_y;
+            if (opMode.gamepad1.right_stick_x >= 0 && opMode.gamepad1.right_stick_y <= 0) {
+                mp = new MotorPowers(speed,
+                        speedX,
+                        speedX,
+                        speed);
+            } else if (opMode.gamepad1.right_stick_x >= 0 && opMode.gamepad1.right_stick_y >= 0) {
+                mp = new MotorPowers(speedY,
+                        -speed,
+                        -speed,
+                        speedY);
+            } else if (opMode.gamepad1.right_stick_x <= 0 && opMode.gamepad1.right_stick_y >= 0) {
+                mp = new MotorPowers(-speed,
+                        speedY,
+                        speedY,
+                        -speed);
+            } else {
+                mp = new MotorPowers(speedX,
+                        speed,
+                        speed,
+                        speedX);
+            }
+        }
+        opMode.telemetry.addData("LeftFront ", mp.leftFront);
+        opMode.telemetry.addData("RightFront ", mp.rightFront);
+        opMode.telemetry.addData("LeftBack ", mp.leftBack);
+        opMode.telemetry.addData("RightBack ", mp.rightBack);
+        opMode.telemetry.addData("LeftFront Vel", robot.leftFront.getVelocity());
+        opMode.telemetry.addData("LeftBack Vel", robot.leftBack.getVelocity());
+
         opMode.telemetry.update();
 
         robot.setMotorPowers(mp);
-}
+    }
 }

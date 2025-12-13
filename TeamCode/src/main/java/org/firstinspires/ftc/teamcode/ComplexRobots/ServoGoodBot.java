@@ -32,9 +32,9 @@ public class ServoGoodBot extends MecanumDrive {
         public final DcMotorEx ShootMotor;
     //    public final DcMotorEx ShootMotor2;
 //        public final CRServo Servo1;
-        public final Servo Servo1;
+//        public final Servo Servo1;
 //        public final CRServo Servo3;
-        public final DcMotorEx intakeMotor;
+//        public final DcMotorEx intakeMotor;
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
@@ -58,7 +58,7 @@ public class ServoGoodBot extends MecanumDrive {
 
         //Initialize Servos
 //        Servo1 = hardwareMap.get(CRServo.class, "servo1");
-        Servo1 = hardwareMap.get(Servo.class, "servo1");
+//        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
@@ -67,15 +67,15 @@ public class ServoGoodBot extends MecanumDrive {
         ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
         ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         // Reset the motor encoder so that it reads zero ticks
         ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
 
 

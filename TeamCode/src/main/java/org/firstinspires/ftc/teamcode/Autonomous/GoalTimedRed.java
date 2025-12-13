@@ -6,13 +6,18 @@ import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm.velocity
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.LazyImu;
 import com.pedropathing.ftc.localization.Encoder;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
@@ -36,8 +41,12 @@ public class GoalTimedRed extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
+        limelightData.hasImu = false;
         robot = new ServoTempBot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
+//        robot.lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
+//                new Orientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES, -180, 0, 0, 0)));
 
+        limelightData.ImuOffset = Math.PI - 2.08;
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,7 +84,7 @@ public class GoalTimedRed extends LinearOpMode {
         long timeSince = System.currentTimeMillis();
         int stage = 0;
         double timeBuffer = 5000;
-        double timeBuffer2 = 6600;
+        double timeBuffer2 = 6900;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 17000) {
             double targetVel = velocityShot(140);
@@ -120,6 +129,10 @@ public class GoalTimedRed extends LinearOpMode {
         robot.Servo2.setPosition(.7);
         robot.Servo3.setPower(0);
         driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 600, System.currentTimeMillis(), .8);
+        robot.setMotorPower(0,0,0,0);
+        rotateTo(Direction.NEGATIVE, 600, System.currentTimeMillis(), .5);
+
+//        driveAllMotorsTo(Direction., 400, System.currentTimeMillis(), .5);
 
 //        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
 //        sleep(500);

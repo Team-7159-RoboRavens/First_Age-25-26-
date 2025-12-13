@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.ftc.LazyImu;
+
 // This class is just for storing data from the limelight
 public class limelightData {
 //The ID is meant to
@@ -11,6 +13,9 @@ public class limelightData {
     public static boolean aiming = false;
     public static double distance;
     public static int pattern;
+    public static LazyImu imu;
+    public static boolean hasImu = false;
+    public static double ImuOffset = 0;
 
 
 
@@ -25,5 +30,10 @@ public class limelightData {
     //This should return the direction and scalar of the april tag, change to be the mean value of degrees.
     public static double[] directionToTag() {
         return new double[]{(aprilXDegrees) / 20, (aprilYDegrees) / 20};
+    }
+
+    public static void setIMU(LazyImu I) {
+        imu = I;
+        hasImu = true;
     }
 }

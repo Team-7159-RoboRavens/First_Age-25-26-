@@ -115,7 +115,7 @@ public class MecanumDrive {
 
     public final VoltageSensor voltageSensor;
 
-    public final LazyImu lazyImu;
+    public LazyImu lazyImu;
 
     public final Localizer localizer;
     public Pose2d pose;
@@ -240,8 +240,14 @@ public class MecanumDrive {
 // Bonk+
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
-                PARAMS.logoFacingDirection, PARAMS.usbFacingDirection));
+        if (!limelightData.hasImu) {
+            lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
+                    PARAMS.logoFacingDirection, PARAMS.usbFacingDirection));
+        }
+        else {
+            lazyImu = limelightData.imu;
+        }
+        limelightData.setIMU(lazyImu);
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

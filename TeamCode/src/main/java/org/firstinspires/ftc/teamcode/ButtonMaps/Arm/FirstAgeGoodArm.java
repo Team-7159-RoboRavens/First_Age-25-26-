@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
-import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 
 public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     //TODO: Change back to private final when done with dash

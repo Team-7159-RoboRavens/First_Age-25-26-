@@ -8,11 +8,9 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 //import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.limelightData;
 
@@ -80,7 +78,7 @@ static double aimingThreshold = .045;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
         robot.setMotorPowers(mp);
-        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         opMode.telemetry.addLine("angle: "+robotHeading);
     }
 
@@ -176,9 +174,8 @@ static double aimingThreshold = .045;
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
         opMode.telemetry.addLine("right: "+right);
         opMode.telemetry.addLine("turn: "+turn);
-        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
-
     }
 
 

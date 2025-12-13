@@ -35,7 +35,7 @@ public class triangleTimedRed extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
         robot = new ServoTempBot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
-
+        limelightData.ImuOffset = Math.PI / 2 - 2.65;
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -97,16 +97,16 @@ public class triangleTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = velocityShot(168);
+            double targetVel = velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            if (Math.abs(targetVel - shootVel) <= 20) {
-                robot.ShootMotor.setPower(onSpeed);
-            }
-            else {
+//            if (Math.abs(targetVel - shootVel) <= 20) {
+//                robot.ShootMotor.setPower(onSpeed);
+//            }
+//            else {
                 onSpeed = (targetVel - shootVel) / 60;
-                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
-            }
+                robot.ShootMotor.setPower((targetVel - shootVel) / 100);
+//            }
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

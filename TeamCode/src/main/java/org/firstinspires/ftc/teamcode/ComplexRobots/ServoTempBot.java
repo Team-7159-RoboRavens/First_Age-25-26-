@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
@@ -162,7 +161,7 @@ public class ServoTempBot extends MecanumDrive {
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
                             double limelightMountAngleDegrees = 26;

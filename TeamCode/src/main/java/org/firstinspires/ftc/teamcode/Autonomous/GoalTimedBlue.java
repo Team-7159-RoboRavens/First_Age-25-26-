@@ -36,8 +36,9 @@ public class GoalTimedBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
+        limelightData.hasImu = false;
         robot = new ServoTempBot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
-
+        limelightData.ImuOffset = Math.PI - 2.08;
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -119,6 +120,11 @@ public class GoalTimedBlue extends LinearOpMode {
         robot.Servo3.setPower(0);
         sleep(500);
         driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 700, System.currentTimeMillis(), .8);
+        rotateTo(GoalTimedBlue.Direction.POSITIVE, 650, System.currentTimeMillis(), .5);
+        robot.setMotorPower(0,0,0,0);
+
+
+        driveAllMotorsTo(GoalTimedBlue.Direction.BACKWARD, 400, System.currentTimeMillis(), .5);
 
 //        rotateTo(GoalTimedBlue.Direction.POSITIVE, 320, System.currentTimeMillis(), .5);
 //        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 800, System.currentTimeMillis(), .6);

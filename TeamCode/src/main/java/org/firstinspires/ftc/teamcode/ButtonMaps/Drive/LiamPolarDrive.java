@@ -161,7 +161,7 @@ static double aimingThreshold = .045;
             }
             forward -= forwardSpeed;
             right += strafeSpeed;
-            turn = turnSpeed;
+            turn += turnSpeed;
         }
 
         //Slow strafe while holding x

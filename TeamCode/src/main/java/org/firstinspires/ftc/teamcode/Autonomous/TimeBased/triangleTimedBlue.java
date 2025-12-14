@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.TimeBased;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
@@ -17,11 +17,11 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Autonomous(name = "GoalTImedBlue")
-public class GoalTimedBlue extends LinearOpMode {
+@Autonomous(name = "triangleTimedBlue")
+public class triangleTimedBlue extends LinearOpMode {
 
     ServoTempBot robot;
-    public static double baseShotPower = .418;
+    public static double baseShotPower = .438;
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
@@ -37,9 +37,8 @@ public class GoalTimedBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
-        limelightData.hasImu = false;
         robot = new ServoTempBot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
-        limelightData.ImuOffset = Math.PI - 2.08;
+        limelightData.ImuOffset = Math.PI / 2;
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -51,15 +50,19 @@ public class GoalTimedBlue extends LinearOpMode {
         waitForStart();
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
+//        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
         robot.Servo2.setPosition(.7);
-        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 1150, System.currentTimeMillis(), .8);
+//        aim( -20,.1, .3, robot, telemetry);
+//        telemetry.addLine("Aiming");
+//        telemetry.update();
+//        sleep(500);
+        driveAllMotorsTo(Direction.FORWARD, 220, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedBlue.Direction.LEFT, 400, System.currentTimeMillis(), .8);
+        strafeMotorsTo(Direction.RIGHT, 506, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        robot.setMotorPower(0,0,0,0);
-        rotateTo(GoalTimedBlue.Direction.POSITIVE, 1040, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 60, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -86,7 +89,7 @@ public class GoalTimedBlue extends LinearOpMode {
                 robot.Servo1.setPower(-.1);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.7);
+                robot.Servo1.setPower(-.5);
                 robot.Servo3.setPower(.5);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
@@ -97,7 +100,7 @@ public class GoalTimedBlue extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = velocityShot(140);
+            double targetVel = velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
             ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
@@ -107,26 +110,8 @@ public class GoalTimedBlue extends LinearOpMode {
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        robot.Servo3.setPower(0);
-        sleep(500);
-        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 700, System.currentTimeMillis(), .8);
-        rotateTo(GoalTimedBlue.Direction.POSITIVE, 650, System.currentTimeMillis(), .5);
-        robot.setMotorPower(0,0,0,0);
-
-
-        driveAllMotorsTo(GoalTimedBlue.Direction.BACKWARD, 400, System.currentTimeMillis(), .5);
-
-//        rotateTo(GoalTimedBlue.Direction.POSITIVE, 320, System.currentTimeMillis(), .5);
-//        driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
-//        robot.setAllMotorPowers(0);
-//        sleep(500);
-//        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 562, System.currentTimeMillis(), .5);
-//        sleep(500);
-//        strafeMotorsTo(GoalTimedBlue.Direction.RIGHT, 1800, System.currentTimeMillis(), .6);
-//        sleep(500);
-//        rotateTo(GoalTimedBlue.Direction.NEGATIVE, 400, System.currentTimeMillis(), .5);
-
-
+        rotateTo(Direction.NEGATIVE, 142, System.currentTimeMillis(), .5);
+        strafeMotorsTo(Direction.LEFT, 550, System.currentTimeMillis(), .8);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -226,5 +211,5 @@ public class GoalTimedBlue extends LinearOpMode {
         }
     }
 }
-    
+
 

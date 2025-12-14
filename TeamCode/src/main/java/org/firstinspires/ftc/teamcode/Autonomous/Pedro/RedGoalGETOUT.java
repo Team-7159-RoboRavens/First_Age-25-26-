@@ -1,4 +1,4 @@
-    package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous (name="BestPedro")
-public class BlueGoalGETOUT extends OpMode {
+public class RedGoalGETOUT extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -28,11 +28,11 @@ public class BlueGoalGETOUT extends OpMode {
     }
     PathState pathState;
 
-    private final Pose startPose = new Pose( 27, 131.358, Math.toRadians(-37));
+    private final Pose startPose = new Pose( 123.69, 122.358, Math.toRadians(40));
 
-    private final Pose shootPose = new Pose( 45, 117, Math.toRadians(40));
+    private final Pose shootPose = new Pose( 90, 110, Math.toRadians(40));
 
-    private final Pose shootPose2 = new Pose( 68, 134, Math.toRadians(25));
+    private final Pose shootPose2 = new Pose( 79, 127, Math.toRadians(25));
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 

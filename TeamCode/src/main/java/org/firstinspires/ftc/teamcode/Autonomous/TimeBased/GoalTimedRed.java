@@ -1,14 +1,15 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.TimeBased;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm.velocityShot;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.pedropathing.ftc.localization.Encoder;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -16,15 +17,16 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-@Autonomous(name = "triangleTimedRed")
-public class triangleTimedRed extends LinearOpMode {
+@Autonomous(name = "GoalTImedRed")
+public class GoalTimedRed extends LinearOpMode {
 
     ServoTempBot robot;
-    public static double baseShotPower = .45;
+    public static double baseShotPower = .418;
     public static double limelightPowerMultiplier = 1.18 ;
     public static double limelightBaseDistance = 100;
     public static double nonLinearPower = 1.0028;
-    public static double onSpeed = 0;
+    private static double onSpeed = 0;
+
 
     //encoder tracks motor pos, set it to 0
     public Encoder par0;
@@ -35,8 +37,12 @@ public class triangleTimedRed extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //creates new object for robot: includes position, vectors, and map)
+        limelightData.hasImu = false;
         robot = new ServoTempBot(hardwareMap, new Pose2d(new Vector2d(0, 0), 0), this);  //idk whats wrong here pls fix it
-        limelightData.ImuOffset = Math.PI / 2 - 2.65;
+//        robot.lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
+//                new Orientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES, -180, 0, 0, 0)));
+
+        limelightData.ImuOffset = Math.PI - 2.08;
         //brakes aka sets all mp to 0
         robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -54,13 +60,14 @@ public class triangleTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 220, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(Direction.FORWARD, 900, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(Direction.LEFT, 506, System.currentTimeMillis(), .8);
+//        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 300, System.currentTimeMillis(), .8);
+//        robot.setMotorPower(0,0,0,0);
+//        sleep(500);
         robot.setMotorPower(0,0,0,0);
-        sleep(500);
-        rotateTo(Direction.NEGATIVE, 352, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 1350, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -72,23 +79,29 @@ public class triangleTimedRed extends LinearOpMode {
 
         long timeSince = System.currentTimeMillis();
         int stage = 0;
-        double timeBuffer = 3000;
-        double timeBuffer2 = 4600;
+        double timeBuffer = 5000;
+        double timeBuffer2 = 6900;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 17000) {
+            double targetVel = velocityShot(140);
+            double shootVel = robot.ShootMotor.getVelocity();
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
+            telemetry.addData("676767 ", shootVel);
+            telemetry.addData("target velocity = ", targetVel);
+
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(.9);
+                robot.Servo2.setPosition(.7);
             }
             stage = 1;
-            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
+            if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 9000 > System.currentTimeMillis()) {
                 robot.Servo2.setPosition(.7);
-                robot.Servo1.setPower(-.1);
+                robot.Servo1.setPower(-.07);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.5);
-                robot.Servo3.setPower(.5);
+                robot.Servo1.setPower(-.7);
+                robot.Servo3.setPower(.8);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
@@ -98,16 +111,21 @@ public class triangleTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = velocityShot(195);
-            double shootVel = robot.ShootMotor.getVelocity();
-
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
+//            if (!limelightData.accurate)
+//                telemetry.addLine("Shoot far");
 
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        rotateTo(Direction.POSITIVE, 242, System.currentTimeMillis(), .5);
-        strafeMotorsTo(Direction.RIGHT, 556, System.currentTimeMillis(), .8);
+        robot.Servo3.setPower(0);
+        driveAllMotorsTo(Direction.FORWARD, 600, System.currentTimeMillis(), .8);
+        robot.setMotorPower(0,0,0,0);
+        rotateTo(Direction.NEGATIVE, 600, System.currentTimeMillis(), .5);
+
+//        driveAllMotorsTo(Direction., 400, System.currentTimeMillis(), .5);
+
+//        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 800, System.currentTimeMillis(), .6);
+//        sleep(500);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -165,18 +183,36 @@ public class triangleTimedRed extends LinearOpMode {
         double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
         telemetry.addData("Angle ", currentAngle);
 //        desiredAngle -= 180;
-        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
+        double rightDegrees = desiredAngle - currentAngle;
+        if (rightDegrees < 0){
+            rightDegrees += 180;
+        }
+
+        double leftDegrees = currentAngle - desiredAngle;
+        if (leftDegrees < 0){
+            leftDegrees += 180;
+        }
+
+
+        double angleOffset = Math.min(leftDegrees, rightDegrees);
         telemetry.addData("Angle Offset ", angleOffset);
         telemetry.update();
         while (angleOffset - millisDelay * 1 > 0) {
             currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
             boolean rotateRight = false;
-            if ((currentAngle - desiredAngle) < (currentAngle + desiredAngle)) {
+            rightDegrees = desiredAngle - currentAngle;
+            if (rightDegrees < 0) {
+                rightDegrees += 180;
+            }
+            leftDegrees = currentAngle - desiredAngle;
+            if (leftDegrees < 0){
+                leftDegrees += 180;
+            }
+            angleOffset = Math.min(leftDegrees, rightDegrees);
+            if (rightDegrees < leftDegrees) {
                 rotateRight = true;
             }
             if (rotateRight) {
-
                 robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
             } else {
                 robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);

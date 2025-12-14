@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 @Autonomous(name = "GoalTImedRed")
@@ -89,13 +90,7 @@ public class GoalTimedRed extends LinearOpMode {
         while (System.currentTimeMillis() < timeSet + 17000) {
             double targetVel = velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
-            if (Math.abs(targetVel - shootVel) <= 20) {
-                robot.ShootMotor.setPower(onSpeed);
-            }
-            else {
-                onSpeed = (targetVel - shootVel) / 60;
-                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
-            }
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
             telemetry.addData("676767 ", shootVel);
             telemetry.addData("target velocity = ", targetVel);
 

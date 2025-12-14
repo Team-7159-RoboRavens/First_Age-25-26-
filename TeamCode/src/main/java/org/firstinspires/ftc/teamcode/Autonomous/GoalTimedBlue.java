@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 @Autonomous(name = "GoalTImedBlue")
@@ -50,12 +51,7 @@ public class GoalTimedBlue extends LinearOpMode {
         waitForStart();
 
 //        //setting time allotted for each action, how much motor power to use, and sets startTime to the current time
-//        strafeMotorsTo(Direction.LEFT, 50, System.currentTimeMillis(), .5);
         robot.Servo2.setPosition(.7);
-//        aim( -20,.1, .3, robot, telemetry);
-//        telemetry.addLine("Aiming");
-//        telemetry.update();
-//        sleep(500);
         driveAllMotorsTo(GoalTimedBlue.Direction.FORWARD, 1150, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
@@ -104,13 +100,7 @@ public class GoalTimedBlue extends LinearOpMode {
             double targetVel = velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            if (Math.abs(targetVel - shootVel) <= 20) {
-                robot.ShootMotor.setPower(onSpeed);
-            }
-            else {
-                onSpeed = (targetVel - shootVel) / 60;
-                robot.ShootMotor.setPower((targetVel - shootVel) / 60);
-            }
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

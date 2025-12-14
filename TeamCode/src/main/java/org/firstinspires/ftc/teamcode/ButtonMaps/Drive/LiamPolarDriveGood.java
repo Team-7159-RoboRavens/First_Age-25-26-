@@ -77,7 +77,7 @@ static double aimingThreshold = .045;
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-        robot.setMotorPowers(mp);
+        robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         opMode.telemetry.addLine("angle: "+robotHeading);
     }

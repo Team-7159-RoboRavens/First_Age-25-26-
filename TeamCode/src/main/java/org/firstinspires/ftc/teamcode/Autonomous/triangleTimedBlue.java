@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 @Autonomous(name = "triangleTimedBlue")
@@ -101,13 +102,7 @@ public class triangleTimedBlue extends LinearOpMode {
             double targetVel = velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-//            if (Math.abs(targetVel - shootVel) <= 20) {
-//                robot.ShootMotor.setPower(onSpeed);
-//            }
-//            else {
-                onSpeed = (targetVel - shootVel) / 60;
-                robot.ShootMotor.setPower((targetVel - shootVel) / 100);
-//            }
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

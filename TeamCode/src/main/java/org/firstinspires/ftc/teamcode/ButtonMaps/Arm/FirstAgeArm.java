@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 
@@ -123,13 +124,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (limelightData.accurate) {
-//                if (Math.abs(targetVel - shootVel) <= 20) {
-//                    robot.ShootMotor.setPower(onSpeed);
-//                }
-//                else {
-                    onSpeed = (targetVel - shootVel) / 60;
-                    robot.ShootMotor.setPower((targetVel - shootVel) / 70);
-//                }
+                ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
             }
             if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");
@@ -159,6 +154,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     }
 
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * 1 * Math.pow(x, 2) +  9.28571 * x + 540.14286);
+        return (2.07096 * Math.pow(10, -16) * 1 * Math.pow(x, 2) +  9.28571 * x + 500.14286);
     }
 }

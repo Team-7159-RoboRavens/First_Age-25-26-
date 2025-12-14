@@ -1,31 +1,17 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
+    package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import com.pedropathing.util.Timer;
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.pedropathing.geometry.BezierLine;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous (name="BestPedro")
-public class BestPedro extends OpMode {
+public class BlueGoalGETOUT extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -42,11 +28,11 @@ public class BestPedro extends OpMode {
     }
     PathState pathState;
 
-    private final Pose startPose = new Pose( 123.69, 122.358, Math.toRadians(40));
+    private final Pose startPose = new Pose( 27, 131.358, Math.toRadians(-37));
 
-    private final Pose shootPose = new Pose( 90, 89, Math.toRadians(40));
+    private final Pose shootPose = new Pose( 45, 117, Math.toRadians(40));
 
-    private final Pose shootPose2 = new Pose( 90, 112, Math.toRadians(25));
+    private final Pose shootPose2 = new Pose( 68, 134, Math.toRadians(25));
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 

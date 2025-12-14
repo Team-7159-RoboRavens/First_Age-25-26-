@@ -90,7 +90,7 @@ public class triangleTimedBlue extends LinearOpMode {
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
-                robot.Servo3.setPower(.5);
+//                robot.Servo3.setPower(.5);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }

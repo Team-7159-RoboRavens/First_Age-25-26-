@@ -101,7 +101,7 @@ public class GoalTimedRed extends LinearOpMode {
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.7);
-                robot.Servo3.setPower(.8);
+//                robot.Servo3.setPower(.8);
                 robot.Servo2.setPosition(.4);
                 telemetry.addLine("Servos");
             }
@@ -117,7 +117,7 @@ public class GoalTimedRed extends LinearOpMode {
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        robot.Servo3.setPower(0);
+//        robot.Servo3.setPower(0);
         driveAllMotorsTo(Direction.FORWARD, 600, System.currentTimeMillis(), .8);
         robot.setMotorPower(0,0,0,0);
         rotateTo(Direction.NEGATIVE, 600, System.currentTimeMillis(), .5);

@@ -33,7 +33,7 @@ public class ServoTempBot extends MecanumDrive {
     //    public final DcMotorEx ShootMotor2;
         public final CRServo Servo1;
         public final Servo Servo2;
-        public final CRServo Servo3;
+//        public final CRServo Servo3;
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
@@ -58,7 +58,7 @@ public class ServoTempBot extends MecanumDrive {
         //Initialize Servos
         Servo1 = hardwareMap.get(CRServo.class, "servo1");
         Servo2 = hardwareMap.get(Servo.class, "servo2");
-        Servo3 = hardwareMap.get(CRServo.class, "servo3");
+//        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
 

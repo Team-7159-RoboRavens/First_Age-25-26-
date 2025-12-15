@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.limelightData;
 
 @TeleOp(name="LM1TeleopBlue")
 public class LM1TeleOpBlue extends LM1TeleOpShared {
@@ -16,6 +17,7 @@ public class LM1TeleOpBlue extends LM1TeleOpShared {
         driveButtonMap.loop(robot, this);
         armButtonmap.loop(robot, this);
         robot.runLimelight(20);
+        telemetry.addData("Offset ", limelightData.ImuOffset);
         telemetry.update();
     }
 }

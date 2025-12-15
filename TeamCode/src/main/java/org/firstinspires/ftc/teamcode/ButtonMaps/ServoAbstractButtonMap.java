@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.ButtonMaps;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 
 public abstract class ServoAbstractButtonMap {

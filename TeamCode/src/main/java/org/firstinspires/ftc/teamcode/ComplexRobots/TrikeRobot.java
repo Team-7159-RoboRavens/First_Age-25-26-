@@ -19,9 +19,8 @@ public class TrikeRobot extends TrikeDrive {
         UP,DOWNw
     }
 
-//    public final DcMotorEx horizontalSlideMotor;
     public final Servo turnServo;
-//    public final SensorLimelight3A limelight;
+
 
     public TrikeRobot(HardwareMap hardwareMap, Pose2d pose) {
         super(hardwareMap, pose);

@@ -108,66 +108,67 @@ public class ServoTempBot extends MecanumDrive {
 
     public void runLimelight(int id){
 
-            LLStatus status = limelight.getStatus();
-            opMode.telemetry.addData("Name", "%s",
-                    status.getName());
-            opMode.telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
-                    status.getTemp(), status.getCpu(),(int)status.getFps());
-            opMode.telemetry.addData("Pipeline", "Index: %d, Type: %s",
-                    status.getPipelineIndex(), status.getPipelineType());
+        LLStatus status = limelight.getStatus();
+        opMode.telemetry.addData("Name", "%s",
+                status.getName());
+        opMode.telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
+                status.getTemp(), status.getCpu(),(int)status.getFps());
+        opMode.telemetry.addData("Pipeline", "Index: %d, Type: %s",
+                status.getPipelineIndex(), status.getPipelineType());
 
-            LLResult result = limelight.getLatestResult();
-            if (result != null) {
-                // Access general information
-                Pose3D botpose = result.getBotpose();
-                double captureLatency = result.getCaptureLatency();
-                double targetingLatency = result.getTargetingLatency();
-                double parseLatency = result.getParseLatency();
-                opMode.telemetry.addData("LL Latency", captureLatency + targetingLatency);
-                opMode.telemetry.addData("Parse Latency", parseLatency);
-                opMode.telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
-                opMode.telemetry.addLine("Limelight Works!");
+        LLResult result = limelight.getLatestResult();
+        if (result != null) {
+            // Access general information
+            Pose3D botpose = result.getBotpose();
+            double captureLatency = result.getCaptureLatency();
+            double targetingLatency = result.getTargetingLatency();
+            double parseLatency = result.getParseLatency();
+            opMode.telemetry.addData("LL Latency", captureLatency + targetingLatency);
+            opMode.telemetry.addData("Parse Latency", parseLatency);
+            opMode.telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
+            opMode.telemetry.addLine("Limelight Works!");
 
-                if (result.isValid()) {
+            if (result.isValid()) {
 
-                    opMode.telemetry.addData("tx", result.getTx());
-                    opMode.telemetry.addData("txnc", result.getTxNC());
-                    opMode.telemetry.addData("ty", result.getTy());
-                    opMode.telemetry.addData("tync", result.getTyNC());
+                opMode.telemetry.addData("tx", result.getTx());
+                opMode.telemetry.addData("txnc", result.getTxNC());
+                opMode.telemetry.addData("ty", result.getTy());
+                opMode.telemetry.addData("tync", result.getTyNC());
 
-                    opMode.telemetry.addData("Botpose", botpose.toString());
-                    if (limelightData.accurate) {
-                        opMode.telemetry.addLine("Correct: ");
-                        opMode.telemetry.addData("Aiming ", limelightData.aiming);
-                    }
-                    else
-                        opMode.telemetry.addLine("Bad");
+                opMode.telemetry.addData("Botpose", botpose.toString());
+                if (limelightData.accurate) {
+                    opMode.telemetry.addLine("Correct: ");
+                    opMode.telemetry.addData("Aiming ", limelightData.aiming);
+                }
+                else
+                    opMode.telemetry.addLine("Bad");
 
-                    // Access fiducial results (April Tags)
-                    List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
-                    if (fiducialResults.isEmpty())
-                        //This makes sure that if there are no detected april tags, it will not take old data
-                        limelightData.accurate = false;
-                    for (LLResultTypes.FiducialResult fr : fiducialResults) {
-                        opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
-                        if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees()));
-                            limelightData.accurate = true;
-                            opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
-                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoTempBot.yOffset(fr.getTargetXDegrees()));
-                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
+                // Access fiducial results (April Tags)
+                List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
+                if (fiducialResults.isEmpty())
+                    //This makes sure that if there are no detected april tags, it will not take old data
+                    limelightData.accurate = false;
+                for (LLResultTypes.FiducialResult fr : fiducialResults) {
+                    opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
+                    if (fr.getFiducialId() == id) {
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() - 5, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.accurate = true;
+                        opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
+                        opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
+                        opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                        opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
+
+                        double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 26;
+                            double limelightMountAngleDegrees = 4;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
-                            double limelightLensHeightCm = 28.0;
+                            double limelightLensHeightCm = 33.5;
 
                             // distance from the target to the floor
                             double goalHeightCm = 75;

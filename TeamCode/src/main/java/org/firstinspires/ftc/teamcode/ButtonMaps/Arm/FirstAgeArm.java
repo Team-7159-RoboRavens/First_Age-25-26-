@@ -16,7 +16,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 3000;
+    private double timeBuffer = 2000;
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;
@@ -75,7 +75,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
 
         if (opMode.gamepad2.y) {
-            robot.Servo2.setPosition(.4);
+            robot.Servo2.setPosition(1);
             opMode.telemetry.addLine("Servos forward");
         }
 
@@ -84,21 +84,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         if (opMode.gamepad2.dpad_down) {
             if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                 opMode.telemetry.addLine("Shoot medium-short");
-                robot.ShootMotor.setPower(baseShotPower * 1.45);
+                robot.ShootMotor.setPower(baseShotPower * -1.45);
             }
             else {
                 opMode.telemetry.addLine("Shoot Short");
-                robot.ShootMotor.setPower(baseShotPower * 1.35);
-            }
-        }
-        else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
-            if (opMode.gamepad2.dpad_up) {
-                opMode.telemetry.addLine("Shoot medium-long");
-                robot.ShootMotor.setPower(baseShotPower * 1.55);
-            }
-            else {
-                opMode.telemetry.addLine("Shoot medium");
-                robot.ShootMotor.setPower(baseShotPower * 1.5);
+                robot.ShootMotor.setPower(baseShotPower * -1.35);
             }
         }
         else if (opMode.gamepad2.dpad_up) {
@@ -109,14 +99,13 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
                 robot.Servo2.setPosition(.7);
             }
             stage = 1;
-            if (timeSince + 4600 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
+            if (timeSince + 4200 < System.currentTimeMillis() && timeSince + 6000 > System.currentTimeMillis()) {
                 robot.Servo2.setPosition(.7);
-                robot.Servo1.setPower(-.1);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.8);
 //                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(.4);
+                robot.Servo2.setPosition(1);
                 opMode.telemetry.addLine("Servos");
             }
             opMode.telemetry.addLine("Shoot limelight");
@@ -124,12 +113,21 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (limelightData.accurate) {
-                ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
+                ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
             }
             if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");
             }
-
+        }
+        else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+            if (opMode.gamepad2.dpad_up) {
+                opMode.telemetry.addLine("Shoot medium-long");
+                robot.ShootMotor.setPower(baseShotPower * -1.55);
+            }
+            else {
+                opMode.telemetry.addLine("Shoot medium");
+                robot.ShootMotor.setPower(baseShotPower * -1.5);
+            }
         }
         else {
             robot.ShootMotor.setPower(0);
@@ -154,6 +152,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     }
 
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * 1 * Math.pow(x, 2) +  9.28571 * x + 500.14286);
+        return (2.07096 * Math.pow(10, -16) * .535 * Math.pow(x, 2) + 9.28571 * x + 200.14286);
     }
 }

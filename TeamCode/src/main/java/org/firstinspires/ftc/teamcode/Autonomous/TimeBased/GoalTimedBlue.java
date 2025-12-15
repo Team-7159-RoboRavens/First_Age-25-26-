@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
@@ -59,7 +60,7 @@ public class GoalTimedBlue extends LinearOpMode {
         robot.setMotorPower(0,0,0,0);
         sleep(500);
         robot.setMotorPower(0,0,0,0);
-        rotateTo(Direction.POSITIVE, 1040, System.currentTimeMillis(), .5);
+        rotateTo(Direction.POSITIVE, 1190, System.currentTimeMillis(), .5);
 //        time
 //        while () {
 //
@@ -88,7 +89,7 @@ public class GoalTimedBlue extends LinearOpMode {
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.7);
 //                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(.4);
+                robot.Servo2.setPosition(1);
                 telemetry.addLine("Servos");
             }
 
@@ -97,10 +98,10 @@ public class GoalTimedBlue extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = velocityShot(140);
+            double targetVel = FirstAgeArm.velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

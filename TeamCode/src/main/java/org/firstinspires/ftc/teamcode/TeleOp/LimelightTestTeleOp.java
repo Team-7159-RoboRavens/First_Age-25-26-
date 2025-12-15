@@ -4,12 +4,8 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.AbstractButtonMapLimelight;
-import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.LimelightArm;
-import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.TempBotDrive;
-import org.firstinspires.ftc.teamcode.ComplexRobots.FirstAgeTempbot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.LimelightBot;
 
 @TeleOp(name="LimelightTeleOp")

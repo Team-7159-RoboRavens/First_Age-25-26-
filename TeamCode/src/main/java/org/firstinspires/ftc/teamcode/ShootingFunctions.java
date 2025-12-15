@@ -13,14 +13,15 @@ public class ShootingFunctions {
     }
 
     //This function is called in a loop to minimize the distance between a target velocity and the current velocity of a given motor,
-    public static void setVelocity(double targetVel, double currentVel, DcMotorEx motor) {
-        if (Math.abs(targetVel - currentVel) > 80) {
-            motor.setPower((targetVel - currentVel) / 80);
-            currentPower = .8;
-        }
-        else {
-            motor.setPower(currentPower);
-            currentPower += (targetVel - currentVel) / 80 * learningRate;
-        }
+    public static void setVelocity(double targetVel, double currentVel, DcMotorEx motor, double muliplier) {
+//        if (Math.abs(targetVel - currentVel) > 80) {
+//            motor.setPower((targetVel * muliplier - currentVel) / 80 * muliplier);
+//            currentPower = .8;
+//        }
+//        else {
+//            motor.setPower(currentPower);
+//            currentPower += (targetVel * muliplier - currentVel) / 80 * learningRate * muliplier;
+//        }
+        motor.setPower((targetVel * muliplier - currentVel) / 70);
     }
 }

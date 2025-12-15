@@ -49,21 +49,22 @@ static double aimingThreshold = .045;
         //Reset FOD
         if (opMode.gamepad1.back) {
             robot.lazyImu.get().resetYaw();
+            limelightData.ImuOffset = 0;
         }
 
 
         if (opMode.gamepad2.x){
-            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold) {
+            if (Math.abs(limelightData.aprilXDegrees / 15) < aimingThreshold) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
             }
             else if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront += limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
-                mp.leftBack += limelightData.aprilXDegrees / 20  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
-                mp.rightFront -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower + .1;
-                mp.rightBack -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.leftFront += limelightData.aprilXDegrees / 25 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.leftBack += limelightData.aprilXDegrees / 25  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.rightFront -= limelightData.aprilXDegrees / 25 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower + .1;
+                mp.rightBack -= limelightData.aprilXDegrees / 25 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
 //                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
@@ -77,9 +78,11 @@ static double aimingThreshold = .045;
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
+//        mp = new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack);
+
         robot.setMotorPowers(mp);
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
-        opMode.telemetry.addLine("angle: "+robotHeading);
+        opMode.telemetry.addLine("angle: "+robotHeading + limelightData.ImuOffset);
     }
 
     public static MotorPowers getMotorPowers(

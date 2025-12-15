@@ -26,12 +26,6 @@ public class LimelightBot extends MecanumDriveNoMotors {
         UP,DOWN
     }
     OpMode opMode;
-    //    public final DcMotorEx ShootMotor1;
-    //    public final DcMotorEx ShootMotor2;
-    //    public final Servo aimServo;
-    //    public final Servo angleServo;
-    //    public final Servo intakeServo;
-
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
@@ -53,23 +47,6 @@ public class LimelightBot extends MecanumDriveNoMotors {
         opMode.telemetry.update();
         limelightData.accurate = false;
 
-        //Initialize Servos
-//        turnServo = hardwareMap.get(Servo.class, "turnServo");
-//        aimServo = hardwareMap.get(Servo.class, "aimServo");
-//        angleServo = hardwareMap.get(Servo.class, "angleServo");
-//        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
-
-        //Initialize Motors
-//        ShootMotor1 = hardwareMap.get(DcMotorEx.class, "ShootMotor1");
-//        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
-
-
-
-        //Initialize Output Servo
-//        turnServo.scaleRange(-1,1);
-//        aimServo.scaleRange(-1,0);
-//        intakeServo.scaleRange(-1,0);
-//        angleServo.scaleRange(-1,0);
     }
 
 

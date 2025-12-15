@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 
+
 public abstract class LM1TeleOpShared extends OpMode {
     //Global Variables
     ServoTempBot robot;
@@ -23,7 +24,7 @@ public abstract class LM1TeleOpShared extends OpMode {
         telemetry.update();
         robot = new ServoTempBot(hardwareMap, new Pose2d(0,0,0), this);
         robot.lazyImu.get().resetYaw();
-        robot.Servo2.setPosition(.5);
+//        robot.Servo2.setPosition(.5);
         driveButtonMap = new LiamPolarDrive();
         armButtonmap = new FirstAgeArm();
         telemetry.addLine("Ready.");

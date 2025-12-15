@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.Autonomous.TimeBased;
 
 //import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
+import static org.firstinspires.ftc.teamcode.Autonomous.TimeBased.TimeAutoFunctions.driveAllMotorsTo;
+import static org.firstinspires.ftc.teamcode.Autonomous.TimeBased.TimeAutoFunctions.rotateTo;
+import static org.firstinspires.ftc.teamcode.Autonomous.TimeBased.TimeAutoFunctions.strafeMotorsTo;
 import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm.velocityShot;
 
 import com.acmerobotics.roadrunner.Pose2d;
@@ -13,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeArm;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
@@ -55,13 +59,13 @@ public class triangleTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(Direction.FORWARD, 220, System.currentTimeMillis(), .8);
+        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(Direction.LEFT, 506, System.currentTimeMillis(), .8);
+        strafeMotorsTo(GoalTimedRed.Direction.LEFT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(Direction.NEGATIVE, 352, System.currentTimeMillis(), .5);
+        rotateTo(GoalTimedRed.Direction.NEGATIVE, 225, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //
@@ -90,7 +94,7 @@ public class triangleTimedRed extends LinearOpMode {
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
 //                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(.4);
+                robot.Servo2.setPosition(1);
                 telemetry.addLine("Servos");
             }
 
@@ -99,16 +103,16 @@ public class triangleTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = velocityShot(195);
+            double targetVel = FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
 
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        rotateTo(Direction.POSITIVE, 242, System.currentTimeMillis(), .5);
-        strafeMotorsTo(Direction.RIGHT, 556, System.currentTimeMillis(), .8);
+        rotateTo(GoalTimedRed.Direction.POSITIVE, 242, System.currentTimeMillis(), .5, robot);
+        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 556, System.currentTimeMillis(), .8, robot);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);
@@ -119,94 +123,7 @@ public class triangleTimedRed extends LinearOpMode {
 
 
     //defines what to do for each movement: moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
-    public void strafeMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower) {
-        if (direction == Direction.LEFT) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(-motorPower, motorPower, motorPower, -motorPower);
-            }
-        } else if (direction == Direction.RIGHT) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
-            }
-        }
-        robot.setMotorPower(0,0,0,0);
-    }
 
-    //sets y direction for the robot, moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
-    public void driveAllMotorsTo(Direction direction, int millisDelay, long startTime, double motorPower) {
-        if (direction == Direction.FORWARD) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setAllMotorPowers(motorPower);
-            }
-        } else if (direction == Direction.BACKWARD) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setAllMotorPowers(-motorPower);
-            }
-        }
-        robot.setMotorPower(0,0,0,0);
-    }
-
-    //negative is right, positive is left
-    public void rotateTo(Direction direction, int millisDelay, long startTime, double motorPower) {
-//        robot.setAllMotorPowers(motorPower);
-        if (direction == Direction.POSITIVE) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
-            }
-        } else if (direction == Direction.NEGATIVE) {
-            while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
-            }
-        }
-        robot.setMotorPower(0,0,0,0);
-
-    }
-
-    public static void aim(double desiredAngle, double millisDelay, double motorPower, ServoTempBot robot, Telemetry telemetry) {
-        double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
-        telemetry.addData("Angle ", currentAngle);
-//        desiredAngle -= 180;
-        double angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
-        telemetry.addData("Angle Offset ", angleOffset);
-        telemetry.update();
-        while (angleOffset - millisDelay * 1 > 0) {
-            currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            angleOffset = Math.min(Math.abs(currentAngle - desiredAngle), Math.abs(currentAngle + desiredAngle));
-            boolean rotateRight = false;
-            if ((currentAngle - desiredAngle) < (currentAngle + desiredAngle)) {
-                rotateRight = true;
-            }
-            if (rotateRight) {
-
-                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
-            } else {
-                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
-            }
-        }
-        robot.setMotorPower(0,0,0,0);
-    }
-    public static void rotate(double degrees, ServoTempBot robot2){
-        double target = robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + degrees;
-        if (target > 360){
-            target -= 360;
-        }
-//        aim(target, 50,  1, robot2,);
-    }
-    static public void timeout(double input) {
-        double startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() < startTime + input) {
-            System.out.println(System.currentTimeMillis());
-        }
-    }
-
-    public static boolean aimLimelight(ServoTempBot robot2) {
-        if (limelightData.accurate) {
-//            aim((robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180) * limelightData.aprilXDegrees, 50, .7, robot2);
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
     
 

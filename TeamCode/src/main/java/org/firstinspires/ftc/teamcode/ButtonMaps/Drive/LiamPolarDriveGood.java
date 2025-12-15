@@ -5,7 +5,9 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 import static org.firstinspires.ftc.teamcode.ButtonMaps.DPadControl.dpadStrafe;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
@@ -25,6 +27,12 @@ static double joystickLinearity = 3;
 
 static double aimingPower = 1;
 static double aimingThreshold = .045;
+
+static private boolean motorBrake = true;
+
+private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
 
@@ -166,14 +174,38 @@ static double aimingThreshold = .045;
         if (x) {
             maxMotorPower *= 0.5;
         }
+
+        //Toggle whether the robot is in brake or coast mode
+        if(opMode.gamepad1.b && et.time() > 500){
+            et.reset();
+            if(motorBrake){
+                robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                motorBrake = false;
+            }else{
+                robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                motorBrake = true;
+            }
+        }
+
+        if(motorBrake){
+            opMode.telemetry.addData("Drive Motor Mode", "Brake");
+        }else{
+            opMode.telemetry.addData("Drive Motor Mode", "Coast");
+        }
+
         robot.lazyImu.get();
         opMode.telemetry.addLine("forward: "+forward);
         opMode.telemetry.addLine("right: "+right);
         opMode.telemetry.addLine("turn: "+turn);
 
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
-        opMode.telemetry.addLine("right: "+right);
-        opMode.telemetry.addLine("turn: "+turn);
+
         double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 

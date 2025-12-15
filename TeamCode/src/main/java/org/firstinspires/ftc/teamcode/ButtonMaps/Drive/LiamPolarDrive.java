@@ -4,7 +4,9 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 import static org.firstinspires.ftc.teamcode.ButtonMaps.DPadControl.dpadStrafe;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 //import org.firstinspires.ftc.teamcode.Autonomous.smallTimedPedro;
@@ -25,6 +27,10 @@ static double joystickLinearity = 3;
 
 static double aimingPower = 1;
 static double aimingThreshold = .045;
+static private boolean motorBrake = true;
+
+private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
@@ -169,6 +175,31 @@ static double aimingThreshold = .045;
         if (x) {
             maxMotorPower *= 0.5;
         }
+
+        if(opMode.gamepad1.b && et.time() > 500){
+            et.reset();
+            if(motorBrake){
+                robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                motorBrake = false;
+            }else{
+                robot.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                motorBrake = true;
+            }
+        }
+
+        if(motorBrake){
+            opMode.telemetry.addData("Drive Motor Mode", "Brake");
+        }else{
+            opMode.telemetry.addData("Drive Motor Mode", "Coast");
+        }
+
+
         robot.lazyImu.get();
         opMode.telemetry.addLine("forward: "+forward);
         opMode.telemetry.addLine("right: "+right);

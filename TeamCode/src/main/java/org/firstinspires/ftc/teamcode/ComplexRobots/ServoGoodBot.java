@@ -63,7 +63,7 @@ public class ServoGoodBot extends MecanumDrive {
 
         //Initialize Motors
         ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
-        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 //        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -64,7 +64,7 @@ public class ServoTempBot extends MecanumDrive {
 
         //Initialize Motors
         ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
-        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Reset the motor encoder so that it reads zero ticks

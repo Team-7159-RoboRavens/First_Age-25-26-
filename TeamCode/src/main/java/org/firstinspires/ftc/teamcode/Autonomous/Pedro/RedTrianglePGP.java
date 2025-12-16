@@ -1,6 +1,7 @@
     package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -36,6 +37,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
         private final Pose shootPose = new Pose(109.040462 , 97.8867052, Math.toRadians(45));
 
+        private final Pose shootControlPose = new Pose(94.2242774, 67.0890173, Math.toRadians(45));
+
         private PathChain driveStartPosPickPos, drivePickPosPickPos2, drivePickPos2ShootPos;
 
         public void buildPaths(){
@@ -48,7 +51,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
                     .setLinearHeadingInterpolation(pickPose.getHeading(), pickPose2.getHeading())
                     .build();
             drivePickPos2ShootPos = follower.pathBuilder()
-                    .addPath(new BezierLine(pickPose2, shootPose))
+                    .addPath(new BezierCurve(pickPose2, shootPose, shootControlPose))
                     .setLinearHeadingInterpolation(pickPose2.getHeading(), shootPose.getHeading())
                     .build();
 

@@ -37,7 +37,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
         private final Pose shootPose = new Pose(109.040462 , 97.8867052, Math.toRadians(45));
 
-        private final Pose shootControlPose = new Pose(94.2242774, 67.0890173, Math.toRadians(45));
+        private final Pose shootControlPose = new Pose(76.41156069, 70.91791907, Math.toRadians(45));
 
         private PathChain driveStartPosPickPos, drivePickPosPickPos2, drivePickPos2ShootPos;
 

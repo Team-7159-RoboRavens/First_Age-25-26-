@@ -38,7 +38,7 @@ public class BlueGoalGPP extends OpMode {
 
     private final Pose shootPose2 = new Pose( 72, 35, Math.toRadians(180));
 
-    private final Pose shootPose3 = new Pose( 133, 35, Math.toRadians(180));
+    private final Pose shootPose3 = new Pose( 15, 35, Math.toRadians(180));
 
     private final Pose shootPose4 = new Pose( 72, 20, Math.toRadians(115));
 

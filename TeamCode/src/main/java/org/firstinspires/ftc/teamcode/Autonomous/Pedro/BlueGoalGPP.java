@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous (name="RedGoalPGP")
-public class RedGoalPGP extends OpMode {
+@Autonomous (name="BlueGoalGPP")
+public class BlueGoalGPP extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -32,15 +32,15 @@ public class RedGoalPGP extends OpMode {
     }
     PathState pathState;
 
-    private final Pose startPose = new Pose( 121, 125, Math.toRadians(217));
+    private final Pose startPose = new Pose( 20.789, 125, Math.toRadians(-40));
 
-    private final Pose shootPose = new Pose( 72, 84, Math.toRadians(37));
+    private final Pose shootPose = new Pose( 72, 84, Math.toRadians(143));
 
-    private final Pose shootPose2 = new Pose( 71.91676300578034, 59.431213872832366, Math.toRadians(0));
+    private final Pose shootPose2 = new Pose( 72, 35, Math.toRadians(180));
 
-    private final Pose shootPose3 = new Pose( 132.01387283236994, 59.431213872832366, Math.toRadians(0));
+    private final Pose shootPose3 = new Pose( 133, 35, Math.toRadians(180));
 
-    private final Pose shootPose4 = new Pose( 72.41618497109828, 84.0693641618497, Math.toRadians(37));
+    private final Pose shootPose4 = new Pose( 72, 20, Math.toRadians(115));
 
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos,driveShootMovePos,driveShootMovePos2;

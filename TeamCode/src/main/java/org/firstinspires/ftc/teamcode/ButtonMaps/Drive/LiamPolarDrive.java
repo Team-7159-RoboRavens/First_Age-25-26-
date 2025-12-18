@@ -111,18 +111,6 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         double forward = 0;
         double turn = 0;
         double maxMotorPower = 1;
-//        if (dpad_up) {
-//            forward += 1;
-//        }
-//        if (dpad_down) {
-//            forward -= 1;
-//        }
-//        if (dpad_left) {
-//            right -= 1;
-//        }
-//        if (dpad_right) {
-//            right += 1;
-//        }
 
         //Turn Left or Right
         if (left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
@@ -206,8 +194,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         opMode.telemetry.addLine("turn: "+turn);
 
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
-        opMode.telemetry.addLine("right: "+right);
-        opMode.telemetry.addLine("turn: "+turn);
+
         double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
     }

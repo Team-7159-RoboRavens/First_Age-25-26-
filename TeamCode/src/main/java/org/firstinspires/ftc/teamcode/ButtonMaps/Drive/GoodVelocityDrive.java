@@ -14,10 +14,11 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 //@Config
-public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
+public class GoodVelocityDrive extends ServoAbstractButtonMapGood {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
@@ -85,7 +86,22 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-        robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
+
+        ShootingFunctions.setVelocityReworked(mp.leftFront * 380, robot.leftFront.getVelocity(), robot.leftFront, -1);
+        ShootingFunctions.setVelocityReworked(mp.rightFront * 380, robot.rightFront.getVelocity(), robot.rightFront, -1);
+        ShootingFunctions.setVelocityReworked(mp.leftBack * 380, robot.leftBack.getVelocity(), robot.leftBack, -1);
+        ShootingFunctions.setVelocityReworked(mp.rightBack * 380, robot.rightBack.getVelocity(), robot.rightBack, -1);
+
+//        robot.leftFront.setVelocity(mp.leftFront * 380);
+//        robot.rightFront.setVelocity(mp.rightFront * 380);
+//        robot.leftBack.setVelocity(mp.leftBack * 380);
+//        robot.rightBack.setVelocity(mp.rightBack * 380);
+
+        opMode.telemetry.addLine("WheelVel " + robot.leftFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.leftBack.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightBack.getVelocity());
+
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         opMode.telemetry.addLine("angle: "+robotHeading);
     }

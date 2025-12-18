@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous (name="REDGOALGETOUT!!!!!")
+@Autonomous (name="RedGoalGPP")
 public class RedGoalPGP extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;

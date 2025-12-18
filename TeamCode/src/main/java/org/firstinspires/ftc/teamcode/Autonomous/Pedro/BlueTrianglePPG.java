@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous (name="BlueGoalGETOUT!!!!!")
+@Autonomous (name="BlueGoalPPG")
 public class BlueTrianglePPG extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;

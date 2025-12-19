@@ -87,10 +87,10 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-        Motors.setMotorPower(mp.leftFront * 380, robot.leftFront, robot.leftFront.getVelocity());
-        Motors.setMotorPower(mp.rightFront * 380, robot.rightFront, robot.rightFront.getVelocity());
-        Motors.setMotorPower(mp.leftBack * 380, robot.leftBack, robot.leftBack.getVelocity());
-        Motors.setMotorPower(mp.rightBack * 380, robot.rightBack, robot.rightBack.getVelocity());
+        Motors.setMotorPower(mp.leftFront, robot.leftFront, robot.leftFront.getVelocity());
+        Motors.setMotorPower(mp.rightFront, robot.rightFront, robot.rightFront.getVelocity());
+        Motors.setMotorPower(mp.leftBack, robot.leftBack, robot.leftBack.getVelocity());
+        Motors.setMotorPower(mp.rightBack, robot.rightBack, robot.rightBack.getVelocity());
 
 //        robot.leftFront.setVelocity(mp.leftFront * 380);
 //        robot.rightFront.setVelocity(mp.rightFront * 380);

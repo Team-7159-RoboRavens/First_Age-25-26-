@@ -29,6 +29,7 @@ static double joystickLinearity = 3;
 static double aimingPower = 1;
 static double aimingThreshold = .045;
 
+static double startTime;
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
@@ -86,11 +87,10 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-
-        ShootingFunctions.setVelocityReworked(mp.leftFront * 380, robot.leftFront.getVelocity(), robot.leftFront, -1);
-        ShootingFunctions.setVelocityReworked(mp.rightFront * 380, robot.rightFront.getVelocity(), robot.rightFront, -1);
-        ShootingFunctions.setVelocityReworked(mp.leftBack * 380, robot.leftBack.getVelocity(), robot.leftBack, -1);
-        ShootingFunctions.setVelocityReworked(mp.rightBack * 380, robot.rightBack.getVelocity(), robot.rightBack, -1);
+        Motors.setMotorPower(mp.leftFront * 380, robot.leftFront, robot.leftFront.getVelocity());
+        Motors.setMotorPower(mp.rightFront * 380, robot.rightFront, robot.rightFront.getVelocity());
+        Motors.setMotorPower(mp.leftBack * 380, robot.leftBack, robot.leftBack.getVelocity());
+        Motors.setMotorPower(mp.rightBack * 380, robot.rightBack, robot.rightBack.getVelocity());
 
 //        robot.leftFront.setVelocity(mp.leftFront * 380);
 //        robot.rightFront.setVelocity(mp.rightFront * 380);

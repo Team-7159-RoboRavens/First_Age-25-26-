@@ -106,7 +106,7 @@ public class triangleTimedRed extends LinearOpMode {
             double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, 1);
 
         }
         robot.ShootMotor.setPower(0);

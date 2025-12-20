@@ -12,11 +12,11 @@ public class TimeAutoFunctions {
     public static void strafeMotorsTo(GoalTimedRed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
         if (direction == GoalTimedRed.Direction.LEFT) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(-motorPower, motorPower, motorPower, -motorPower);
+                robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
             }
         } else if (direction == GoalTimedRed.Direction.RIGHT) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
+                robot.setMotorPower(-motorPower, motorPower, motorPower, -motorPower);
             }
         }
         robot.setMotorPower(0,0,0,0);
@@ -26,11 +26,11 @@ public class TimeAutoFunctions {
     public static void driveAllMotorsTo(GoalTimedRed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
         if (direction == GoalTimedRed.Direction.FORWARD) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setAllMotorPowers(motorPower);
+                robot.setAllMotorPowers(-motorPower);
             }
         } else if (direction == GoalTimedRed.Direction.BACKWARD) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setAllMotorPowers(-motorPower);
+                robot.setAllMotorPowers(motorPower);
             }
         }
         robot.setMotorPower(0,0,0,0);
@@ -41,11 +41,11 @@ public class TimeAutoFunctions {
 //        robot.setAllMotorPowers(motorPower);
         if (direction == GoalTimedRed.Direction.POSITIVE) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
+                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
             }
         } else if (direction == GoalTimedRed.Direction.NEGATIVE) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
-                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
+                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
             }
         }
         robot.setMotorPower(0,0,0,0);
@@ -96,7 +96,7 @@ public class TimeAutoFunctions {
     public static void rotate(double degrees, ServoTempBot robot2){
         double target = robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + degrees;
         if (target > 360){
-            target -= 360;
+            target += 360;
         }
     }
 

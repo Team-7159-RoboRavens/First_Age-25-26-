@@ -107,7 +107,7 @@ public class triangleTimedBlue extends LinearOpMode {
             double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, 1);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 

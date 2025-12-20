@@ -88,7 +88,7 @@ public class GoalTimedRed extends LinearOpMode {
         while (System.currentTimeMillis() < timeSet + 17000) {
             double targetVel = -FirstAgeArm.velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, 1);
             telemetry.addData("676767 ", shootVel);
             telemetry.addData("target velocity = ", targetVel);
 

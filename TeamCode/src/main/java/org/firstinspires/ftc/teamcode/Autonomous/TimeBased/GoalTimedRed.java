@@ -86,7 +86,7 @@ public class GoalTimedRed extends LinearOpMode {
         double timeBuffer2 = 6900;
         double timeSet = System.currentTimeMillis();
         while (System.currentTimeMillis() < timeSet + 17000) {
-            double targetVel = FirstAgeArm.velocityShot(140);
+            double targetVel = -FirstAgeArm.velocityShot(140);
             double shootVel = robot.ShootMotor.getVelocity();
             ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
             telemetry.addData("676767 ", shootVel);
@@ -95,17 +95,17 @@ public class GoalTimedRed extends LinearOpMode {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(.7);
+                robot.Servo2.setPosition(.2);
             }
             stage = 1;
             if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 9000 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.7);
+                robot.Servo2.setPosition(.2);
                 robot.Servo1.setPower(-.07);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.7);
 //                robot.Servo3.setPower(.8);
-                robot.Servo2.setPosition(1);
+                robot.Servo2.setPosition(-.3);
                 telemetry.addLine("Servos");
             }
 

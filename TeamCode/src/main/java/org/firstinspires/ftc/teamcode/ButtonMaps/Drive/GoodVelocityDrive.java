@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
+import org.firstinspires.ftc.teamcode.Motors;
 
 //@Config
 public class GoodVelocityDrive extends ServoAbstractButtonMapGood {
@@ -29,7 +30,6 @@ static double joystickLinearity = 3;
 static double aimingPower = 1;
 static double aimingThreshold = .045;
 
-static double startTime;
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
@@ -87,15 +87,11 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
+
         Motors.setMotorPower(mp.leftFront, robot.leftFront, robot.leftFront.getVelocity());
         Motors.setMotorPower(mp.rightFront, robot.rightFront, robot.rightFront.getVelocity());
         Motors.setMotorPower(mp.leftBack, robot.leftBack, robot.leftBack.getVelocity());
         Motors.setMotorPower(mp.rightBack, robot.rightBack, robot.rightBack.getVelocity());
-
-//        robot.leftFront.setVelocity(mp.leftFront * 380);
-//        robot.rightFront.setVelocity(mp.rightFront * 380);
-//        robot.leftBack.setVelocity(mp.leftBack * 380);
-//        robot.rightBack.setVelocity(mp.rightBack * 380);
 
         opMode.telemetry.addLine("WheelVel " + robot.leftFront.getVelocity());
         opMode.telemetry.addLine("WheelVel " + robot.rightFront.getVelocity());

@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -123,46 +124,41 @@ public class ServoTempBot extends MecanumDrive {
             double captureLatency = result.getCaptureLatency();
             double targetingLatency = result.getTargetingLatency();
             double parseLatency = result.getParseLatency();
-            opMode.telemetry.addData("LL Latency", captureLatency + targetingLatency);
-            opMode.telemetry.addData("Parse Latency", parseLatency);
-            opMode.telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
+//            opMode.telemetry.addData("LL Latency", captureLatency + targetingLatency);
+//            opMode.telemetry.addData("Parse Latency", parseLatency);
+//            opMode.telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
             opMode.telemetry.addLine("Limelight Works!");
 
             if (result.isValid()) {
 
                 opMode.telemetry.addData("tx", result.getTx());
-                opMode.telemetry.addData("txnc", result.getTxNC());
+//                opMode.telemetry.addData("txnc", result.getTxNC());
                 opMode.telemetry.addData("ty", result.getTy());
-                opMode.telemetry.addData("tync", result.getTyNC());
-
-                opMode.telemetry.addData("Botpose", botpose.toString());
-                if (limelightData.accurate) {
-                    opMode.telemetry.addLine("Correct: ");
-                    opMode.telemetry.addData("Aiming ", limelightData.aiming);
-                }
-                else
-                    opMode.telemetry.addLine("Bad");
+//                opMode.telemetry.addData("tync", result.getTyNC());
+//
+//                opMode.telemetry.addData("Botpose", botpose.toString());
 
                 // Access fiducial results (April Tags)
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
-                if (fiducialResults.isEmpty())
+                if (fiducialResults.isEmpty()) {
                     //This makes sure that if there are no detected april tags, it will not take old data
+                    opMode.telemetry.addData("Fiducial", "No data available");
                     limelightData.accurate = false;
-                for (LLResultTypes.FiducialResult fr : fiducialResults) {
-                    opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
-                    if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() - 5, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
-                        limelightData.accurate = true;
-                        opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
-                        opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                        opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
-                        opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
-                        opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
+                }
+                    for (LLResultTypes.FiducialResult fr : fiducialResults) {
+                        opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+                        if (fr.getFiducialId() == id) {
+                            limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() - 5, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
+                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
+                            limelightData.fieldPosOfTag = lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + limelightData.aprilXDegrees;
 
 
-
-
-                        double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
+                            //calculate distance
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
                             double limelightMountAngleDegrees = 4;
@@ -180,6 +176,10 @@ public class ServoTempBot extends MecanumDrive {
                             double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
                             limelightData.distance = distanceFromLimelightToGoalCm;
                             opMode.telemetry.addData("Distance: ", distanceFromLimelightToGoalCm);
+                            opMode.telemetry.addData("Accuracy ", limelightData.accurate);
+                        } else {
+                            opMode.telemetry.addLine("Not found tag");
+//                            limelightData.accurate = false;
                         }
                         if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
                             limelightData.pattern = fr.getFiducialId();
@@ -199,14 +199,12 @@ public class ServoTempBot extends MecanumDrive {
 //                    }
 //                    if (colorResult.getTargetXPixels() > 120)
 //                        telemetry.addData("Largest Yellow Object", String.valueOf(colorResult.getTargetXDegrees()), String.valueOf(colorResult.getTargetYDegrees()));
-//
                 }
             } else {
                 opMode.telemetry.addData("Limelight", "No data available");
                 //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
                 limelightData.accurate = false;
             }
-
 //            opMode.telemetry.update();
     }
 

@@ -84,17 +84,17 @@ public class triangleTimedRed extends LinearOpMode {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(.9);
+                robot.Servo2.setPosition(-.2);
             }
             stage = 1;
             if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.7);
+                robot.Servo2.setPosition(.2);
                 robot.Servo1.setPower(-.1);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
 //                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(1);
+                robot.Servo2.setPosition(-.3);
                 telemetry.addLine("Servos");
             }
 
@@ -103,7 +103,7 @@ public class triangleTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = FirstAgeArm.velocityShot(195);
+            double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
             ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);

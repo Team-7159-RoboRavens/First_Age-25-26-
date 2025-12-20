@@ -24,9 +24,9 @@ public class ShootingFunctions {
         targetVel = Math.abs(targetVel);
         currentVel = Math.abs(currentVel);
 
-        if ((targetVel - currentVel) < (targetVel / 150)) {
+        if ((targetVel - currentVel) < (targetVel / 300)) {
             currentPower -=  learningRate * (currentVel / (targetVel + Math.pow(10,-8)));
-        } else if ((targetVel - currentVel) > (targetVel / 150)) {
+        } else if ((targetVel - currentVel) > (targetVel / 300)) {
             currentPower += learningRate * (targetVel / (currentVel + Math.pow(10,-8)));
         }
         if (currentPower > 1) {

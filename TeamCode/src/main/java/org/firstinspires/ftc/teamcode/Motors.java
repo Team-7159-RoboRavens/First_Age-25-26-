@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Motors {
     static double powerMultiplier = 1;
-    static void setMotorPower(double targetPower, DcMotorEx motor, double motorVelocity){
+    public static void setMotorPower(double targetPower, DcMotorEx motor, double motorVelocity){
         double power = powerMultiplier*(targetPower-motorVelocity/1000) + targetPower;
         motor.setPower(power);
     }

@@ -54,7 +54,7 @@ public class GoForward extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 300, System.currentTimeMillis(), .8, robot);
+        driveAllMotorsTo(GoalTimed.Direction.FORWARD, 300, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
 //        sleep(1000);
 //        aim( 180,50, 1, robot);

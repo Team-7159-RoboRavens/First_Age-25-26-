@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.limelightData;
 public class TimeAutoFunctions {
 
 
-    public static void strafeMotorsTo(GoalTimedRed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
-        if (direction == GoalTimedRed.Direction.LEFT) {
+    public static void strafeMotorsTo(GoalTimed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
+        if (direction == GoalTimed.Direction.LEFT) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(motorPower, -motorPower, -motorPower, motorPower);
             }
-        } else if (direction == GoalTimedRed.Direction.RIGHT) {
+        } else if (direction == GoalTimed.Direction.RIGHT) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(-motorPower, motorPower, motorPower, -motorPower);
             }
@@ -23,12 +23,12 @@ public class TimeAutoFunctions {
     }
 
     //sets y direction for the robot, moves in that direction for the time allotted for that action (millisDelay), sets the motor powers to variable defined above
-    public static void driveAllMotorsTo(GoalTimedRed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
-        if (direction == GoalTimedRed.Direction.FORWARD) {
+    public static void driveAllMotorsTo(GoalTimed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
+        if (direction == GoalTimed.Direction.FORWARD) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setAllMotorPowers(-motorPower);
             }
-        } else if (direction == GoalTimedRed.Direction.BACKWARD) {
+        } else if (direction == GoalTimed.Direction.BACKWARD) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setAllMotorPowers(motorPower);
             }
@@ -37,13 +37,13 @@ public class TimeAutoFunctions {
     }
 
     //negative is right, positive is left
-    public static void rotateTo(GoalTimedRed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
+    public static void rotateTo(GoalTimed.Direction direction, int millisDelay, long startTime, double motorPower, MecanumDrive robot) {
 //        robot.setAllMotorPowers(motorPower);
-        if (direction == GoalTimedRed.Direction.POSITIVE) {
+        if (direction == GoalTimed.Direction.POSITIVE) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
             }
-        } else if (direction == GoalTimedRed.Direction.NEGATIVE) {
+        } else if (direction == GoalTimed.Direction.NEGATIVE) {
             while ((System.currentTimeMillis() - startTime) < millisDelay) {
                 robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
             }

@@ -112,7 +112,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (limelightData.accurate) {
-                robot.ShootMotor.setPower((targetVel - shootVel) / 70);
+                robot.ShootMotor.setPower((targetVel - shootVel) / 100);
             }
             else if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");

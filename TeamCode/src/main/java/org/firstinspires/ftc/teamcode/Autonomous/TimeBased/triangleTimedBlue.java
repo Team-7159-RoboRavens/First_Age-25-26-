@@ -60,13 +60,13 @@ public class triangleTimedBlue extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
+        driveAllMotorsTo(GoalTimed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 506, System.currentTimeMillis(), .8, robot);
+        strafeMotorsTo(GoalTimed.Direction.RIGHT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(GoalTimedRed.Direction.POSITIVE, 225, System.currentTimeMillis(), .5, robot);
+        rotateTo(GoalTimed.Direction.POSITIVE, 175, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //
@@ -107,15 +107,16 @@ public class triangleTimedBlue extends LinearOpMode {
             double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, 1);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, .895);
 //            if (!limelightData.accurate)
 //                telemetry.addLine("Shoot far");
 
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        rotateTo(GoalTimedRed.Direction.NEGATIVE, 142, System.currentTimeMillis(), .5, robot);
-        strafeMotorsTo(GoalTimedRed.Direction.LEFT, 550, System.currentTimeMillis(), .8, robot);
+        rotateTo(GoalTimed.Direction.NEGATIVE, 142, System.currentTimeMillis(), .5, robot);
+        strafeMotorsTo(GoalTimed.Direction.LEFT, 550, System.currentTimeMillis(), .8, robot);
+        limelightData.ImuOffset = Math.PI/4;
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);

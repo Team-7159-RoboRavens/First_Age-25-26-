@@ -68,10 +68,10 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             else if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront += limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower;
-                mp.leftBack += limelightData.aprilXDegrees / 10  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower;
-                mp.rightFront -= limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower;
-                mp.rightBack -= limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower;
+                mp.leftFront += limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.2) * aimingPower;
+                mp.leftBack += limelightData.aprilXDegrees / 10  * Math.pow(limelightData.aprilXDegrees, -.2) * aimingPower;
+                mp.rightFront -= limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.2)  * aimingPower;
+                mp.rightBack -= limelightData.aprilXDegrees / 10 * Math.pow(limelightData.aprilXDegrees, -.2) * aimingPower;
 //                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");

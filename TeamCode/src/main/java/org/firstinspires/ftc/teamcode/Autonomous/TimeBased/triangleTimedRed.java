@@ -65,7 +65,7 @@ public class triangleTimedRed extends LinearOpMode {
         strafeMotorsTo(GoalTimed.Direction.LEFT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(GoalTimed.Direction.NEGATIVE, 225, System.currentTimeMillis(), .5, robot);
+        rotateTo(GoalTimed.Direction.NEGATIVE, 200, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //
@@ -106,7 +106,7 @@ public class triangleTimedRed extends LinearOpMode {
             double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, .895);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, .892);
 
         }
         robot.ShootMotor.setPower(0);

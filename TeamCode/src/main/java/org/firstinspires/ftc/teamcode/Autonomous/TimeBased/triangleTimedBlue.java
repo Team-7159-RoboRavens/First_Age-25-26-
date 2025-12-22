@@ -66,7 +66,7 @@ public class triangleTimedBlue extends LinearOpMode {
         strafeMotorsTo(GoalTimed.Direction.RIGHT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(GoalTimed.Direction.POSITIVE, 175, System.currentTimeMillis(), .5, robot);
+        rotateTo(GoalTimed.Direction.POSITIVE, 160, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //

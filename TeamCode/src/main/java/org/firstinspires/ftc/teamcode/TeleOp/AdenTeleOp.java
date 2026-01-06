@@ -29,12 +29,17 @@
 
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.acmerobotics.roadrunner.ftc.OverflowEncoder;
+import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 /*
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -55,7 +60,8 @@ public class AdenTeleOp extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor launcher = null;
+    private DcMotorEx launcher = null;
+    private OverflowEncoder encoder;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -67,13 +73,13 @@ public class AdenTeleOp extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        launcher  = hardwareMap.get(DcMotor.class, "flywheel");
+        launcher  = hardwareMap.get(DcMotorEx.class, "flywheel");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         launcher.setDirection(DcMotor.Direction.FORWARD);
-
+        encoder = new OverflowEncoder(new RawEncoder(launcher));
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -122,7 +128,9 @@ public class AdenTeleOp extends OpMode
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Speed", launcherPower);
+        telemetry.addData("TriggerVal", launcherPower);
+
+        telemetry.addData("Speed", launcher.getVelocity());
 
     }
 

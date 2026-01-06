@@ -14,10 +14,12 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
+import org.firstinspires.ftc.teamcode.Motors;
 
 //@Config
-public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
+public class GoodVelocityDrive extends ServoAbstractButtonMapGood {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
@@ -85,7 +87,17 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-        robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
+
+        Motors.setMotorPower(mp.leftFront, robot.leftFront, robot.leftFront.getVelocity());
+        Motors.setMotorPower(mp.rightFront, robot.rightFront, robot.rightFront.getVelocity());
+        Motors.setMotorPower(mp.leftBack, robot.leftBack, robot.leftBack.getVelocity());
+        Motors.setMotorPower(mp.rightBack, robot.rightBack, robot.rightBack.getVelocity());
+
+        opMode.telemetry.addLine("WheelVel " + robot.leftFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.leftBack.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightBack.getVelocity());
+
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         opMode.telemetry.addLine("angle: "+robotHeading);
     }

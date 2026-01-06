@@ -16,6 +16,7 @@ public class limelightData {
     public static LazyImu imu;
     public static boolean hasImu = false;
     public static double ImuOffset = 0;
+    public static double fieldPosOfTag = 0;
 
 
 
@@ -25,6 +26,7 @@ public class limelightData {
         aprilFamily = F;
         aprilXDegrees = X;
         aprilYDegrees = Y;
+        accurate = true;
     }
 
     //This should return the direction and scalar of the april tag, change to be the mean value of degrees.

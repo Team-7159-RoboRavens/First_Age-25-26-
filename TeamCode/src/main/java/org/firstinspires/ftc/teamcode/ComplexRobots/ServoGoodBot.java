@@ -147,9 +147,10 @@ public class ServoGoodBot extends MecanumDrive {
 
                     // Access fiducial results (April Tags)
                     List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
-                    if (fiducialResults.isEmpty())
+                    if (fiducialResults.isEmpty()) {
                         //This makes sure that if there are no detected april tags, it will not take old data
                         limelightData.accurate = false;
+                    }
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {

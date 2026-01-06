@@ -59,13 +59,13 @@ public class triangleTimedRed extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(GoalTimedRed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
+        driveAllMotorsTo(GoalTimed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        strafeMotorsTo(GoalTimedRed.Direction.LEFT, 506, System.currentTimeMillis(), .8, robot);
+        strafeMotorsTo(GoalTimed.Direction.LEFT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(GoalTimedRed.Direction.NEGATIVE, 225, System.currentTimeMillis(), .5, robot);
+        rotateTo(GoalTimed.Direction.NEGATIVE, 200, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //
@@ -84,17 +84,17 @@ public class triangleTimedRed extends LinearOpMode {
             if (stage == 0) {
                 timeSet = System.currentTimeMillis();
                 timeSince = System.currentTimeMillis();
-                robot.Servo2.setPosition(.9);
+                robot.Servo2.setPosition(-.2);
             }
             stage = 1;
             if (timeSince + timeBuffer2 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.7);
+                robot.Servo2.setPosition(.2);
                 robot.Servo1.setPower(-.1);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.5);
 //                robot.Servo3.setPower(.5);
-                robot.Servo2.setPosition(1);
+                robot.Servo2.setPosition(-.3);
                 telemetry.addLine("Servos");
             }
 
@@ -103,16 +103,17 @@ public class triangleTimedRed extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = FirstAgeArm.velocityShot(195);
+            double targetVel = -FirstAgeArm.velocityShot(195);
             double shootVel = robot.ShootMotor.getVelocity();
 
-            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, -1);
+            ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, .892);
 
         }
         robot.ShootMotor.setPower(0);
         robot.Servo2.setPosition(.7);
-        rotateTo(GoalTimedRed.Direction.POSITIVE, 242, System.currentTimeMillis(), .5, robot);
-        strafeMotorsTo(GoalTimedRed.Direction.RIGHT, 556, System.currentTimeMillis(), .8, robot);
+        rotateTo(GoalTimed.Direction.POSITIVE, 242, System.currentTimeMillis(), .5, robot);
+        strafeMotorsTo(GoalTimed.Direction.RIGHT, 556, System.currentTimeMillis(), .8, robot);
+        limelightData.ImuOffset = +Math.PI/4;
 //        sleep(1000);
 //        aim( 180,50, 1, robot);
 //        sleep(1000);

@@ -119,7 +119,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
                 if (limelightData.accurate)
-                    robot.ShootMotor.setPower((targetVel - shootVel) / 60);
+                    robot.ShootMotor.setVelocity(targetVel);
                 if (!limelightData.accurate)
                     opMode.telemetry.addLine("Shoot far");
 

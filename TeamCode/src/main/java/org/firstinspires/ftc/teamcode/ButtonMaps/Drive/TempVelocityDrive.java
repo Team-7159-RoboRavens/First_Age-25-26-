@@ -12,29 +12,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
-import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
-import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 //@Config
-public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
+public class TempVelocityDrive extends ServoAbstractButtonMap {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
 static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
-static double joystickDeadZone = .1;
+static double joystickDeadZone = .15;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
 static double aimingThreshold = .045;
-
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-
     @Override
-    public void loop(ServoGoodBot robot, OpMode opMode) {
+    public void loop(ServoTempBot robot, OpMode opMode) {
 
         MotorPowers mp;
         mp = getMotorPowers(
@@ -57,21 +56,22 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         //Reset FOD
         if (opMode.gamepad1.back) {
             robot.lazyImu.get().resetYaw();
+            limelightData.ImuOffset = 0;
         }
 
 
         if (opMode.gamepad2.x){
-            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold) {
+            if (Math.abs(limelightData.aprilXDegrees / 15) < aimingThreshold) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
             }
             else if (limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-                mp.leftFront += limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
-                mp.leftBack += limelightData.aprilXDegrees / 20  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
-                mp.rightFront -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower + .1;
-                mp.rightBack -= limelightData.aprilXDegrees / 20 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.leftFront += limelightData.aprilXDegrees / 15 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.leftBack += limelightData.aprilXDegrees / 15  * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
+                mp.rightFront -= limelightData.aprilXDegrees / 15 * Math.pow(limelightData.aprilXDegrees, -.3)  * aimingPower + .1;
+                mp.rightBack -= limelightData.aprilXDegrees / 15 * Math.pow(limelightData.aprilXDegrees, -.3) * aimingPower + .1;
 //                smallTimedPedro.rotate(limelightData.aprilXDegrees + 4, robot);
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
@@ -85,13 +85,28 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.leftBack += dpadStrafe(opMode, .8).leftBack;
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
-        robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
-        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        opMode.telemetry.addLine("angle: "+robotHeading);
+//        mp = new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack);
+//        ShootingFunctions.setVelocityReworked(mp.leftFront * 380, robot.leftFront.getVelocity(), robot.leftFront, 1, 1);
+//        ShootingFunctions.setVelocityReworked(mp.rightFront * 380, robot.rightFront.getVelocity(), robot.rightFront, 1, 1);
+//        ShootingFunctions.setVelocityReworked(mp.leftBack * 380, robot.leftBack.getVelocity(), robot.leftBack, 1, 1);
+//        ShootingFunctions.setVelocityReworked(mp.rightBack * 380, robot.rightBack.getVelocity(), robot.rightBack, 1, 1);
+
+        robot.leftFront.setVelocity(-mp.leftFront * 800);
+        robot.rightFront.setVelocity(-mp.rightFront * 800);
+        robot.leftBack.setVelocity(-mp.leftBack * 800);
+        robot.rightBack.setVelocity(-mp.rightBack * 800);
+
+        opMode.telemetry.addLine("WheelVel " + robot.leftFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightFront.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.leftBack.getVelocity());
+        opMode.telemetry.addLine("WheelVel " + robot.rightBack.getVelocity());
+
+        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
+        opMode.telemetry.addLine("angle: "+robotHeading + limelightData.ImuOffset);
     }
 
     public static MotorPowers getMotorPowers(
-            ServoGoodBot robot,
+            ServoTempBot robot,
             IMU imu,
             boolean dpad_up,
             boolean dpad_down,
@@ -118,7 +133,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         }
 
         if (Math.abs(right_stick_x) > joystickDeadZone) {
-            double turnSpeed = -Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
+            double turnSpeed = Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
             turn += turnSpeed;
         }
 
@@ -155,7 +170,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             }
             forward -= forwardSpeed;
             right += strafeSpeed;
-            turn = turnSpeed;
+            turn += turnSpeed;
         }
 
         //Slow strafe while holding x
@@ -163,7 +178,6 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             maxMotorPower *= 0.5;
         }
 
-        //Toggle whether the robot is in brake or coast mode
         if(opMode.gamepad1.b && et.time() > 500){
             et.reset();
             if(motorBrake){
@@ -187,6 +201,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             opMode.telemetry.addData("Drive Motor Mode", "Coast");
         }
 
+
         robot.lazyImu.get();
         opMode.telemetry.addLine("forward: "+forward);
         opMode.telemetry.addLine("right: "+right);
@@ -194,9 +209,8 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
 
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
 
-        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
-
     }
 
 

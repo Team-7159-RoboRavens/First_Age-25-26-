@@ -55,7 +55,7 @@ public class WukAutoRed6Cycle extends OpMode {
 
     Pose gateClear   = new Pose(131.5, 62, Math.toRadians(-90));
     Pose loadingZone = new Pose(132, 11, Math.toRadians(0));
-    Pose parkPose    = new Pose(92, 27, Math.toRadians(180));
+    Pose parkPose    = new Pose(92, 27, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;

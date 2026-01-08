@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "WukAutoRed")
-public class WukAutoRed extends OpMode {
+@Autonomous(name = "WukAutoRedGoal")
+public class WukAutoRedGoal extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
@@ -29,27 +29,23 @@ public class WukAutoRed extends OpMode {
         GATE_CLEAR,
         GATE_TO_SHOOT,
         SHOOT_3,
-        SHOOT_TO_LOAD,
-        LOAD_TO_SHOOT,
-        SHOOT_4,
         PARK,
         DONE
     }
 
     private AutoState state;
 
-    Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(83, 12, Math.toRadians(67.3));
+    Pose startPose   = new Pose(124, 122, Math.toRadians(35));
+    Pose shootPose   = new Pose(94.2826, 93.2522, Math.toRadians(50));
 
-    Pose pickPPGstart = new Pose(102, 35.3438, Math.toRadians(0));
+    Pose pickPPGstart = new Pose(102, 83.463, Math.toRadians(0));
     Pose pickPPGend   = new Pose(130, 35.3438, Math.toRadians(0));
 
     Pose pickPGPstart = new Pose(102, 60, Math.toRadians(0));
     Pose pickPGPend   = new Pose(130, 60, Math.toRadians(0));
 
     Pose gateClear   = new Pose(131.5, 62, Math.toRadians(-90));
-    Pose loadingZone = new Pose(132, 11, Math.toRadians(0));
-    Pose parkPose    = new Pose(92, 27, Math.toRadians(0));
+    Pose parkPose    = new Pose(105, 65, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;
@@ -59,8 +55,6 @@ public class WukAutoRed extends OpMode {
     PathChain pickupPGPToPGPend;
     PathChain pgpendToGate;
     PathChain gateToShoot;
-    PathChain shootToLoad;
-    PathChain loadToShoot;
     PathChain shootToPark;
 
     void buildPaths() {
@@ -102,16 +96,6 @@ public class WukAutoRed extends OpMode {
         gateToShoot = follower.pathBuilder()
                 .addPath(new BezierLine(gateClear, shootPose))
                 .setLinearHeadingInterpolation(gateClear.getHeading(), shootPose.getHeading())
-                .build();
-
-        shootToLoad = follower.pathBuilder()
-                .addPath(new BezierLine(shootPose, loadingZone))
-                .setLinearHeadingInterpolation(shootPose.getHeading(), loadingZone.getHeading())
-                .build();
-
-        loadToShoot = follower.pathBuilder()
-                .addPath(new BezierLine(loadingZone, shootPose))
-                .setLinearHeadingInterpolation(loadingZone.getHeading(), shootPose.getHeading())
                 .build();
 
         shootToPark = follower.pathBuilder()
@@ -160,15 +144,6 @@ public class WukAutoRed extends OpMode {
                 follower.followPath(gateToShoot, true);
                 break;
             case SHOOT_3:
-                // shooting code
-                break;
-            case SHOOT_TO_LOAD:
-                follower.followPath(shootToLoad, true);
-                break;
-            case LOAD_TO_SHOOT:
-                follower.followPath(loadToShoot, true);
-                break;
-            case SHOOT_4:
                 // shooting code
                 break;
             case PARK:
@@ -228,18 +203,6 @@ public class WukAutoRed extends OpMode {
         case SHOOT_3:
             if (stateTimer.getElapsedTimeSeconds() > 3.0)
                 setState(AutoState.SHOOT_TO_LOAD);
-            break;
-        case SHOOT_TO_LOAD:
-            if (!follower.isBusy())
-                setState(AutoState.LOAD_TO_SHOOT);
-            break;
-        case LOAD_TO_SHOOT:
-            if (!follower.isBusy())
-                setState(AutoState.SHOOT_4);
-            break;
-        case SHOOT_4:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.PARK);
             break;
         case PARK:
             if (!follower.isBusy())

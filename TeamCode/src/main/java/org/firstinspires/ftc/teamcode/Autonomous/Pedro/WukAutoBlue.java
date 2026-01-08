@@ -49,7 +49,7 @@ public class WukAutoBlue extends OpMode {
 
     Pose gateClear   = new Pose(13, 62, Math.toRadians(270));
     Pose loadingZone = new Pose(12, 11, Math.toRadians(180));
-    Pose parkPose    = new Pose(52, 27, Math.toRadians(0));
+    Pose parkPose    = new Pose(52, 27, Math.toRadians(180));
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;

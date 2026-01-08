@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
@@ -36,7 +37,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         targetVel = -FirstAgeArm.velocityShot(limelightData.distance)* .9;
         opMode.telemetry.addData("Velocity ", shootVel);
         opMode.telemetry.addData("target velocity = ", targetVel);
-
 
         //Automatically Aim if there is a tag
         if (opMode.gamepad2.x) {
@@ -112,10 +112,12 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
             if (limelightData.accurate) {
-                robot.ShootMotor.setPower((targetVel - shootVel) / 125);
+                robot.ShootMotor.setPower((targetVel - shootVel) / 137);
+                opMode.telemetry.addLine("Limelight passes in data");
             }
             else if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");
+                opMode.telemetry.addLine("Limelight not working");
                 ShootingFunctions.setVelocityReworked(1590
                         , shootVel, robot.ShootMotor,-1);
             }
@@ -146,7 +148,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
 
 
-
+        robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 

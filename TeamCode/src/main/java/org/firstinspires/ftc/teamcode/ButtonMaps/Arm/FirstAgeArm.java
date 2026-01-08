@@ -82,6 +82,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
 
 
         if (opMode.gamepad2.dpad_down) {
+            robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                 opMode.telemetry.addLine("Shoot medium-short");
                 robot.ShootMotor.setPower(baseShotPower * -1.45);
@@ -92,7 +93,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
         }
         else if (opMode.gamepad2.dpad_up) {
-
+            robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
 //                robot.Servo3.setPower(0);
@@ -123,6 +124,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
         }
         else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+            robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (opMode.gamepad2.dpad_up) {
                 opMode.telemetry.addLine("Shoot medium-long");
                 robot.ShootMotor.setPower(baseShotPower * -1.55);
@@ -137,6 +139,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             stage = 0;
 //            robot.Servo3.setPower(0);
             robot.Servo2.setPosition(.2);
+            robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
 
@@ -148,7 +151,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         }
 
 
-        robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 

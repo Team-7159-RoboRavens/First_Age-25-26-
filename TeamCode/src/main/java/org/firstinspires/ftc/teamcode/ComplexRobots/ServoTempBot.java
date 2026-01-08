@@ -148,7 +148,7 @@ public class ServoTempBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                            limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() - 5, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 2.25 : fr.getTargetXDegrees() - 3.4, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
                             opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));

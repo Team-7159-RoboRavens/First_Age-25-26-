@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
@@ -81,6 +82,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 
 
             if (opMode.gamepad2.dpad_down) {
+                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                     opMode.telemetry.addLine("Shoot medium-short");
                     robot.ShootMotor.setPower(baseShotPower * 1.45);
@@ -89,6 +91,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     robot.ShootMotor.setPower(baseShotPower * 1.35);
                 }
             } else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 if (opMode.gamepad2.dpad_up) {
                     opMode.telemetry.addLine("Shoot medium-long");
                     robot.ShootMotor.setPower(baseShotPower * 1.55);
@@ -97,6 +100,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     robot.ShootMotor.setPower(baseShotPower * 1.5);
                 }
             } else if (opMode.gamepad2.dpad_up) {
+                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 //            if (stage == 0) {
 //                timeSince = System.currentTimeMillis();
@@ -124,6 +128,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("Shoot far");
 
             } else {
+                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.ShootMotor.setPower(0);
                 stage = 0;
 //            robot.Servo3.setPower(0);
@@ -144,6 +149,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     }
 
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * 0.97 * Math.pow(x, 2) +  9.28571 * x + 481.14286);
+        return (2.07096 * Math.pow(10, -16) * 0.97 * Math.pow(x, 2) + 9.28571 * x + 481.14286);
     }
 }

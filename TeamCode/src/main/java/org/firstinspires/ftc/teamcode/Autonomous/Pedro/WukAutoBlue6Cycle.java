@@ -32,12 +32,12 @@ public class WukAutoBlue6Cycle extends OpMode {
         SHOOT_TO_LOAD,
         LOAD_TO_SHOOT,
         SHOOT_4,
-        SHOOT_TO_LOAD,
-        LOAD_TO_SHOOT,
-        SHOOT_4,
-        SHOOT_TO_LOAD,
-        LOAD_TO_SHOOT,
-        SHOOT_4,
+        SHOOT_TO_LOAD2,
+        LOAD_TO_SHOOT2,
+        SHOOT_5,
+        SHOOT_TO_LOAD3,
+        LOAD_TO_SHOOT3,
+        SHOOT_6,
         PARK,
         DONE
     }
@@ -67,6 +67,10 @@ public class WukAutoBlue6Cycle extends OpMode {
     PathChain gateToShoot;
     PathChain shootToLoad;
     PathChain loadToShoot;
+    PathChain loadToShoot2;
+    PathChain loadToShoot3;
+    PathChain shootToLoad2;
+    PathChain shootToLoad3;
     PathChain shootToPark;
 
     void buildPaths() {
@@ -114,12 +118,27 @@ public class WukAutoBlue6Cycle extends OpMode {
                 .addPath(new BezierLine(shootPose, loadingZone))
                 .setLinearHeadingInterpolation(shootPose.getHeading(), loadingZone.getHeading())
                 .build();
-
+        shootToLoad2 = follower.pathBuilder()
+                .addPath(new BezierLine(shootPose, loadingZone))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), loadingZone.getHeading())
+                .build();
+        shootToLoad3 = follower.pathBuilder()
+                .addPath(new BezierLine(shootPose, loadingZone))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), loadingZone.getHeading())
+                .build();
         loadToShoot = follower.pathBuilder()
                 .addPath(new BezierLine(loadingZone, shootPose))
                 .setLinearHeadingInterpolation(loadingZone.getHeading(), shootPose.getHeading())
                 .build();
-
+        
+        loadToShoot2 = follower.pathBuilder()
+                .addPath(new BezierLine(loadingZone, shootPose))
+                .setLinearHeadingInterpolation(loadingZone.getHeading(), shootPose.getHeading())
+                .build();
+        loadToShoot3 = follower.pathBuilder()
+                .addPath(new BezierLine(loadingZone, shootPose))
+                .setLinearHeadingInterpolation(loadingZone.getHeading(), shootPose.getHeading())
+                .build();
         shootToPark = follower.pathBuilder()
                 .addPath(new BezierLine(shootPose, parkPose))
                 .setLinearHeadingInterpolation(shootPose.getHeading(), parkPose.getHeading())
@@ -169,12 +188,33 @@ public class WukAutoBlue6Cycle extends OpMode {
                 // shooting code
                 break;
             case SHOOT_TO_LOAD:
+                //intake code
                 follower.followPath(shootToLoad, true);
                 break;
             case LOAD_TO_SHOOT:
                 follower.followPath(loadToShoot, true);
                 break;
             case SHOOT_4:
+                // shooting code
+                break;
+            case SHOOT_TO_LOAD2:
+                //intake code
+                follower.followPath(shootToLoad2, true);
+                break;
+            case LOAD_TO_SHOOT2:
+                follower.followPath(loadToShoot2, true);
+                break;
+            case SHOOT_5:
+                // shooting code
+                break;
+            case SHOOT_TO_LOAD3:
+                //intake code
+                follower.followPath(shootToLoad3, true);
+                break;
+            case LOAD_TO_SHOOT3:
+                follower.followPath(loadToShoot3, true);
+                break;
+            case SHOOT_6:
                 // shooting code
                 break;
             case PARK:
@@ -244,6 +284,30 @@ public class WukAutoBlue6Cycle extends OpMode {
                 setState(AutoState.SHOOT_4);
             break;
         case SHOOT_4:
+            if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                setState(AutoState.PARK);
+            break;
+        case SHOOT_TO_LOAD2:
+            if (!follower.isBusy())
+                setState(AutoState.LOAD_TO_SHOOT2);
+            break;
+        case LOAD_TO_SHOOT2:
+            if (!follower.isBusy())
+                setState(AutoState.SHOOT_5);
+            break;
+        case SHOOT_5:
+            if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                setState(AutoState.PARK);
+            break;
+        case SHOOT_TO_LOAD3:
+            if (!follower.isBusy())
+                setState(AutoState.LOAD_TO_SHOOT3);
+            break;
+        case LOAD_TO_SHOOT3:
+            if (!follower.isBusy())
+                setState(AutoState.SHOOT_6);
+            break;
+        case SHOOT_6:
             if (stateTimer.getElapsedTimeSeconds() > 3.0)
                 setState(AutoState.PARK);
             break;

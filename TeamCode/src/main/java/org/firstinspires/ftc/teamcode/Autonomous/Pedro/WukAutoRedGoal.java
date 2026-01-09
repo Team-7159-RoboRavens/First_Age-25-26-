@@ -39,7 +39,7 @@ public class WukAutoRedGoal extends OpMode {
     Pose shootPose   = new Pose(94.2826, 93.2522, Math.toRadians(50));
 
     Pose pickPPGstart = new Pose(102, 83.463, Math.toRadians(0));
-    Pose pickPPGend   = new Pose(130, 35.3438, Math.toRadians(0));
+    Pose pickPPGend   = new Pose(128, 83.463, Math.toRadians(0));
 
     Pose pickPGPstart = new Pose(102, 60, Math.toRadians(0));
     Pose pickPGPend   = new Pose(130, 60, Math.toRadians(0));

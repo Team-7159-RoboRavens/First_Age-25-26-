@@ -47,7 +47,7 @@ public class WukAutoBlue extends OpMode {
     Pose pickPGPstart = new Pose(41.64277, 60, Math.toRadians(180));
     Pose pickPGPend   = new Pose(13.5, 60, Math.toRadians(180));
 
-    Pose gateClear   = new Pose(13, 62, Math.toRadians(270));
+    Pose gateClear   = new Pose(13.5, 62, Math.toRadians(270));
     Pose loadingZone = new Pose(12, 11, Math.toRadians(180));
     Pose parkPose    = new Pose(52, 27, Math.toRadians(180));
 

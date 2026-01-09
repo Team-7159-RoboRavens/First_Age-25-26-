@@ -97,11 +97,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
 //                robot.Servo3.setPower(0);
-                robot.Servo2.setPosition(.2);
+                robot.Servo2.setPosition(.5);
             }
             stage = 1;
             if (timeSince + 4200 < System.currentTimeMillis() && timeSince + 6000 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.2);
+                robot.Servo2.setPosition(.5);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
                 robot.Servo1.setPower(-.8);
@@ -138,7 +138,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             robot.ShootMotor.setPower(0);
             stage = 0;
 //            robot.Servo3.setPower(0);
-            robot.Servo2.setPosition(.2);
+            robot.Servo2.setPosition(.5);
             robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 

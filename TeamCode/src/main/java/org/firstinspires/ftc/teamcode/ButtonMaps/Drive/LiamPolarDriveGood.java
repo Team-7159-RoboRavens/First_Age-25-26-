@@ -60,25 +60,25 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         }
 
 
-        if (opMode.gamepad2.x) {
-            if (Math.abs(limelightData.aprilXDegrees / 400) < aimingThreshold && limelightData.accurate) {
+        if (opMode.gamepad2.x){
+            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
                 mp = new MotorPowers(0, 0, 0, 0);
                 robot.setMotorPowers(mp);
             }
-            else if ((Math.abs(limelightData.aprilXDegrees / 400) >= aimingThreshold) && limelightData.accurate) {
+            else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
 //                mp.leftFront += (limelightData.aprilXDegrees)/ 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
 //                mp.leftBack += (limelightData.aprilXDegrees) / 3.08  * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
 //                mp.rightFront -= (limelightData.aprilXDegrees) / 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
 //                mp.rightBack -= (limelightData.aprilXDegrees)/ 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-                mp.leftFront += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.leftBack += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightFront -= limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightBack -= limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftFront -= limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftBack -= limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.rightFront += limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.rightBack += limelightData.aprilXDegrees / 20 * aimingPower;
                 limelightData.aiming = false;
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
             }

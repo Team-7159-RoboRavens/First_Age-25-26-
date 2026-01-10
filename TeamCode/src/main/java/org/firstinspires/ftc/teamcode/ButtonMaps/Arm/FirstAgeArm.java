@@ -17,7 +17,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 2000;
+    private double timeBuffer = 800;
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;
@@ -67,7 +67,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             opMode.telemetry.addLine("Servos forward");
         }
         else if (opMode.gamepad2.b) {
-            robot.Servo1.setPower(.8);
+            robot.Servo1.setPower(1);
             opMode.telemetry.addLine("Servos Back");
         }
         else {
@@ -100,11 +100,11 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
                 robot.Servo2.setPosition(.5);
             }
             stage = 1;
-            if (timeSince + 4200 < System.currentTimeMillis() && timeSince + 6000 > System.currentTimeMillis()) {
+            if (timeSince + 3000 < System.currentTimeMillis() && timeSince + 3500 > System.currentTimeMillis()) {
                 robot.Servo2.setPosition(.5);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-.8);
+                robot.Servo1.setPower(-0.85);
 //                robot.Servo3.setPower(.5);
                 robot.Servo2.setPosition(-.3);
                 opMode.telemetry.addLine("Servos");

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 
@@ -23,6 +24,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     public static double nonLinearPower = 1.0028;
     public static double shootVel;
     public static double targetVel;
+    static double joystickDeadZone = .1;
+
+
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
@@ -49,37 +53,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 limelightData.aiming = false;
             }
         }
-//        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
-//            robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
-//            robot.Servo2.setPower(-opMode.gamepad2.left_stick_y);
-//            opMode.telemetry.addData("Servos Going", opMode.gamepad2.left_stick_y);
-//        }
-//        else{
-//            robot.Servo1.setPower(0);
-//            robot.Servo2.setPower(0);
-//        }
-
-        if (opMode.gamepad2.a) {
-//            robot.intakeMotor.setPower(.8);
-        }
-        else {
-//            robot.intakeMotor.setPower(0);
-        }
-        if (opMode.gamepad2.b) {
-//            robot.Servo1.setPosition(.8);
-            opMode.telemetry.addLine("Servos Back");
-        }
-        else if (opMode.gamepad2.x) {
-//            robot.Servo1.setPosition(-.8);
-            opMode.telemetry.addLine("Servos  x ");
-//            robot.Servo1.setPower(0);
-        }
-
-//        if (opMode.gamepad2.y) {
-//            robot.Servo2.setPosition(.4);
-//            opMode.telemetry.addLine("Servos forward");
-//        }
-
 
             if (opMode.gamepad2.dpad_down) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -101,31 +74,19 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 }
             } else if (opMode.gamepad2.dpad_up) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
-//            if (stage == 0) {
-//                timeSince = System.currentTimeMillis();
-//                robot.Servo3.setPower(0);
-//                robot.Servo2.setPosition(.7);
-//            }
-//            stage = 1;
-//            if (timeSince + 4600 < System.currentTimeMillis() && timeSince + 6500 > System.currentTimeMillis()) {
-//                robot.Servo2.setPosition(.7);
-//                robot.Servo1.setPower(-.1);
-//            }
-//            else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-//                robot.Servo1.setPower(-.8);
-//                robot.Servo3.setPower(.5);
-//                robot.Servo2.setPosition(.4);
-//                opMode.telemetry.addLine("Servos");
-//            }
                 opMode.telemetry.addLine("Shoot limelight");
-                //This is meant to shoot according to the distance to the april tag if the limelight is accurate
-                //All of these variables are yet to be tested and should be iterated on
+                //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
-                if (limelightData.accurate)
-                    robot.ShootMotor.setVelocity(targetVel);
-                if (!limelightData.accurate)
+                if (limelightData.accurate) {
+                    robot.ShootMotor.setPower((targetVel - shootVel) / 137);
+                    opMode.telemetry.addLine("Limelight passes in data");
+                }
+                else if (!limelightData.accurate) {
                     opMode.telemetry.addLine("Shoot far");
+                    opMode.telemetry.addLine("Limelight not working");
+                    ShootingFunctions.setVelocityReworked(1590
+                            , shootVel, robot.ShootMotor,-1);
+                }
 
             } else {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -135,19 +96,29 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 //            robot.Servo2.setPosition(.7);
             }
 
-
-            //Aim manually with the left joystick
-            if (Math.abs(opMode.gamepad2.left_stick_y) > 0.2 || Math.abs(opMode.gamepad2.left_stick_x) > 0.2) {
-                //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_x, robot.aimServo);
-                //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_y, robot.angleServo);
-                opMode.telemetry.addLine("Aiming manually, x/y: " + opMode.gamepad2.left_stick_x + opMode.gamepad2.left_stick_y);
+            //Intake Motors code
+            if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
+                robot.intakeMotor1.setPower(.7);
+                robot.intakeMotor2.setPower(.6);
             }
-
-
-
-
+            else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
+                robot.intakeMotor1.setPower(.7);
+                robot.intakeMotor2.setPower(0);
+            }
+            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
+                robot.intakeMotor1.setPower(-.7);
+                robot.intakeMotor2.setPower(-.6);
+            }
+            //When you don't want the first intake to move and just want to move artifacts to the launcher
+            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
+                robot.intakeMotor1.setPower(0);
+                robot.intakeMotor2.setPower(.6);
+            }
+            else {
+                robot.intakeMotor1.setPower(0);
+                robot.intakeMotor2.setPower(0);
+            }
     }
-
     public static double velocityShot(double x) {
         return (2.07096 * Math.pow(10, -16) * 0.97 * Math.pow(x, 2) + 9.28571 * x + 481.14286);
     }

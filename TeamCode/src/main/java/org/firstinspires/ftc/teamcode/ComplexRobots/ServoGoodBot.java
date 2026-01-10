@@ -28,6 +28,8 @@ public class ServoGoodBot extends MecanumDrive {
     }
     OpMode opMode;
         public final DcMotorEx ShootMotor;
+        public final DcMotorEx intakeMotor1;
+        public final DcMotorEx intakeMotor2;
     //    public final DcMotorEx ShootMotor2;
 //        public final CRServo Servo1;
 //        public final Servo Servo1;
@@ -75,6 +77,12 @@ public class ServoGoodBot extends MecanumDrive {
         ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
+        intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
+        intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
+        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 

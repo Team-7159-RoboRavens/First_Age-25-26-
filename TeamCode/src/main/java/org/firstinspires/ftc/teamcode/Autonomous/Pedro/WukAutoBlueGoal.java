@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "WukAutoRedGoal")
-public class WukAutoRedGoal extends OpMode {
+@Autonomous(name = "WukAutoBlueGoal")
+public class WukAutoBlueGoal extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
@@ -202,7 +202,7 @@ public class WukAutoRedGoal extends OpMode {
             break;
         case SHOOT_3:
             if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_LOAD);
+                setState(AutoState.PARK);
             break;
         case PARK:
             if (!follower.isBusy())

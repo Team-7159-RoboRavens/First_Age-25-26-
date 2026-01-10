@@ -202,7 +202,7 @@ public class WukAutoRedGoal extends OpMode {
             break;
         case SHOOT_3:
             if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_LOAD);
+                setState(AutoState.PARK);
             break;
         case PARK:
             if (!follower.isBusy())

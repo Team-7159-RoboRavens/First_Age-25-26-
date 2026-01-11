@@ -79,49 +79,56 @@ public class GoodArmNoWheels extends NoWheelsAbstractButtonMap {
                 //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
                 if (limelightData.accurate) {
-                    robot.intakeMotor1.setPower(.7);
-                    robot.intakeMotor2.setPower(.6);
+                    robot.intakeMotor1.setPower(1);
+                    robot.intakeMotor2.setPower(.8);
                     robot.ShootMotor.setPower((targetVel - shootVel) / 137);
                     opMode.telemetry.addLine("Limelight passes in data");
                 }
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.intakeMotor1.setPower(.7);
-                    robot.intakeMotor2.setPower(.6);
+                    robot.intakeMotor1.setPower(1);
+                    robot.intakeMotor2.setPower(.8);
                     robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
                 }
 
             } else {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.ShootMotor.setPower(0);
+                robot.intakeMotor1.setPower(0);
+                robot.intakeMotor2.setPower(0);
                 stage = 0;
 //            robot.Servo3.setPower(0);
 //            robot.Servo2.setPosition(.7);
             }
 
             //Intake Motors code
-            if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(.7);
-                robot.intakeMotor2.setPower(.6);
-            }
-            else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(.7);
+//            if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
+//                robot.intakeMotor1.setPower(.7);
+//                robot.intakeMotor2.setPower(.4);
+//            }
+             if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
+                robot.intakeMotor1.setPower(1);
                 robot.intakeMotor2.setPower(0);
-            }
-            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(-.7);
-                robot.intakeMotor2.setPower(-.6);
-            }
-            //When you don't want the first intake to move and just want to move artifacts to the launcher
-            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(.6);
-            }
-            else {
-                robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(0);
-            }
+             }
+
+             if (opMode.gamepad2.b) {
+                 robot.intakeMotor1.setPower(1);
+                 robot.intakeMotor2.setPower(.8);
+             }
+//            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
+//                robot.intakeMotor1.setPower(-.7);
+//                robot.intakeMotor2.setPower(-.4);
+//            }
+//            //When you don't want the first intake to move and just want to move artifacts to the launcher
+//            else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
+//                robot.intakeMotor1.setPower(0);
+//                robot.intakeMotor2.setPower(.4);
+//            }
+//            else {
+//                robot.intakeMotor1.setPower(0);
+//                robot.intakeMotor2.setPower(0);
+//            }
     }
     public static double velocityShot(double x) {
         return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 550.14286);

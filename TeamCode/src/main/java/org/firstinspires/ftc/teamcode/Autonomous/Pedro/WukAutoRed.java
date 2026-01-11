@@ -7,11 +7,18 @@ import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoRed")
 public class WukAutoRed extends OpMode {
+    public DcMotorEx ShootMotor;
+    public DcMotorEx intakeMotor1;
+    public DcMotorEx intakeMotor2;
 
     private Follower follower;
     private Timer stateTimer;
@@ -202,8 +209,13 @@ public class WukAutoRed extends OpMode {
                 setState(AutoState.SHOOT_2);
             break;
         case SHOOT_2:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_PICKUP_PGP);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.SHOOT_TO_PICKUP_PGP);
             break;
         case SHOOT_TO_PICKUP_PGP:
             if (!follower.isBusy())
@@ -218,16 +230,26 @@ public class WukAutoRed extends OpMode {
                 setState(AutoState.GATE_CLEAR);
             break;
         case GATE_CLEAR:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.GATE_TO_SHOOT);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.GATE_TO_SHOOT);
             break;
         case GATE_TO_SHOOT:
             if (!follower.isBusy())
                 setState(AutoState.SHOOT_3);
             break;
         case SHOOT_3:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_LOAD);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.SHOOT_TO_LOAD);
             break;
         case SHOOT_TO_LOAD:
             if (!follower.isBusy())
@@ -238,8 +260,13 @@ public class WukAutoRed extends OpMode {
                 setState(AutoState.SHOOT_4);
             break;
         case SHOOT_4:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.PARK);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.PARK);
             break;
         case PARK:
             if (!follower.isBusy())
@@ -253,6 +280,27 @@ public class WukAutoRed extends OpMode {
 
     @Override
     public void init() {
+        ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
+        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        ShootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        // Reset the motor encoder so that it reads zero ticks
+        ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
+        intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
+        intakeMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
+        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         follower = Constants.createFollower(hardwareMap);
         stateTimer = new Timer();
         buildPaths();

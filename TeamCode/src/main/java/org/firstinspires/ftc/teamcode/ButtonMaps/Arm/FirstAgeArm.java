@@ -154,6 +154,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     }
 
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 550.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.71571 * x + 555.14286);
     }
 }

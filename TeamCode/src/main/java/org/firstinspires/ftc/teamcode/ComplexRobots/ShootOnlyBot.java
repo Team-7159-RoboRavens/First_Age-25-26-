@@ -66,7 +66,7 @@ public class ShootOnlyBot extends MecanumDriveNoMotors {
         //Initialize Motors
         ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
         ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        ShootMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        ShootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 //        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -79,10 +79,12 @@ public class ShootOnlyBot extends MecanumDriveNoMotors {
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
+        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -175,7 +177,7 @@ public class ShootOnlyBot extends MecanumDriveNoMotors {
                             double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 1;
+                            double limelightMountAngleDegrees = 6.5;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

@@ -89,23 +89,21 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
             else {
                 opMode.telemetry.addLine("Shoot Short");
-                ShootingFunctions.setVelocityReworked(-700, shootVel ,robot.ShootMotor,-1);
+                robot.ShootMotor.setPower((1300 - shootVel) / 137);
             }
         }
         else if (opMode.gamepad2.dpad_up) {
             robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
-//                robot.Servo3.setPower(0);
-                robot.Servo2.setPosition(.5);
+                robot.Servo2.setPosition(.4);
             }
             stage = 1;
             if (timeSince + 3000 < System.currentTimeMillis() && timeSince + 3500 > System.currentTimeMillis()) {
-                robot.Servo2.setPosition(.5);
+                robot.Servo2.setPosition(.4);
             }
             else if (timeSince + timeBuffer < System.currentTimeMillis()) {
-                robot.Servo1.setPower(-0.85);
-//                robot.Servo3.setPower(.5);
+                robot.Servo1.setPower(-0.93);
                 robot.Servo2.setPosition(-.3);
                 opMode.telemetry.addLine("Servos");
             }
@@ -119,8 +117,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             else if (!limelightData.accurate) {
                 opMode.telemetry.addLine("Shoot far");
                 opMode.telemetry.addLine("Limelight not working");
-                ShootingFunctions.setVelocityReworked(1590
-                        , shootVel, robot.ShootMotor,-1);
+                robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
             }
         }
         else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -131,14 +128,14 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             }
             else {
                 opMode.telemetry.addLine("Shoot medium");
-                robot.ShootMotor.setVelocity(-700);
+                robot.ShootMotor.setVelocity(-1400);
             }
         }
         else {
             robot.ShootMotor.setPower(0);
             stage = 0;
 //            robot.Servo3.setPower(0);
-            robot.Servo2.setPosition(.5);
+            robot.Servo2.setPosition(.4);
             robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 

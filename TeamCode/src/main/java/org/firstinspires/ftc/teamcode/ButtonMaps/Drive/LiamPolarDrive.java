@@ -26,7 +26,7 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .15;
 static double joystickLinearity = 3;
 
-static double aimingPower = 1.6;
+static double aimingPower = 1.4;
 static double aimingThreshold = .06;
 static private boolean motorBrake = true;
 

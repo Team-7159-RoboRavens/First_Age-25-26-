@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.MecanumDriveNoMotors;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 //This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
 
 @Config
-public class ServoGoodBot extends MecanumDrive {
+public class ShootOnlyBot extends MecanumDriveNoMotors {
     enum Direction {
         UP,DOWN
     }
@@ -39,8 +40,7 @@ public class ServoGoodBot extends MecanumDrive {
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
-        super(hardwareMap, pose);
+    public ShootOnlyBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
@@ -162,20 +162,20 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees()));
                             opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 5;
+                            double limelightMountAngleDegrees = 1;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

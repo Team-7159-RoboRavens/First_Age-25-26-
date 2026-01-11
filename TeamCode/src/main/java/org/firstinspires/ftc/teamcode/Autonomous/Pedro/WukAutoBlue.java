@@ -186,7 +186,7 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_1);
             break;
         case SHOOT_1:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
+            if (stateTimer.getElapsedTimeSeconds()  > 3.0)
                 setState(AutoState.SHOOT_TO_PICKUP_PPG);
             break;
         case SHOOT_TO_PICKUP_PPG:

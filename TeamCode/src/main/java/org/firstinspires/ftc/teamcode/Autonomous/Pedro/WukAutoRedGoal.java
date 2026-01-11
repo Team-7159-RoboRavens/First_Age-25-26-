@@ -219,7 +219,7 @@ public class WukAutoRedGoal extends OpMode {
         follower = Constants.createFollower(hardwareMap);
         stateTimer = new Timer();
         buildPaths();
-        follower.setPose(startPose);
+        follower.setStartingPose(startPose);
         setState(AutoState.START_TO_SHOOT);
     }
 

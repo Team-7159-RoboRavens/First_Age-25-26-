@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
+import org.firstinspires.ftc.teamcode.ButtonMaps.NoWheelsAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
-import org.firstinspires.ftc.teamcode.ShootingFunctions;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ShootOnlyBot;
 import org.firstinspires.ftc.teamcode.limelightData;
-import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 
-public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
+public class GoodArmNoWheels extends NoWheelsAbstractButtonMap {
     //TODO: Change back to private final when done with dash
     private MotorPowers mp;// = new MotorPowers(0);
     private double servoPosition;
@@ -29,7 +30,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 
 
     @Override
-    public void loop(ServoGoodBot robot, OpMode opMode) {
+    public void loop(ShootOnlyBot robot, OpMode opMode) {
 
 //        if (opMode.gamepad2.options) {
 //            robot.intakeMotor.setPower(.8);

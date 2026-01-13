@@ -1,16 +1,28 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 
 public class PIDControl {
-    public static double p = 0;
-    public static double proportional = 0;
-    public static double integral = 0;
-    public static double derivative = 0;
-    public static double dt = 0.02;
-    public static double prevErr;
-    public double integral(double err) {
-        integral += err*dt;
+    private double kp;
+    private double ki;
+    private double kd;
+    private double prevErr;
+    private double err;
+    private double dt;
+    private double integral;
+    public PIDControl(double p, double i, double d, double initialErr) {
+        kp = p;
+        ki = i;
+        kd = d;
+        prevErr = initialErr;
+        err = initialErr;
+        dt = 0.05;
+        integral = 0;
     }
-    public double proportional(double err) {
-
+    public double output() {
+        return kp * err + ki * integral + kd * (err-prevErr)/dt;
+    }
+    public void update(double newErr) {
+        prevErr = err;
+        err = newErr;
+        integral += err * dt;
     }
 }

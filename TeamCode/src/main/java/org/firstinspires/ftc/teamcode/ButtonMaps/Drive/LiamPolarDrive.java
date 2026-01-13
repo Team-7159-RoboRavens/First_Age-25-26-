@@ -32,6 +32,8 @@ static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
+static PIDControl pid = new PIDControl(aimingPower, 0.1, 0.1, 90); // tune later
+
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
 
@@ -75,10 +77,10 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
 //                mp.leftBack += (limelightData.aprilXDegrees) / 3.08  * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
 //                mp.rightFront -= (limelightData.aprilXDegrees) / 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
 //                mp.rightBack -= (limelightData.aprilXDegrees)/ 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-                mp.leftFront -= limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.leftBack -= limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightFront += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightBack += limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftFront -= pid.output();
+                mp.leftBack -= pid.output();
+                mp.rightFront += pid.output();
+                mp.rightBack += pid.output();
                 limelightData.aiming = false;
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
             }
@@ -102,6 +104,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         robot.setMotorPowers(mp);
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         opMode.telemetry.addLine("angle: "+robotHeading + limelightData.ImuOffset);
+        pid.update(limelightData.aprilXDegrees);
     }
 
 

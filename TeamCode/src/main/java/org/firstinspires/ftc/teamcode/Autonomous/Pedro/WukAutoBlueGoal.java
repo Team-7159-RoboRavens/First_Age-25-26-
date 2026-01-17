@@ -111,6 +111,7 @@ public class WukAutoBlueGoal extends OpMode {
         switch (newState) {
             case START_TO_SHOOT:
                 follower.followPath(startToShoot, true);
+
                 break;
             case SHOOT_1:
                 // shooting code
@@ -221,11 +222,13 @@ public class WukAutoBlueGoal extends OpMode {
         buildPaths();
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
+
     }
 
     @Override
     public void loop() {
         follower.update();
         updateStateMachine();
+
     }
 }

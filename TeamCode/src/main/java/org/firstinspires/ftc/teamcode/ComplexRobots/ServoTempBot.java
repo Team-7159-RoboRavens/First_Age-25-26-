@@ -152,7 +152,7 @@ public class ServoTempBot extends MecanumDrive {
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
                             opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
-                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("\"X: \"", limelightData.aprilXDegrees);
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
                             limelightData.fieldPosOfTag = lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + limelightData.aprilXDegrees;
 
@@ -179,7 +179,7 @@ public class ServoTempBot extends MecanumDrive {
                             opMode.telemetry.addData("Accuracy ", limelightData.accurate);
                         } else {
                             opMode.telemetry.addLine("Not found tag");
-//                            limelightData.accurate = false;
+                            limelightData.accurate = false;
                         }
                         if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
                             limelightData.pattern = fr.getFiducialId();

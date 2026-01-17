@@ -32,7 +32,7 @@ static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-public static PIDControl pid = new PIDControl(aimingPower, 0.1, 0.1, 90); // tune later
+public static PIDControl pid = new PIDControl(0.02, 0, 0); // tune later
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -61,16 +61,17 @@ public static PIDControl pid = new PIDControl(aimingPower, 0.1, 0.1, 90); // tun
             limelightData.ImuOffset = 0;
         }
 
+        pid.update(limelightData.aprilXDegrees);
 
         if (opMode.gamepad2.x){
-            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                limelightData.aiming = false;
-                opMode.telemetry.addLine("Aimed");
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                mp = new MotorPowers(0, 0, 0, 0);
-                robot.setMotorPowers(mp);
-            }
-            else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+//            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+//                limelightData.aiming = false;
+//                opMode.telemetry.addLine("Aimed");
+//                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+//                mp = new MotorPowers(0, 0, 0, 0);
+//                robot.setMotorPowers(mp);
+//            }
+            if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
 
@@ -78,6 +79,7 @@ public static PIDControl pid = new PIDControl(aimingPower, 0.1, 0.1, 90); // tun
                 mp.leftBack -= pid.output();
                 mp.rightFront += pid.output();
                 mp.rightBack += pid.output();
+                opMode.telemetry.addData("turning value", pid.output());
                 limelightData.aiming = false;
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
             }
@@ -101,7 +103,6 @@ public static PIDControl pid = new PIDControl(aimingPower, 0.1, 0.1, 90); // tun
         robot.setMotorPowers(mp);
         double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + limelightData.ImuOffset;
         opMode.telemetry.addLine("angle: "+robotHeading + limelightData.ImuOffset);
-        pid.update(limelightData.aprilXDegrees);
     }
 
 

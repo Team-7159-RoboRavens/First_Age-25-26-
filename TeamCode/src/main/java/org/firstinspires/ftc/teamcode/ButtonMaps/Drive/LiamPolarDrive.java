@@ -64,14 +64,58 @@ public static PIDControl pid = new PIDControl(0.02, 0, 0); // tune later
         pid.update(limelightData.aprilXDegrees);
 
         if (opMode.gamepad2.x){
-//            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-//                limelightData.aiming = false;
-//                opMode.telemetry.addLine("Aimed");
-//                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-//                mp = new MotorPowers(0, 0, 0, 0);
-//                robot.setMotorPowers(mp);
-//            }
-            if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+                limelightData.aiming = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                opMode.telemetry.addLine("Aimed");
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                mp = new MotorPowers(0, 0, 0, 0);
+                robot.setMotorPowers(mp);
+            }
+            else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
 

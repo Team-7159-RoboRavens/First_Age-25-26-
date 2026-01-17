@@ -199,14 +199,16 @@ public class ServoTempBot extends MecanumDrive {
 //                    }
 //                    if (colorResult.getTargetXPixels() > 120)
 //                        telemetry.addData("Largest Yellow Object", String.valueOf(colorResult.getTargetXDegrees()), String.valueOf(colorResult.getTargetYDegrees()));
-                }
+                } else {
+                limelightData.accurate = false;
+            }
             } else {
                 opMode.telemetry.addData("Limelight", "No data available");
                 //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
                 limelightData.accurate = false;
             }
 //            opMode.telemetry.update();
-    }
+        }
 
 
     public void setServosTo(double min, double max, double value, Servo servo) {

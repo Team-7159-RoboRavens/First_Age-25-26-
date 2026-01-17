@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ftc.LazyImu;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -35,6 +37,7 @@ public class ServoGoodBot extends MecanumDrive {
 //        public final Servo Servo1;
 //        public final CRServo Servo3;
 //        public final DcMotorEx intakeMotor;
+
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
@@ -85,6 +88,17 @@ public class ServoGoodBot extends MecanumDrive {
         intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //Set Imu
+
+        if (!limelightData.hasImu) {
+            lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
+                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+        }
+        else {
+            lazyImu = limelightData.imu;
+        }
+        limelightData.setIMU(lazyImu);
 
 
 

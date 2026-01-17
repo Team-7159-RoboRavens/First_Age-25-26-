@@ -32,7 +32,7 @@ static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-public static PIDControl pid = new PIDControl(0.02, 0, 0); // tune later
+public static PIDControl pid = new PIDControl(0.04, 0, 0); // tune later
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -66,66 +66,21 @@ public static PIDControl pid = new PIDControl(0.02, 0, 0); // tune later
         if (opMode.gamepad2.x){
             if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
                 limelightData.aiming = false;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 opMode.telemetry.addLine("Aimed");
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
                 mp = new MotorPowers(0, 0, 0, 0);
                 robot.setMotorPowers(mp);
             }
             else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-
                 mp.leftFront -= pid.output();
                 mp.leftBack -= pid.output();
                 mp.rightFront += pid.output();
                 mp.rightBack += pid.output();
                 opMode.telemetry.addData("turning value", pid.output());
                 limelightData.aiming = false;
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
 
             mp = new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack);

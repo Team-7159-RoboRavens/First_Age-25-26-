@@ -15,7 +15,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 3000;
+    private double timeBuffer = 800;
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;
@@ -53,6 +53,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
             if (opMode.gamepad2.dpad_down) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
                 if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                     opMode.telemetry.addLine("Shoot medium-short");
                     robot.ShootMotor.setPower(baseShotPower * 1.45);
@@ -62,23 +63,31 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 }
             } else if (opMode.gamepad2.dpad_up) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                opMode.telemetry.addLine("Shoot limelight");
-                //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
-                //A PIDFF controller may want to be implemented.
-                if (limelightData.accurate) {
+                if (stage == 0) {
+                    timeSince = System.currentTimeMillis();
+                }
+                stage = 1;
+                if (timeSince + timeBuffer < System.currentTimeMillis()) {
+                    opMode.telemetry.addLine("No Balls");
+                }
+                else if (limelightData.accurate) {
                     robot.intakeMotor1.setPower(1);
-                    robot.intakeMotor2.setPower(.7);
+                    robot.intakeMotor2.setPower(.6);
                     robot.ShootMotor.setPower((targetVel - shootVel) / 137);
-                    opMode.telemetry.addLine("Limelight passes in data");
+                    opMode.telemetry.addLine("Limelight passes in shot");
                 }
                 //This allows you to shoot the ball far even if the limelight disconnects or misses the tag.
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
                     robot.intakeMotor1.setPower(1);
-                    robot.intakeMotor2.setPower(.7);
+                    robot.intakeMotor2.setPower(.6);
                     robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
                 }
+                opMode.telemetry.addLine("Shoot limelight");
+                //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
+                //A PIDFF controller may want to be implemented.
+
                 //These are just modes for testing launcher power.
             } else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -104,7 +113,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             //Intake balls without feeding them into the launcher.
             else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
                 robot.intakeMotor1.setPower(1);
-                robot.intakeMotor2.setPower(0);
             }
             //This is for clearing the launcher if something is stuck.
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -119,7 +127,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             //Run both motors without having to turn on the shooting motor.
             if (opMode.gamepad2.b) {
             robot.intakeMotor1.setPower(1);
-            robot.intakeMotor2.setPower(.8);
             }
             //The end case where none of the relevent buttons are pressed so the motors don't just keep spinning.
             else if (Math.abs(opMode.gamepad2.left_stick_y) < joystickDeadZone && !opMode.gamepad2.dpad_up) {

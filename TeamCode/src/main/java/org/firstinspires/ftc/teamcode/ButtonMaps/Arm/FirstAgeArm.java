@@ -146,14 +146,10 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
             //                robot.setServosTo(-1, 1, opMode.gamepad2.left_stick_y, robot.angleServo);
             opMode.telemetry.addLine("Aiming manually, x/y: " + opMode.gamepad2.left_stick_x + opMode.gamepad2.left_stick_y);
         }
-
-
-
-
-
+        
     }
 
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.71571 * x + 555.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 8.11571 * x + 555.14286);
     }
 }

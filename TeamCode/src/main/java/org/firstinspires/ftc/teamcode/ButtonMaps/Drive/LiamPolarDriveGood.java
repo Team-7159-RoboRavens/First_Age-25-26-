@@ -27,12 +27,13 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
-static double aimingThreshold = .045;
+static double aimingThreshold = .06;
 
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
+    public static PIDControl pid = new PIDControl(0.03, 0, 0);
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
@@ -60,23 +61,25 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             robot.lazyImu.get().resetYaw();
         }
 
+        pid.update(limelightData.aprilXDegrees);
 
         if (opMode.gamepad2.x){
             if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
                 mp = new MotorPowers(0, 0, 0, 0);
                 robot.setMotorPowers(mp);
             }
             else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
-                mp.leftFront -= pid.output();
-                mp.leftBack -= pid.output();
-                mp.rightFront += pid.output();
-                mp.rightBack += pid.output();
+                mp.leftFront += pid.output();
+                mp.leftBack += pid.output();
+                mp.rightFront -= pid.output();
+                mp.rightBack -= pid.output();
                 limelightData.aiming = false;
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("turning value", pid.output());
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
         }
 

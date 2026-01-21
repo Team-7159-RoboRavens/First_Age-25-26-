@@ -12,10 +12,13 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     //TODO: Change back to private final when done with dash
     private MotorPowers mp;// = new MotorPowers(0);
-    private double servoPosition;
+    private double servoPosition = 1;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 800;
+    private double timeBuffer = 2000;
+    private double timeBuffer2 = 500;
+    private double timeSince2;
+
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;
@@ -32,6 +35,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     public void loop(ServoGoodBot robot, OpMode opMode) {
 
         //These coefficients are used in the shooting code later.
+        timeSince2 = opMode.getRuntime();
         shootVel = robot.ShootMotor.getVelocity();
         opMode.telemetry.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
@@ -67,12 +71,19 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     timeSince = System.currentTimeMillis();
                 }
                 stage = 1;
-                if (timeSince + timeBuffer < System.currentTimeMillis()) {
+                if (timeSince + timeBuffer > System.currentTimeMillis()) {
                     opMode.telemetry.addLine("No Balls");
                 }
-                else if (limelightData.accurate) {
-                    robot.intakeMotor1.setPower(1);
+                else {
+                    robot.intakeMotor1.setPower(-1);
                     robot.intakeMotor2.setPower(.6);
+                    if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
+                        timeSince2 = System.currentTimeMillis();
+                        robot.Servo1.setPosition(servoPosition);
+                        servoPosition *= -1;
+                    }
+                }
+                if (limelightData.accurate) {
                     robot.ShootMotor.setPower((targetVel - shootVel) / 137);
                     opMode.telemetry.addLine("Limelight passes in shot");
                 }
@@ -80,8 +91,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.intakeMotor1.setPower(1);
-                    robot.intakeMotor2.setPower(.6);
                     robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
                 }
                 opMode.telemetry.addLine("Shoot limelight");
@@ -107,26 +116,26 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 
             //Intake balls and shoot them into the launcher.
             if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(1);
-                robot.intakeMotor2.setPower(.6);
+                robot.intakeMotor1.setPower(1*opMode.gamepad2.left_stick_y);
+                robot.intakeMotor2.setPower(1*opMode.gamepad2.left_stick_y);
             }
             //Intake balls without feeding them into the launcher.
             else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(1);
+                robot.intakeMotor1.setPower(opMode.gamepad2.left_stick_y);
             }
             //This is for clearing the launcher if something is stuck.
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(-1);
-                robot.intakeMotor2.setPower(-.6);
+                robot.intakeMotor1.setPower(1*opMode.gamepad2.left_stick_y);
+                robot.intakeMotor2.setPower(1*opMode.gamepad2.left_stick_y);
             }
             //When you don't want the first intake to move and just want to move artifacts to the launcher
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
                 robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(.6);
+                robot.intakeMotor2.setPower(1 * opMode.gamepad2.left_stick_y);
             }
             //Run both motors without having to turn on the shooting motor.
             if (opMode.gamepad2.b) {
-            robot.intakeMotor1.setPower(1);
+            robot.intakeMotor2.setPower(1);
             }
             //The end case where none of the relevent buttons are pressed so the motors don't just keep spinning.
             else if (Math.abs(opMode.gamepad2.left_stick_y) < joystickDeadZone && !opMode.gamepad2.dpad_up) {

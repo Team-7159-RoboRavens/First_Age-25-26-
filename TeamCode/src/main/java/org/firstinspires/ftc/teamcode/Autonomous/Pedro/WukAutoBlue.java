@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
@@ -152,10 +153,10 @@ public class WukAutoBlue extends OpMode {
                         limelightData.aiming = true;
                         telemetry.addLine("Aiming");
 
-                        robot.leftFront.setPower(-LiamPolarDrive.pid.output());
-                        robot.leftBack.setPower(-LiamPolarDrive.pid.output());
-                        robot.rightFront.setPower(LiamPolarDrive.pid.output());
-                        robot.rightBack.setPower(LiamPolarDrive.pid.output());
+                        robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                        robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                        robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                        robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
                         limelightData.aiming = false;
                         telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
                     }
@@ -183,10 +184,10 @@ public class WukAutoBlue extends OpMode {
                     limelightData.aiming = true;
                     telemetry.addLine("Aiming");
 
-                    robot.leftFront.setPower(-LiamPolarDrive.pid.output());
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
                     robot.leftBack.setPower(-LiamPolarDrive.pid.output());
-                    robot.rightFront.setPower(LiamPolarDrive.pid.output());
-                    robot.rightBack.setPower(LiamPolarDrive.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
                     limelightData.aiming = false;
                     telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
                 }
@@ -219,10 +220,10 @@ public class WukAutoBlue extends OpMode {
                     limelightData.aiming = true;
                     telemetry.addLine("Aiming");
 
-                    robot.leftFront.setPower(-LiamPolarDrive.pid.output());
-                    robot.leftBack.setPower(-LiamPolarDrive.pid.output());
-                    robot.rightFront.setPower(LiamPolarDrive.pid.output());
-                    robot.rightBack.setPower(LiamPolarDrive.pid.output());
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
                     limelightData.aiming = false;
                     telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
                 }
@@ -246,10 +247,10 @@ public class WukAutoBlue extends OpMode {
                     limelightData.aiming = true;
                     telemetry.addLine("Aiming");
 
-                    robot.leftFront.setPower(-LiamPolarDrive.pid.output());
-                    robot.leftBack.setPower(-LiamPolarDrive.pid.output());
-                    robot.rightFront.setPower(LiamPolarDrive.pid.output());
-                    robot.rightBack.setPower(LiamPolarDrive.pid.output());
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
                     limelightData.aiming = false;
                     telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
                 }

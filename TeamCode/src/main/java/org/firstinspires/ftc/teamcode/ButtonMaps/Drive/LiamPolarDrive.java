@@ -86,7 +86,7 @@ public static PIDControl pid = new PIDControl(0.04, 0, 0); // tune later
             mp = new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack);
             robot.setMotorPowers(mp);
 //            else {
-//                opMode.telemetry.addLine("Testrun Large Aim " + limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset));
+//                opMode.telemetry.addLine("Testrun LargopMode.gamepad2.left_stick_ye Aim " + limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset));
 //                limelightData.aiming = false;
 //                GoalTimedBlue.aim(limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset), 100, .5, robot, opMode.telemetry);
 //            }

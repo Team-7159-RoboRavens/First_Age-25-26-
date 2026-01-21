@@ -9,10 +9,12 @@ import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -33,7 +35,7 @@ public class ServoGoodBot extends MecanumDrive {
         public final DcMotorEx intakeMotor1;
         public final DcMotorEx intakeMotor2;
     //    public final DcMotorEx ShootMotor2;
-//        public final CRServo Servo1;
+        public final Servo Servo1;
 //        public final Servo Servo1;
 //        public final CRServo Servo3;
 //        public final DcMotorEx intakeMotor;
@@ -60,7 +62,7 @@ public class ServoGoodBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-//        Servo1 = hardwareMap.get(CRServo.class, "servo1");
+        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
@@ -81,12 +83,12 @@ public class ServoGoodBot extends MecanumDrive {
 //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
-        intakeMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
         intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Set Imu

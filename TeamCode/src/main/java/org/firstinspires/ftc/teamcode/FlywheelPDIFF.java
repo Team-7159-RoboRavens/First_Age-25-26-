@@ -38,15 +38,9 @@ public class FlywheelPDIFF extends OpMode {
 
     @Override
     public void loop() {
+        curTargetVelocity = limelightData.distance;
         //Normal opmode code
 
-        if (gamepad2.yWasPressed()) {
-            if (curTargetVelocity == highVelocity) {
-                curTargetVelocity = lowVelocity;
-            } else {
-                curTargetVelocity = highVelocity;
-            }
-        }
 
         if (gamepad2.bWasPressed()) {
             stepIndex = (stepIndex + 1) % stepSizes.length;
@@ -81,6 +75,7 @@ public class FlywheelPDIFF extends OpMode {
         telemetry.addData("F", F);
         telemetry.addData("P", P);
         telemetry.addData("Current Velocity", curVelocity);
+        telemetry.addData("Step Size", stepSizes[stepIndex]);
         telemetry.addData("Target Velocity", curTargetVelocity);
         telemetry.addData("Error", error);
         telemetry.addLine("-------------------------------------");

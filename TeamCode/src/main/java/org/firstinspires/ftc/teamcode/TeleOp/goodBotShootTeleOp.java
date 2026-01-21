@@ -10,23 +10,27 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.motorDirectionDebugger;
 import org.firstinspires.ftc.teamcode.ButtonMaps.NoWheelsAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.WheelTestAbstractButtonMap;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ShootOnlyBot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.WheelTestBot;
+import org.firstinspires.ftc.teamcode.FlywheelPDIFF;
 
-@TeleOp(name="ShootGoodBot")
+@TeleOp(name="PIDFF Bot")
 public class goodBotShootTeleOp extends OpMode {
     //Global Variables
-    ShootOnlyBot robot;
+    ServoGoodBot robot;
 
     //Button Maps
-    NoWheelsAbstractButtonMap driveButtonMap;
+    ServoAbstractButtonMapGood driveButtonMap;
+    FlywheelPDIFF armButtonMap;
 
     @Override
     public void init() {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
-        robot = new ShootOnlyBot(hardwareMap, new Pose2d(0,0,0), this);
-        driveButtonMap = new GoodArmNoWheels();
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        driveButtonMap = new FirstAgeGoodArm();
+        armButtonMap = new FlywheelPDIFF();
         telemetry.addLine("Ready.");
         telemetry.update();
     }
@@ -34,7 +38,8 @@ public class goodBotShootTeleOp extends OpMode {
     @Override
     public void loop() {
         driveButtonMap.loop(robot, this);
-        robot.runLimelight(20);
+        armButtonMap.loop();
+        robot.runLimelight(25);
         telemetry.update();
     }
 }

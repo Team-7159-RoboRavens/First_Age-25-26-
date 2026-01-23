@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -7,7 +8,16 @@ import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
+import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoBlue")
@@ -15,7 +25,12 @@ public class WukAutoBlue extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
+    public DcMotorEx ShootMotor;
+    public DcMotorEx intakeMotor1;
+    public DcMotorEx intakeMotor2;
 
+    public ServoGoodBot robot;
+    static double aimingThreshold = .06;
     enum AutoState {
         START_TO_SHOOT,
         SHOOT_1,
@@ -127,6 +142,24 @@ public class WukAutoBlue extends OpMode {
         switch (newState) {
             case START_TO_SHOOT:
                 follower.followPath(startToShoot, true);
+                //aim code
+                    if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+                        limelightData.aiming = false;
+                        telemetry.addLine("Aimed");
+                        telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                        robot.setMotorPowers(new MotorPowers(0));
+                    }
+                    else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+                        limelightData.aiming = true;
+                        telemetry.addLine("Aiming");
+
+                        robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                        robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                        robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                        robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
+                        limelightData.aiming = false;
+                        telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                    }
                 break;
             case SHOOT_1:
                 // shooting code
@@ -140,6 +173,24 @@ public class WukAutoBlue extends OpMode {
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 follower.followPath(pickupPPGendToShoot, true);
+                //aim code
+                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+                    limelightData.aiming = false;
+                    telemetry.addLine("Aimed");
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                    robot.setMotorPowers(new MotorPowers(0));
+                }
+                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+                    limelightData.aiming = true;
+                    telemetry.addLine("Aiming");
+
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.leftBack.setPower(-LiamPolarDrive.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
+                    limelightData.aiming = false;
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                }
                 break;
             case SHOOT_2:
                 // shooting code
@@ -158,6 +209,24 @@ public class WukAutoBlue extends OpMode {
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
+                //aim code
+                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+                    limelightData.aiming = false;
+                    telemetry.addLine("Aimed");
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                    robot.setMotorPowers(new MotorPowers(0));
+                }
+                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+                    limelightData.aiming = true;
+                    telemetry.addLine("Aiming");
+
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
+                    limelightData.aiming = false;
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                }
                 break;
             case SHOOT_3:
                 // shooting code
@@ -167,6 +236,24 @@ public class WukAutoBlue extends OpMode {
                 break;
             case LOAD_TO_SHOOT:
                 follower.followPath(loadToShoot, true);
+                //aim code
+                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+                    limelightData.aiming = false;
+                    telemetry.addLine("Aimed");
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                    robot.setMotorPowers(new MotorPowers(0));
+                }
+                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+                    limelightData.aiming = true;
+                    telemetry.addLine("Aiming");
+
+                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
+                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
+                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
+                    limelightData.aiming = false;
+                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                }
                 break;
             case SHOOT_4:
                 // shooting code
@@ -186,8 +273,13 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_1);
             break;
         case SHOOT_1:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_PICKUP_PPG);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.SHOOT_TO_PICKUP_PPG);
             break;
         case SHOOT_TO_PICKUP_PPG:
             if (!follower.isBusy())
@@ -202,8 +294,13 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_2);
             break;
         case SHOOT_2:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_PICKUP_PGP);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.SHOOT_TO_PICKUP_PGP);
             break;
         case SHOOT_TO_PICKUP_PGP:
             if (!follower.isBusy())
@@ -218,16 +315,26 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.GATE_CLEAR);
             break;
         case GATE_CLEAR:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.GATE_TO_SHOOT);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.GATE_TO_SHOOT);
             break;
         case GATE_TO_SHOOT:
             if (!follower.isBusy())
                 setState(AutoState.SHOOT_3);
             break;
         case SHOOT_3:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_LOAD);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.SHOOT_TO_LOAD);
             break;
         case SHOOT_TO_LOAD:
             if (!follower.isBusy())
@@ -238,8 +345,13 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_4);
             break;
         case SHOOT_4:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.PARK);
+            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
+                double shootVel = ShootMotor.getVelocity();
+                intakeMotor1.setPower(.8);
+                intakeMotor2.setPower(.8);
+                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            }
+            setState(AutoState.PARK);
             break;
         case PARK:
             if (!follower.isBusy())
@@ -253,16 +365,40 @@ public class WukAutoBlue extends OpMode {
 
     @Override
     public void init() {
+        ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
+        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        ShootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        // Reset the motor encoder so that it reads zero ticks
+        ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
+        intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
+        intakeMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
+        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         follower = Constants.createFollower(hardwareMap);
         stateTimer = new Timer();
         buildPaths();
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
     }
 
     @Override
     public void loop() {
         follower.update();
         updateStateMachine();
+        robot.runLimelight(20);
+        telemetry.update();
     }
 }

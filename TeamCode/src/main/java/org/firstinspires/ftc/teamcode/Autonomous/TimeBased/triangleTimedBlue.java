@@ -60,13 +60,13 @@ public class triangleTimedBlue extends LinearOpMode {
 //        telemetry.addLine("Aiming");
 //        telemetry.update();
 //        sleep(500);
-        driveAllMotorsTo(GoalTimed.Direction.FORWARD, 220, System.currentTimeMillis(), .8, robot);
+        driveAllMotorsTo(GoalTimed.Direction.FORWARD, 240, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
         strafeMotorsTo(GoalTimed.Direction.RIGHT, 506, System.currentTimeMillis(), .8, robot);
         robot.setMotorPower(0,0,0,0);
         sleep(500);
-        rotateTo(GoalTimed.Direction.POSITIVE, 160, System.currentTimeMillis(), .5, robot);
+        rotateTo(GoalTimed.Direction.POSITIVE, 144, System.currentTimeMillis(), .5, robot);
 //        time
 //        while () {
 //
@@ -104,7 +104,7 @@ public class triangleTimedBlue extends LinearOpMode {
             telemetry.update();
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate
             //All of these variables are yet to be tested and should be iterated on
-            double targetVel = -FirstAgeArm.velocityShot(195);
+            double targetVel = -FirstAgeArm.velocityShot(186);
             double shootVel = robot.ShootMotor.getVelocity();
 
             ShootingFunctions.setVelocity(targetVel, shootVel, robot.ShootMotor, .895);

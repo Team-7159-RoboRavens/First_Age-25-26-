@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ftc.LazyImu;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -74,6 +76,15 @@ public class ServoTempBot extends MecanumDrive {
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
+        //Set IMU
+        if (!limelightData.hasImu) {
+            lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
+                    PARAMS.logoFacingDirection, PARAMS.usbFacingDirection));
+        }
+        else {
+            lazyImu = limelightData.imu;
+        }
+        limelightData.setIMU(lazyImu);
 
 
 
@@ -152,7 +163,7 @@ public class ServoTempBot extends MecanumDrive {
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
                             opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
-                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
+                            opMode.telemetry.addData("\"X: \"", limelightData.aprilXDegrees);
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
                             limelightData.fieldPosOfTag = lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + limelightData.aprilXDegrees;
 
@@ -179,7 +190,7 @@ public class ServoTempBot extends MecanumDrive {
                             opMode.telemetry.addData("Accuracy ", limelightData.accurate);
                         } else {
                             opMode.telemetry.addLine("Not found tag");
-//                            limelightData.accurate = false;
+                            limelightData.accurate = false;
                         }
                         if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
                             limelightData.pattern = fr.getFiducialId();
@@ -199,14 +210,16 @@ public class ServoTempBot extends MecanumDrive {
 //                    }
 //                    if (colorResult.getTargetXPixels() > 120)
 //                        telemetry.addData("Largest Yellow Object", String.valueOf(colorResult.getTargetXDegrees()), String.valueOf(colorResult.getTargetYDegrees()));
-                }
+                } else {
+                limelightData.accurate = false;
+            }
             } else {
                 opMode.telemetry.addData("Limelight", "No data available");
                 //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
                 limelightData.accurate = false;
             }
 //            opMode.telemetry.update();
-    }
+        }
 
 
     public void setServosTo(double min, double max, double value, Servo servo) {

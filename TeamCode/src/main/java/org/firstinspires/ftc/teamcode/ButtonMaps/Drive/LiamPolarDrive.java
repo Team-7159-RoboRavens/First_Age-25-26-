@@ -26,11 +26,13 @@ static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer
 static double joystickDeadZone = .15;
 static double joystickLinearity = 3;
 
-static double aimingPower = 1.6;
+static double aimingPower = 1.4;
 static double aimingThreshold = .06;
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+public static PIDControl pid = new PIDControl(0.04, 0, 0); // tune later
 
     @Override
     public void loop(ServoTempBot robot, OpMode opMode) {
@@ -59,34 +61,32 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             limelightData.ImuOffset = 0;
         }
 
+        pid.update(limelightData.aprilXDegrees);
 
         if (opMode.gamepad2.x){
             if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
                 mp = new MotorPowers(0, 0, 0, 0);
                 robot.setMotorPowers(mp);
             }
             else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 opMode.telemetry.addLine("Aiming");
-//                mp.leftFront += (limelightData.aprilXDegrees)/ 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-//                mp.leftBack += (limelightData.aprilXDegrees) / 3.08  * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-//                mp.rightFront -= (limelightData.aprilXDegrees) / 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-//                mp.rightBack -= (limelightData.aprilXDegrees)/ 3.08 * Math.pow(limelightData.aprilXDegrees, 1) * aimingPower;
-                mp.leftFront -= limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.leftBack -= limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightFront += limelightData.aprilXDegrees / 20 * aimingPower;
-                mp.rightBack += limelightData.aprilXDegrees / 20 * aimingPower;
+                mp.leftFront -= pid.output();
+                mp.leftBack -= pid.output();
+                mp.rightFront += pid.output();
+                mp.rightBack += pid.output();
+                opMode.telemetry.addData("turning value", pid.output());
                 limelightData.aiming = false;
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
+                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
 
             mp = new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack);
             robot.setMotorPowers(mp);
 //            else {
-//                opMode.telemetry.addLine("Testrun Large Aim " + limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset));
+//                opMode.telemetry.addLine("Testrun LargopMode.gamepad2.left_stick_ye Aim " + limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset));
 //                limelightData.aiming = false;
 //                GoalTimedBlue.aim(limelightData.fieldPosOfTag + Math.toDegrees(limelightData.ImuOffset), 100, .5, robot, opMode.telemetry);
 //            }

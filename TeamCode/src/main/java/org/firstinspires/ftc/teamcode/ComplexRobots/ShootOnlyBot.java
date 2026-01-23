@@ -2,23 +2,20 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ftc.LazyImu;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.MecanumDriveNoMotors;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 import java.util.List;
@@ -26,7 +23,7 @@ import java.util.List;
 //This is right now the same as the TrikeRobot, add Pivot turn at some point and some more functionality.
 
 @Config
-public class ServoGoodBot extends MecanumDrive {
+public class ShootOnlyBot extends MecanumDriveNoMotors {
     enum Direction {
         UP,DOWN
     }
@@ -35,17 +32,15 @@ public class ServoGoodBot extends MecanumDrive {
         public final DcMotorEx intakeMotor1;
         public final DcMotorEx intakeMotor2;
     //    public final DcMotorEx ShootMotor2;
-        public final Servo Servo1;
+//        public final CRServo Servo1;
 //        public final Servo Servo1;
 //        public final CRServo Servo3;
 //        public final DcMotorEx intakeMotor;
 
-
 //    public final Servo turnServo;
     public final Limelight3A limelight;
 
-    public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
-        super(hardwareMap, pose);
+    public ShootOnlyBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
@@ -62,7 +57,7 @@ public class ServoGoodBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-        Servo1 = hardwareMap.get(Servo.class, "servo1");
+//        Servo1 = hardwareMap.get(CRServo.class, "servo1");
 //        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
@@ -83,24 +78,13 @@ public class ServoGoodBot extends MecanumDrive {
 //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
-        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
+        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //Set Imu
-
-        if (!limelightData.hasImu) {
-            lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
-                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
-        }
-        else {
-            lazyImu = limelightData.imu;
-        }
-        limelightData.setIMU(lazyImu);
 
 
 
@@ -180,17 +164,17 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees()));
                             opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
                             opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ShootOnlyBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
                             double limelightMountAngleDegrees = 6.5;

@@ -17,7 +17,7 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
     private double servoPosition;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 800;
+    private double timeBuffer = 500;
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;

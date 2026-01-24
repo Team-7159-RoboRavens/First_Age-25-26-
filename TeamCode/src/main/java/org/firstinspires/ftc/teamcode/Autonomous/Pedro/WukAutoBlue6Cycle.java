@@ -18,6 +18,7 @@ public class WukAutoBlue6Cycle extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
+    ServoGoodBot robot;
     static double aimingThreshold = .06;
     enum AutoState {
         START_TO_SHOOT,

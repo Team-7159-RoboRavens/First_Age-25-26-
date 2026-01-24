@@ -35,7 +35,7 @@ public class ServoGoodBot extends MecanumDrive {
         public final DcMotorEx intakeMotor1;
         public final DcMotorEx intakeMotor2;
     //    public final DcMotorEx ShootMotor2;
-        public final Servo Servo1;
+//        public final Servo Servo1;
 //        public final Servo Servo1;
 //        public final CRServo Servo3;
 //        public final DcMotorEx intakeMotor;
@@ -62,7 +62,7 @@ public class ServoGoodBot extends MecanumDrive {
         limelightData.accurate = false;
 
         //Initialize Servos
-        Servo1 = hardwareMap.get(Servo.class, "servo1");
+//        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo1 = hardwareMap.get(Servo.class, "servo1");
 //        Servo3 = hardwareMap.get(CRServo.class, "servo3");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
@@ -87,7 +87,7 @@ public class ServoGoodBot extends MecanumDrive {
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
-        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -180,13 +180,13 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees() + limelightData.distance / 22, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
                             opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("Direction to Tag", limelightData.directionToTag());
+                            opMode.telemetry.addData("Direction to Tag", limelightData.aprilXDegrees);
 
 
 

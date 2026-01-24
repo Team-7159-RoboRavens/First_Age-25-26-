@@ -1,5 +1,6 @@
     package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -8,12 +9,14 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
     @Autonomous (name="BlueGoalGETOUT!!!!!")
     public class BlueGoalGETOUT extends OpMode {
         private Follower follower;
         private Timer pathTimer, opModeTimer;
+        public ServoGoodBot robot;
 
         public enum PathState {
             //Start pos-end
@@ -61,7 +64,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
                         telemetry.addLine("done Path");
                         follower.followPath(driveShootPosEndPos, true);
                         setPathState(PathState.DRIVE_SHOOTPOS_ENDPOS);
-                        //add shooting code
+                        PedroFunctions.shoot(robot);
                     }
                     break;
                 default:
@@ -71,7 +74,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
                     // check if follower is done
                     if (!follower.isBusy()) {
                         telemetry.addLine("done Path2");
-                        //add shooting code
+                        PedroFunctions.shoot(robot);
                     }
                     break;
             }
@@ -93,6 +96,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
             buildPaths();
             follower.setPose(startPose);
+            robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
         }
 
         public void start() {

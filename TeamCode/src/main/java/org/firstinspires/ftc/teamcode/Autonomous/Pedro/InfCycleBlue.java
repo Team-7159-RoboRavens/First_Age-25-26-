@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -8,6 +9,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "InfCycleBlue")
@@ -16,6 +18,7 @@ public class InfCycleBlue extends OpMode {
     private Follower follower;
     private Timer stateTimer;
     private Timer autoTimer;
+    public ServoGoodBot robot;
     private static final double SHOOT_TIME = 2.0;
     private static final double INTAKE_TIME = 1.5;
     private static final double AUTO_END_TIME = 27.0;
@@ -72,13 +75,13 @@ public class InfCycleBlue extends OpMode {
                 follower.followPath(startToShoot, true);
                 break;
             case SHOOT:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKLOAD:
                 follower.followPath(shootToPickLoad, true);
                 break;
             case PICKLOAD:
-                // intake code
+                PedroFunctions.intake(robot);
                 break;
             case PICKLOAD_TO_SHOOT:
                 follower.followPath(pickLoadToShoot, true);
@@ -149,6 +152,7 @@ public class InfCycleBlue extends OpMode {
         autoTimer.resetTimer();
 
         setState(AutoState.START_TO_SHOOT);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
     }
 
     @Override

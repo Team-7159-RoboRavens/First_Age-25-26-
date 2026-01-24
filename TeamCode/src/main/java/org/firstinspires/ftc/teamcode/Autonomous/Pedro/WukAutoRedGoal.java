@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -8,6 +9,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoRedGoal")
@@ -15,6 +17,9 @@ public class WukAutoRedGoal extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
+
+    public ServoGoodBot robot;
+
 
     enum AutoState {
         START_TO_SHOOT,
@@ -113,26 +118,26 @@ public class WukAutoRedGoal extends OpMode {
                 follower.followPath(startToShoot, true);
                 break;
             case SHOOT_1:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PPG:
                 follower.followPath(shootToPickupPPG, true);
                 break;
             case PICKUP_PPG_TO_PPGEND:
-                //intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPPGToPPGend, true);
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 follower.followPath(pickupPPGendToShoot, true);
                 break;
             case SHOOT_2:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PGP:
                 follower.followPath(shootToPickupPGP, true);
                 break;
             case PICKUP_PGP_TO_PGPEND:
-                // intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPGPToPGPend, true);
                 break;
             case PGPEND_TO_GATE:
@@ -144,7 +149,7 @@ public class WukAutoRedGoal extends OpMode {
                 follower.followPath(gateToShoot, true);
                 break;
             case SHOOT_3:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -221,6 +226,7 @@ public class WukAutoRedGoal extends OpMode {
         buildPaths();
         follower.setStartingPose(startPose);
         setState(AutoState.START_TO_SHOOT);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
     }
 
     @Override

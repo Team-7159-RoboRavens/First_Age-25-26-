@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions;
 
 @Autonomous(name = "WukAutoBlue")
 public class WukAutoBlue extends OpMode {
@@ -142,64 +143,31 @@ public class WukAutoBlue extends OpMode {
         switch (newState) {
             case START_TO_SHOOT:
                 follower.followPath(startToShoot, true);
-                //aim code
-                    if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                        limelightData.aiming = false;
-                        telemetry.addLine("Aimed");
-                        telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                        robot.setMotorPowers(new MotorPowers(0));
-                    }
-                    else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-                        limelightData.aiming = true;
-                        telemetry.addLine("Aiming");
-
-                        robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
-                        robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
-                        robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
-                        robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
-                        limelightData.aiming = false;
-                        telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                    }
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_1:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PPG:
                 follower.followPath(shootToPickupPPG, true);
                 break;
             case PICKUP_PPG_TO_PPGEND:
-                //intake code
+                //probably won't work because intake needs the robot to move simultaneously
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPPGToPPGend, true);
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 follower.followPath(pickupPPGendToShoot, true);
-                //aim code
-                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                    limelightData.aiming = false;
-                    telemetry.addLine("Aimed");
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                    robot.setMotorPowers(new MotorPowers(0));
-                }
-                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-                    limelightData.aiming = true;
-                    telemetry.addLine("Aiming");
-
-                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
-                    robot.leftBack.setPower(-LiamPolarDrive.pid.output());
-                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
-                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
-                    limelightData.aiming = false;
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                }
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_2:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PGP:
                 follower.followPath(shootToPickupPGP, true);
                 break;
             case PICKUP_PGP_TO_PGPEND:
-                // intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPGPToPGPend, true);
                 break;
             case PGPEND_TO_GATE:
@@ -209,54 +177,20 @@ public class WukAutoBlue extends OpMode {
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
-                //aim code
-                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                    limelightData.aiming = false;
-                    telemetry.addLine("Aimed");
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                    robot.setMotorPowers(new MotorPowers(0));
-                }
-                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-                    limelightData.aiming = true;
-                    telemetry.addLine("Aiming");
-
-                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
-                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
-                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
-                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
-                    limelightData.aiming = false;
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                }
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_3:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_LOAD:
                 follower.followPath(shootToLoad, true);
                 break;
             case LOAD_TO_SHOOT:
                 follower.followPath(loadToShoot, true);
-                //aim code
-                if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                    limelightData.aiming = false;
-                    telemetry.addLine("Aimed");
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                    robot.setMotorPowers(new MotorPowers(0));
-                }
-                else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-                    limelightData.aiming = true;
-                    telemetry.addLine("Aiming");
-
-                    robot.leftFront.setPower(-LiamPolarDriveGood.pid.output());
-                    robot.leftBack.setPower(-LiamPolarDriveGood.pid.output());
-                    robot.rightFront.setPower(LiamPolarDriveGood.pid.output());
-                    robot.rightBack.setPower(LiamPolarDriveGood.pid.output());
-                    limelightData.aiming = false;
-                    telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
-                }
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_4:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);

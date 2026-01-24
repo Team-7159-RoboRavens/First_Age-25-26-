@@ -19,6 +19,7 @@ public class WukAutoBlue6Cycle extends OpMode {
     private Follower follower;
     private Timer stateTimer;
     static double aimingThreshold = .06;
+    public ServoGoodBot robot;
     enum AutoState {
         START_TO_SHOOT,
         SHOOT_1,
@@ -155,30 +156,30 @@ public class WukAutoBlue6Cycle extends OpMode {
         switch (newState) {
             case START_TO_SHOOT:
                 follower.followPath(startToShoot, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_1:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PPG:
                 follower.followPath(shootToPickupPPG, true);
                 break;
             case PICKUP_PPG_TO_PPGEND:
-                //intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPPGToPPGend, true);
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 follower.followPath(pickupPPGendToShoot, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_2:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PGP:
                 follower.followPath(shootToPickupPGP, true);
                 break;
             case PICKUP_PGP_TO_PGPEND:
-                // intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(pickupPGPToPGPend, true);
                 break;
             case PGPEND_TO_GATE:
@@ -188,43 +189,43 @@ public class WukAutoBlue6Cycle extends OpMode {
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_3:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_LOAD:
-                //intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToLoad, true);
                 break;
             case LOAD_TO_SHOOT:
                 follower.followPath(loadToShoot, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_4:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_LOAD2:
-                //intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToLoad2, true);
                 break;
             case LOAD_TO_SHOOT2:
                 follower.followPath(loadToShoot2, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_5:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_LOAD3:
-                //intake code
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToLoad3, true);
                 break;
             case LOAD_TO_SHOOT3:
                 follower.followPath(loadToShoot3, true);
-                //aim
+                PedroFunctions.aim(robot);
                 break;
             case SHOOT_6:
-                // shooting code
+                PedroFunctions.shoot(robot);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);

@@ -16,7 +16,6 @@ public class ShootingFunctions {
     public static void setVelocity(double targetVel, double currentVel, DcMotorEx motor, double muliplier) {
         motor.setVelocity(targetVel * muliplier);
     }
-
     //This funnction is similar to the previous function but it should be better.
     // This is for wheels that brake like driving ones so they can reach their target velocity slower and not overshoot as much.
     public static void setVelocityReworked(double targetVel, double currentVel, DcMotorEx motor, int sign) {

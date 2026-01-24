@@ -75,8 +75,8 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    robot.intakeMotor1.setPower(-1);
-                    robot.intakeMotor2.setPower(.6);
+                    robot.intakeMotor2.setPower(-1);
+                    robot.intakeMotor1.setPower(.6);
                     if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
                         timeSince2 = System.currentTimeMillis();
                         robot.Servo1.setPosition(servoPosition);
@@ -116,31 +116,32 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 
             //Intake balls and shoot them into the launcher.
             if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(1*opMode.gamepad2.left_stick_y);
                 robot.intakeMotor2.setPower(1*opMode.gamepad2.left_stick_y);
+                robot.intakeMotor1.setPower(1*opMode.gamepad2.left_stick_y);
             }
             //Intake balls without feeding them into the launcher.
             else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(opMode.gamepad2.left_stick_y);
+                robot.intakeMotor2.setPower(opMode.gamepad2.left_stick_y);
+                robot.intakeMotor1.setPower(0);
             }
             //This is for clearing the launcher if something is stuck.
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(1*opMode.gamepad2.left_stick_y);
                 robot.intakeMotor2.setPower(1*opMode.gamepad2.left_stick_y);
+                robot.intakeMotor1.setPower(0);
             }
             //When you don't want the first intake to move and just want to move artifacts to the launcher
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(1 * opMode.gamepad2.left_stick_y);
+                robot.intakeMotor2.setPower(0);
+                robot.intakeMotor1.setPower(1 * opMode.gamepad2.left_stick_y);
             }
             //Run both motors without having to turn on the shooting motor.
             if (opMode.gamepad2.b) {
-            robot.intakeMotor2.setPower(1);
+            robot.intakeMotor1.setPower(1);
             }
             //The end case where none of the relevent buttons are pressed so the motors don't just keep spinning.
             else if (Math.abs(opMode.gamepad2.left_stick_y) < joystickDeadZone && !opMode.gamepad2.dpad_up) {
-                robot.intakeMotor1.setPower(0);
                 robot.intakeMotor2.setPower(0);
+                robot.intakeMotor1.setPower(0);
             }
     }
     public static double velocityShot(double x) {

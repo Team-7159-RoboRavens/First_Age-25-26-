@@ -79,7 +79,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     robot.intakeMotor2.setPower(.6);
                     if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
                         timeSince2 = System.currentTimeMillis();
-                        robot.Servo1.setPosition(servoPosition);
                         servoPosition *= -1;
                     }
                 }

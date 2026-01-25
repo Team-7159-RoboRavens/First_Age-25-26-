@@ -41,8 +41,8 @@ public class InfCycleRed extends OpMode {
 
     private AutoState state;
     Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(83, 12, Math.toRadians(67.72));
-    Pose pickLoadPose = new Pose(120, 7.5079, Math.toRadians(0));
+    Pose shootPose   = new Pose(83, 12, Math.toRadians(64.72));
+    Pose pickLoadPose = new Pose(120, 12.5079, Math.toRadians(0));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
@@ -92,7 +92,6 @@ public class InfCycleRed extends OpMode {
                 PedroFunctions.intake(robot);
                 break;
             case PICKLOAD_TO_SHOOT:
-                PedroFunctions.reset(robot);
                 follower.followPath(pickLoadToShoot, true);
                 break;
             case PARK:
@@ -129,19 +128,22 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(.5);
                 if (!follower.isBusy())
                     setState(AutoState.PICKLOAD);
                 break;
 
             case PICKLOAD:
                 PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(0);
                 if (!follower.isBusy()) {
                     setState(AutoState.PICKLOAD_TO_SHOOT);
-                    PedroFunctions.reset(robot);
                 }
                 break;
 
             case PICKLOAD_TO_SHOOT:
+                PedroFunctions.intake(robot);
                 if (!follower.isBusy())
                     setState(AutoState.SHOOT);
                 break;
@@ -170,7 +172,7 @@ public class InfCycleRed extends OpMode {
 
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
-        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P+1.2, 0, 0, FlywheelPDIFF.F+1.2));
 
     }
 
@@ -179,10 +181,6 @@ public class InfCycleRed extends OpMode {
         follower.update();
         updateStateMachine();
         telemetry.addData("Shoot Velocity",robot.ShootMotor.getVelocity());
-//        if (intaking)
-//            PedroFunctions.intake(robot);
-//        if (shooting)
-//            PedroFunctions.shoot(robot);
         telemetry.update();
     }
 }

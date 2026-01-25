@@ -28,13 +28,13 @@ public class InfCycleRed extends OpMode {
     boolean intaking;
     boolean shooting;
 
-
     enum AutoState {
         START_TO_SHOOT,
         SHOOT,
         SHOOT_TO_PICKLOAD,
         PICKLOAD,
-        PICKLOAD_TO_SHOOT,
+        PICKLOAD_TO_PICKLOAD_END,
+        PICKLOAD_END_TO_SHOOT,
         PARK,
         DONE
     }
@@ -42,13 +42,15 @@ public class InfCycleRed extends OpMode {
     private AutoState state;
     Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
     Pose shootPose   = new Pose(83, 12, Math.toRadians(64.72));
-    Pose pickLoadPose = new Pose(120, 12.5079, Math.toRadians(0));
+    Pose pickLoadPose = new Pose(110, 9.183, Math.toRadians(0));
+    Pose pickLoadPoseEnd = new Pose(133.277, 8.900, Math.toRadians(0));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
-    PathChain pickLoadToShoot;
     PathChain shootToPark;
+    PathChain pickLoadToPickLoadEnd;
+    PathChain pickLoadEndToShoot;
 
     void buildPaths() {
         startToShoot = follower.pathBuilder()
@@ -61,14 +63,19 @@ public class InfCycleRed extends OpMode {
                 .setLinearHeadingInterpolation(shootPose.getHeading(), pickLoadPose.getHeading())
                 .build();
 
-        pickLoadToShoot = follower.pathBuilder()
-                .addPath(new BezierLine(pickLoadPose, shootPose))
-                .setLinearHeadingInterpolation(pickLoadPose.getHeading(), shootPose.getHeading())
-                .build();
-
         shootToPark = follower.pathBuilder()
                 .addPath(new BezierLine(shootPose, parkPose))
                 .setLinearHeadingInterpolation(shootPose.getHeading(), parkPose.getHeading())
+                .build();
+
+        pickLoadToPickLoadEnd = follower.pathBuilder()
+                .addPath(new BezierLine(pickLoadPose, pickLoadPoseEnd))
+                .setLinearHeadingInterpolation(pickLoadPose.getHeading(), pickLoadPoseEnd.getHeading())
+                .build();
+
+        pickLoadEndToShoot = follower.pathBuilder()
+                .addPath(new BezierLine(pickLoadPoseEnd, shootPose))
+                .setLinearHeadingInterpolation(pickLoadPoseEnd.getHeading(), shootPose.getHeading())
                 .build();
     }
 
@@ -81,18 +88,22 @@ public class InfCycleRed extends OpMode {
                 follower.followPath(startToShoot, true);
                 break;
             case SHOOT:
-                // shooting code
                 break;
             case SHOOT_TO_PICKLOAD:
-                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickLoad, true);
                 break;
             case PICKLOAD:
-                // intake code
                 PedroFunctions.intake(robot);
                 break;
-            case PICKLOAD_TO_SHOOT:
-                follower.followPath(pickLoadToShoot, true);
+            case PICKLOAD_TO_PICKLOAD_END:
+                PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(.5);
+                follower.followPath(pickLoadToPickLoadEnd, true);
+                break;
+            case PICKLOAD_END_TO_SHOOT:
+                PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(.5);
+                follower.followPath(pickLoadEndToShoot, true);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -128,22 +139,29 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case SHOOT_TO_PICKLOAD:
-                PedroFunctions.intake(robot);
-                robot.intakeMotor2.setPower(.5);
                 if (!follower.isBusy())
                     setState(AutoState.PICKLOAD);
                 break;
 
             case PICKLOAD:
                 PedroFunctions.intake(robot);
-                robot.intakeMotor2.setPower(0);
+                robot.intakeMotor2.setPower(.5);
                 if (!follower.isBusy()) {
-                    setState(AutoState.PICKLOAD_TO_SHOOT);
+                    setState(AutoState.PICKLOAD_TO_PICKLOAD_END);
                 }
                 break;
 
-            case PICKLOAD_TO_SHOOT:
+            case PICKLOAD_TO_PICKLOAD_END:
                 PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(.5);
+                if (!follower.isBusy()) {
+                    setState(AutoState.PICKLOAD_END_TO_SHOOT);
+                }
+                break;
+
+            case PICKLOAD_END_TO_SHOOT:
+                PedroFunctions.intake(robot);
+                robot.intakeMotor2.setPower(.5);
                 if (!follower.isBusy())
                     setState(AutoState.SHOOT);
                 break;
@@ -172,15 +190,17 @@ public class InfCycleRed extends OpMode {
 
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
-        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P+1.2, 0, 0, FlywheelPDIFF.F+1.2));
-
+        robot.ShootMotor.setPIDFCoefficients(
+                DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1.2)
+        );
     }
 
     @Override
     public void loop() {
         follower.update();
         updateStateMachine();
-        telemetry.addData("Shoot Velocity",robot.ShootMotor.getVelocity());
+        telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
         telemetry.update();
     }
 }

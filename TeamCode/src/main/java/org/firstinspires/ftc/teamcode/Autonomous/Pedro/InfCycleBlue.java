@@ -116,6 +116,7 @@ public class InfCycleBlue extends OpMode {
 
             case SHOOT:
                 PedroFunctions.shoot(robot);
+                PedroFunctions.aim(robot);
                 if (!follower.isBusy()) {
                 if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
                     setState(AutoState.SHOOT_TO_PICKLOAD);

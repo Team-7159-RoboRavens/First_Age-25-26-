@@ -78,7 +78,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    if (Math.abs(targetVel - shootVel) < 150) {
+                    if (Math.abs(targetVel - shootVel) < 80) {
                         robot.intakeMotor1.setPower(.75);
                         robot.intakeMotor2.setPower(.8);
                         opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
@@ -103,7 +103,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.ShootMotor.setVelocity(velocityShot(185));
+                    robot.ShootMotor.setVelocity(velocityShot(194));
                 }
                 opMode.telemetry.addLine("Shoot limelight");
                 //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -156,6 +156,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.73571 * x + 401.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.83571 * x + 421.14286);
     }
 }

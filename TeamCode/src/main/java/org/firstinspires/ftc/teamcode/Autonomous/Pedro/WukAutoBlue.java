@@ -210,6 +210,7 @@ public class WukAutoBlue extends OpMode {
         case SHOOT_1:
             if (!follower.isBusy()) {
                 PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
                 if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
                     setState(AutoState.SHOOT_TO_PICKUP_PPG);
                     PedroFunctions.reset(robot);
@@ -233,7 +234,8 @@ public class WukAutoBlue extends OpMode {
             break;
         case SHOOT_2:
             if (!follower.isBusy()) {
-            PedroFunctions.shoot(robot);
+                PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
             if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
                 setState(AutoState.SHOOT_TO_PICKUP_PGP);
                 PedroFunctions.reset(robot);
@@ -256,8 +258,7 @@ public class WukAutoBlue extends OpMode {
             break;
         case GATE_CLEAR:
             if (!follower.isBusy()) {
-            PedroFunctions.shoot(robot);
-            if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+            if (stateTimer.getElapsedTimeSeconds() >= 2.0) {
                 setState(AutoState.GATE_TO_SHOOT);
                 PedroFunctions.reset(robot);
             }}
@@ -269,6 +270,7 @@ public class WukAutoBlue extends OpMode {
         case SHOOT_3:
             if (!follower.isBusy()) {
                 PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
                 if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
                     setState(AutoState.SHOOT_TO_LOAD);
                     PedroFunctions.reset(robot);
@@ -286,6 +288,7 @@ public class WukAutoBlue extends OpMode {
         case SHOOT_4:
             if (!follower.isBusy()) {
             PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
             if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
                 setState(AutoState.PARK);
                 PedroFunctions.reset(robot);

@@ -33,7 +33,7 @@ public class PedroFunctions {
     public static double shootVel;
     public static double targetVel;
     static double joystickDeadZone = .1;
-    static double aimingThreshold = .06;
+    static double aimingThreshold = .05;
 
     public static void shoot(ServoGoodBot robot) {
 
@@ -42,23 +42,23 @@ public class PedroFunctions {
         robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
-        if (limelightData.accurate) {
-            if (Math.abs(targetVel - shootVel) < 150) {
-                robot.intakeMotor1.setPower(1);
-                robot.intakeMotor2.setPower(1);
-            }
-            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
-        } else {
-            if (Math.abs(velocityShot(205) - shootVel) < 150) {
+//        if (limelightData.accurate) {
+//            if (Math.abs(targetVel - shootVel) < 40) {
+//                robot.intakeMotor1.setPower(.75);
+//                robot.intakeMotor2.setPower(.8);
+//            }
+//            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
+//        } else {
+            if (Math.abs(velocityShot(199) - shootVel) < 60) {
                 robot.intakeMotor1.setPower(.8);
-                robot.intakeMotor2.setPower(1);
+                robot.intakeMotor2.setPower(.75);
             }
             else {
                 robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(-.4);
+                robot.intakeMotor2.setPower(-.3);
             }
-            robot.ShootMotor.setVelocity(velocityShot(205));
-        }
+            robot.ShootMotor.setVelocity(velocityShot(199));
+//        }
     }
 
     public static void aim(ServoGoodBot robot) {

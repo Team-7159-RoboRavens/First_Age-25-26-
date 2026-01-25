@@ -16,13 +16,13 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     private int stage = 1;
 
-    public static double F = 12.7;
+    public static double F = 12.1;
 
-    public static double P = 12.7;
+    public static double P = 130.7;
 
-    public double highVelocity = 1500;
+    public double highVelocity = 1920;
 
-    public  double lowVelocity = 900;
+    public  double lowVelocity = 1500;
 
     public double curTargetVelocity = highVelocity;
 
@@ -40,12 +40,20 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
             robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
         }
 
-        curTargetVelocity = FirstAgeGoodArm.velocityShot(limelightData.distance);
         //Normal opmode code
 
 
         if (opMode.gamepad2.bWasPressed()) {
             stepIndex = (stepIndex + 1) % stepSizes.length;
+        }
+
+        if (opMode.gamepad2.xWasPressed()) {
+            if (curTargetVelocity == highVelocity) {
+                curTargetVelocity = lowVelocity;
+            }
+            else {
+                curTargetVelocity = highVelocity;
+            }
         }
 
         if (opMode.gamepad2.dpadLeftWasPressed()) {
@@ -65,7 +73,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         }
 
         if(opMode.gamepad2.left_stick_y < -.2) {
-            if (Math.abs(curTargetVelocity - robot.ShootMotor.getVelocity()) < 40) {
+            if (Math.abs(curTargetVelocity - robot.ShootMotor.getVelocity()) < 60) {
                 robot.intakeMotor1.setPower(.8);
                 robot.intakeMotor2.setPower(1);
             }

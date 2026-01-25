@@ -27,13 +27,13 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
-static double aimingThreshold = .06;
+static double aimingThreshold = .05;
 
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.03, 0, 0);
+    public static PIDControl pid = new PIDControl(0.032, 0, 0);
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
@@ -121,7 +121,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         }
 
         if (Math.abs(right_stick_x) > joystickDeadZone) {
-            double turnSpeed = -Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
+            double turnSpeed = Math.pow((right_stick_x-triggerDeadZone), triggerLinearity)/Math.pow((1-triggerDeadZone), triggerLinearity);
             turn += turnSpeed;
         }
 

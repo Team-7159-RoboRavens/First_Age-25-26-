@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoRed")
@@ -203,6 +204,7 @@ public class WukAutoRed extends OpMode {
                 break;
             case SHOOT_1:
                 PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
                 if (!follower.isBusy()) {
                     if (stateTimer.getElapsedTimeSeconds() > 4.8) {
                         setState(AutoState.SHOOT_TO_PICKUP_PPG);
@@ -227,6 +229,7 @@ public class WukAutoRed extends OpMode {
             break;
         case SHOOT_2:
             PedroFunctions.shoot(robot);
+//            PedroFunctions.aim(robot);
             if (!follower.isBusy()) {
                 if (stateTimer.getElapsedTimeSeconds() >= 4.8) {
                     setState(AutoState.SHOOT_TO_PICKUP_PGP);
@@ -260,6 +263,7 @@ public class WukAutoRed extends OpMode {
             break;
         case SHOOT_3:
             PedroFunctions.shoot(robot);
+//            PedroFunctions.aim(robot);
             if (!follower.isBusy()) {
                 if (stateTimer.getElapsedTimeSeconds() >= 4.8) {
                     setState(AutoState.SHOOT_TO_LOAD);
@@ -278,6 +282,7 @@ public class WukAutoRed extends OpMode {
         case SHOOT_4:
             if (!follower.isBusy()) {
             PedroFunctions.shoot(robot);
+//                PedroFunctions.aim(robot);
                 if (stateTimer.getElapsedTimeSeconds() >= 4.8) {
                     setState(AutoState.PARK);
                     PedroFunctions.reset(robot);
@@ -309,6 +314,9 @@ public class WukAutoRed extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        robot.runLimelight(24);
         updateStateMachine();
+        telemetry.addData("X Degrees", limelightData.aprilXDegrees);
+        telemetry.update();
     }
 }

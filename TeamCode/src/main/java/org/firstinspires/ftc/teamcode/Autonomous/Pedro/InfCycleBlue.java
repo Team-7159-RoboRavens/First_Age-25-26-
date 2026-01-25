@@ -8,7 +8,10 @@ import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -19,7 +22,7 @@ public class InfCycleBlue extends OpMode {
     private Timer stateTimer;
     private Timer autoTimer;
     public ServoGoodBot robot;
-    private static final double SHOOT_TIME = 2.0;
+    private static final double SHOOT_TIME = 5.5;
     private static final double INTAKE_TIME = 1.5;
     private static final double AUTO_END_TIME = 27.0;
 
@@ -36,7 +39,7 @@ public class InfCycleBlue extends OpMode {
     private AutoState state;
     Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
     Pose shootPose   = new Pose(61, 12, Math.toRadians(112.28));
-    Pose pickLoadPose = new Pose(10.436, 7.5079, Math.toRadians(180));
+    Pose pickLoadPose = new Pose(14.436, 7.5079, Math.toRadians(180));
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
 
     PathChain startToShoot;
@@ -78,12 +81,14 @@ public class InfCycleBlue extends OpMode {
                 PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickLoad, true);
                 break;
             case PICKLOAD:
                 PedroFunctions.intake(robot);
                 break;
             case PICKLOAD_TO_SHOOT:
+                PedroFunctions.reset(robot);
                 follower.followPath(pickLoadToShoot, true);
                 break;
             case PARK:
@@ -110,8 +115,12 @@ public class InfCycleBlue extends OpMode {
                 break;
 
             case SHOOT:
-                if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME)
+                PedroFunctions.shoot(robot);
+                if (!follower.isBusy()) {
+                if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
                     setState(AutoState.SHOOT_TO_PICKLOAD);
+                    PedroFunctions.reset(robot);
+                }}
                 break;
 
             case SHOOT_TO_PICKLOAD:
@@ -120,8 +129,11 @@ public class InfCycleBlue extends OpMode {
                 break;
 
             case PICKLOAD:
-                if (stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME)
+                PedroFunctions.intake(robot);
+                if (!follower.isBusy()) {
                     setState(AutoState.PICKLOAD_TO_SHOOT);
+                    PedroFunctions.reset(robot);
+                }
                 break;
 
             case PICKLOAD_TO_SHOOT:
@@ -153,11 +165,14 @@ public class InfCycleBlue extends OpMode {
 
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+
     }
 
     @Override
     public void loop() {
         follower.update();
         updateStateMachine();
+        telemetry.update();
     }
 }

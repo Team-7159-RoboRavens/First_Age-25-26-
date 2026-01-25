@@ -38,23 +38,26 @@ public class PedroFunctions {
     public static void shoot(ServoGoodBot robot) {
 
         shootVel = robot.ShootMotor.getVelocity();
-        opMode.telemetry.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
         robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        opMode.telemetry.addLine("Shoot limelight");
         //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
         if (limelightData.accurate) {
-            robot.intakeMotor1.setPower(1);
-            robot.intakeMotor2.setPower(1);
-            robot.ShootMotor.setPower((targetVel - shootVel) / 137);
-            opMode.telemetry.addLine("Limelight passes in data");
+            if (Math.abs(targetVel - shootVel) < 150) {
+                robot.intakeMotor1.setPower(1);
+                robot.intakeMotor2.setPower(1);
+            }
+            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
         } else {
-            opMode.telemetry.addLine("Shoot far");
-            opMode.telemetry.addLine("Limelight not working");
-            robot.intakeMotor1.setPower(1);
-            robot.intakeMotor2.setPower(.6);
-            robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
+            if (Math.abs(velocityShot(205) - shootVel) < 150) {
+                robot.intakeMotor1.setPower(.8);
+                robot.intakeMotor2.setPower(1);
+            }
+            else {
+                robot.intakeMotor1.setPower(0);
+                robot.intakeMotor2.setPower(-.4);
+            }
+            robot.ShootMotor.setVelocity(velocityShot(205));
         }
     }
 
@@ -63,24 +66,27 @@ public class PedroFunctions {
 
         if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
             limelightData.aiming = false;
-            opMode.telemetry.addLine("Aimed");
-            opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
             robot.setMotorPowers(new MotorPowers(0, 0, 0, 0));
         } else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
             limelightData.aiming = true;
-            opMode.telemetry.addLine("Aiming");
             robot.leftFront.setPower(-pid.output());
             robot.leftBack.setPower(-pid.output());
             robot.rightFront.setPower(pid.output());
             robot.rightBack.setPower(pid.output());
             limelightData.aiming = false;
-            opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 400)));
         }
     }
 
 
     public static void intake(ServoGoodBot robot) {
-        robot.intakeMotor2.setPower(1);
-        robot.intakeMotor1.setPower(-1);
+//        robot.intakeMotor2.setPower(1);
+        robot.intakeMotor1.setPower(1);
+    }
+
+    public static void reset(ServoGoodBot robot) {
+        robot.intakeMotor1.setPower(0);
+        robot.intakeMotor2.setPower(0);
+        robot.ShootMotor.setPower(0);
+
     }
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -7,7 +8,11 @@ import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
+import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "InfCycleRed")
@@ -16,9 +21,13 @@ public class InfCycleRed extends OpMode {
     private Follower follower;
     private Timer stateTimer;
     private Timer autoTimer;
-    private static final double SHOOT_TIME = 2.0;
+    private static final double SHOOT_TIME = 5.5;
     private static final double INTAKE_TIME = 1.5;
     private static final double AUTO_END_TIME = 27.0;
+    ServoGoodBot robot;
+    boolean intaking;
+    boolean shooting;
+
 
     enum AutoState {
         START_TO_SHOOT,
@@ -33,7 +42,7 @@ public class InfCycleRed extends OpMode {
     private AutoState state;
     Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
     Pose shootPose   = new Pose(83, 12, Math.toRadians(67.72));
-    Pose pickLoadPose = new Pose(134.8323, 7.5079, Math.toRadians(0));
+    Pose pickLoadPose = new Pose(120, 7.5079, Math.toRadians(0));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
@@ -75,12 +84,15 @@ public class InfCycleRed extends OpMode {
                 // shooting code
                 break;
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickLoad, true);
                 break;
             case PICKLOAD:
                 // intake code
+                PedroFunctions.intake(robot);
                 break;
             case PICKLOAD_TO_SHOOT:
+                PedroFunctions.reset(robot);
                 follower.followPath(pickLoadToShoot, true);
                 break;
             case PARK:
@@ -107,8 +119,13 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case SHOOT:
-                if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME)
-                    setState(AutoState.SHOOT_TO_PICKLOAD);
+                PedroFunctions.shoot(robot);
+                if (!follower.isBusy()) {
+                    if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
+                        setState(AutoState.SHOOT_TO_PICKLOAD);
+                        PedroFunctions.reset(robot);
+                    }
+                }
                 break;
 
             case SHOOT_TO_PICKLOAD:
@@ -117,8 +134,11 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case PICKLOAD:
-                if (stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME)
+                PedroFunctions.intake(robot);
+                if (!follower.isBusy()) {
                     setState(AutoState.PICKLOAD_TO_SHOOT);
+                    PedroFunctions.reset(robot);
+                }
                 break;
 
             case PICKLOAD_TO_SHOOT:
@@ -149,11 +169,20 @@ public class InfCycleRed extends OpMode {
         autoTimer.resetTimer();
 
         setState(AutoState.START_TO_SHOOT);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+
     }
 
     @Override
     public void loop() {
         follower.update();
         updateStateMachine();
+        telemetry.addData("Shoot Velocity",robot.ShootMotor.getVelocity());
+//        if (intaking)
+//            PedroFunctions.intake(robot);
+//        if (shooting)
+//            PedroFunctions.shoot(robot);
+        telemetry.update();
     }
 }

@@ -5,18 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
-import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.GoodArmNoWheels;
-import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.motorDirectionDebugger;
-import org.firstinspires.ftc.teamcode.ButtonMaps.NoWheelsAbstractButtonMap;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
-import org.firstinspires.ftc.teamcode.ButtonMaps.WheelTestAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
-import org.firstinspires.ftc.teamcode.ComplexRobots.ShootOnlyBot;
-import org.firstinspires.ftc.teamcode.ComplexRobots.WheelTestBot;
-import org.firstinspires.ftc.teamcode.FlywheelPDIFF;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 
-@TeleOp(name="PIDFF Bot")
-public class goodBotShootTeleOp extends OpMode {
+@TeleOp(name="PIDFF TeloOp")
+public class PIDFFTeleOp extends OpMode {
     //Global Variables
     ServoGoodBot robot;
 
@@ -29,7 +24,7 @@ public class goodBotShootTeleOp extends OpMode {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
-        driveButtonMap = new FirstAgeGoodArm();
+        driveButtonMap = new LiamPolarDriveGood();
         armButtonMap = new FlywheelPDIFF();
         telemetry.addLine("Ready.");
         telemetry.update();
@@ -38,8 +33,8 @@ public class goodBotShootTeleOp extends OpMode {
     @Override
     public void loop() {
         driveButtonMap.loop(robot, this);
-        armButtonMap.loop();
-        robot.runLimelight(25);
+        armButtonMap.loop(robot, this);
+        robot.runLimelight(24);
         telemetry.update();
     }
 }

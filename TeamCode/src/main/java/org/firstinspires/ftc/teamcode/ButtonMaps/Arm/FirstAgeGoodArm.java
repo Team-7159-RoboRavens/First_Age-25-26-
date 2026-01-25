@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
@@ -16,7 +17,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     private double stage = 0;
     private double timeSince;
     private double timeBuffer = 2000;
-    private double timeBuffer2 = 500;
+    private double timeBuffer2 = 600;
     private double timeSince2;
 
 
@@ -39,6 +40,8 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
         shootVel = robot.ShootMotor.getVelocity();
         opMode.telemetry.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
+        opMode.telemetry.addData("Target Velocity ", targetVel);
+
 
         //Automatically Aim if there is a tag, this is not currently neccessary.
         if (opMode.gamepad2.x) {
@@ -75,22 +78,32 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    robot.intakeMotor1.setPower(-1);
-                    robot.intakeMotor2.setPower(.6);
-                    if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
-                        timeSince2 = System.currentTimeMillis();
-                        servoPosition *= -1;
+                    if (Math.abs(targetVel - shootVel) < 150) {
+                        robot.intakeMotor1.setPower(.75);
+                        robot.intakeMotor2.setPower(.8);
+                        opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
+//                        if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
+//                            timeSince2 = System.currentTimeMillis();
+//                            if (servoPosition == 1)
+//                                servoPosition *= 0;
+//                            else
+//                                servoPosition = 1;
+//                        }
+                    }
+                    else {
+                        robot.intakeMotor1.setPower(0);
+                        robot.intakeMotor2.setPower(-.4);
                     }
                 }
                 if (limelightData.accurate) {
-                    robot.ShootMotor.setPower((targetVel - shootVel) / 137);
+                    robot.ShootMotor.setVelocity(targetVel);
                     opMode.telemetry.addLine("Limelight passes in shot");
                 }
                 //This allows you to shoot the ball far even if the limelight disconnects or misses the tag.
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.ShootMotor.setPower((velocityShot(185) - shootVel) / 137);
+                    robot.ShootMotor.setVelocity(velocityShot(185));
                 }
                 opMode.telemetry.addLine("Shoot limelight");
                 //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -134,7 +147,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
             //Run both motors without having to turn on the shooting motor.
             if (opMode.gamepad2.b) {
-            robot.intakeMotor2.setPower(1);
+                PedroFunctions.intake(robot);
             }
             //The end case where none of the relevent buttons are pressed so the motors don't just keep spinning.
             else if (Math.abs(opMode.gamepad2.left_stick_y) < joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -143,6 +156,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 550.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.73571 * x + 401.14286);
     }
 }

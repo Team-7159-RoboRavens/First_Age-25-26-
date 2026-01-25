@@ -14,9 +14,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.limelightData;
@@ -80,6 +82,7 @@ public class ServoGoodBot extends MecanumDrive {
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
 //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
@@ -87,7 +90,7 @@ public class ServoGoodBot extends MecanumDrive {
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
-        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -180,7 +183,7 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 3.5 : fr.getTargetXDegrees() + 1, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
@@ -228,6 +231,9 @@ public class ServoGoodBot extends MecanumDrive {
 //                    if (colorResult.getTargetXPixels() > 120)
 //                        telemetry.addData("Largest Yellow Object", String.valueOf(colorResult.getTargetXDegrees()), String.valueOf(colorResult.getTargetYDegrees()));
 //
+                }
+                else {
+                    limelightData.accurate = false;
                 }
             } else {
                 opMode.telemetry.addData("Limelight", "No data available");

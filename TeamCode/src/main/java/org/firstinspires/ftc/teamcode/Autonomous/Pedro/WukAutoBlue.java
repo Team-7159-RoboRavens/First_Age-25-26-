@@ -11,7 +11,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -146,9 +148,9 @@ public class WukAutoBlue extends OpMode {
                 PedroFunctions.aim(robot);
                 break;
             case SHOOT_1:
-                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PPG:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickupPPG, true);
                 break;
             case PICKUP_PPG_TO_PPGEND:
@@ -161,9 +163,9 @@ public class WukAutoBlue extends OpMode {
                 PedroFunctions.aim(robot);
                 break;
             case SHOOT_2:
-                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_PICKUP_PGP:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickupPGP, true);
                 break;
             case PICKUP_PGP_TO_PGPEND:
@@ -180,17 +182,16 @@ public class WukAutoBlue extends OpMode {
                 PedroFunctions.aim(robot);
                 break;
             case SHOOT_3:
-                PedroFunctions.shoot(robot);
                 break;
             case SHOOT_TO_LOAD:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToLoad, true);
                 break;
             case LOAD_TO_SHOOT:
+                PedroFunctions.reset(robot);
                 follower.followPath(loadToShoot, true);
-                PedroFunctions.aim(robot);
                 break;
             case SHOOT_4:
-                PedroFunctions.shoot(robot);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -207,38 +208,43 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_1);
             break;
         case SHOOT_1:
-            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
-                double shootVel = ShootMotor.getVelocity();
-                intakeMotor1.setPower(.8);
-                intakeMotor2.setPower(.8);
-                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            if (!follower.isBusy()) {
+                PedroFunctions.shoot(robot);
+                if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                    setState(AutoState.SHOOT_TO_PICKUP_PPG);
+                    PedroFunctions.reset(robot);
+                }
             }
-            setState(AutoState.SHOOT_TO_PICKUP_PPG);
             break;
         case SHOOT_TO_PICKUP_PPG:
             if (!follower.isBusy())
                 setState(AutoState.PICKUP_PPG_TO_PPGEND);
             break;
         case PICKUP_PPG_TO_PPGEND:
-            if (!follower.isBusy())
+            PedroFunctions.intake(robot);
+            if (!follower.isBusy()) {
                 setState(AutoState.PICKUP_PPGEND_TO_SHOOT);
+                PedroFunctions.reset(robot);
+            }
             break;
         case PICKUP_PPGEND_TO_SHOOT:
             if (!follower.isBusy())
                 setState(AutoState.SHOOT_2);
             break;
         case SHOOT_2:
-            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
-                double shootVel = ShootMotor.getVelocity();
-                intakeMotor1.setPower(.8);
-                intakeMotor2.setPower(.8);
-                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
-            }
-            setState(AutoState.SHOOT_TO_PICKUP_PGP);
+            if (!follower.isBusy()) {
+            PedroFunctions.shoot(robot);
+            if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                setState(AutoState.SHOOT_TO_PICKUP_PGP);
+                PedroFunctions.reset(robot);
+            }}
             break;
         case SHOOT_TO_PICKUP_PGP:
-            if (!follower.isBusy())
+            PedroFunctions.intake(robot);
+            if (!follower.isBusy()) {
                 setState(AutoState.PICKUP_PGP_TO_PGPEND);
+                PedroFunctions.reset(robot);
+            }
             break;
         case PICKUP_PGP_TO_PGPEND:
             if (!follower.isBusy())
@@ -249,26 +255,25 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.GATE_CLEAR);
             break;
         case GATE_CLEAR:
-            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
-                double shootVel = ShootMotor.getVelocity();
-                intakeMotor1.setPower(.8);
-                intakeMotor2.setPower(.8);
-                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
-            }
-            setState(AutoState.GATE_TO_SHOOT);
+            if (!follower.isBusy()) {
+            PedroFunctions.shoot(robot);
+            if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                setState(AutoState.GATE_TO_SHOOT);
+                PedroFunctions.reset(robot);
+            }}
             break;
         case GATE_TO_SHOOT:
             if (!follower.isBusy())
                 setState(AutoState.SHOOT_3);
             break;
         case SHOOT_3:
-            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
-                double shootVel = ShootMotor.getVelocity();
-                intakeMotor1.setPower(.8);
-                intakeMotor2.setPower(.8);
-                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
+            if (!follower.isBusy()) {
+                PedroFunctions.shoot(robot);
+                if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                    setState(AutoState.SHOOT_TO_LOAD);
+                    PedroFunctions.reset(robot);
+                }
             }
-            setState(AutoState.SHOOT_TO_LOAD);
             break;
         case SHOOT_TO_LOAD:
             if (!follower.isBusy())
@@ -279,13 +284,12 @@ public class WukAutoBlue extends OpMode {
                 setState(AutoState.SHOOT_4);
             break;
         case SHOOT_4:
-            while (stateTimer.getElapsedTimeSeconds() < 3.0) {
-                double shootVel = ShootMotor.getVelocity();
-                intakeMotor1.setPower(.8);
-                intakeMotor2.setPower(.8);
-                ShootMotor.setPower((FirstAgeGoodArm.velocityShot(196) - shootVel) / 137);
-            }
-            setState(AutoState.PARK);
+            if (!follower.isBusy()) {
+            PedroFunctions.shoot(robot);
+            if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                setState(AutoState.PARK);
+                PedroFunctions.reset(robot);
+            }}
             break;
         case PARK:
             if (!follower.isBusy())
@@ -299,33 +303,15 @@ public class WukAutoBlue extends OpMode {
 
     @Override
     public void init() {
-        ShootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
-        ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        ShootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        // Reset the motor encoder so that it reads zero ticks
-        ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
-        ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
-        intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
-        intakeMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeMotor2 = hardwareMap.get(DcMotorEx.class, "intakeMotor2");
-        intakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         follower = Constants.createFollower(hardwareMap);
         stateTimer = new Timer();
         buildPaths();
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+
     }
 
     @Override

@@ -63,19 +63,18 @@ public class PedroFunctions {
 
     public static void aim(ServoGoodBot robot) {
 
-
         if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-            limelightData.aiming = false;
+            limelightData.aiming = true;
             robot.setMotorPowers(new MotorPowers(0, 0, 0, 0));
         } else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-            limelightData.aiming = true;
+            limelightData.aiming = false;
             robot.leftFront.setPower(-pid.output());
             robot.leftBack.setPower(-pid.output());
             robot.rightFront.setPower(pid.output());
             robot.rightBack.setPower(pid.output());
-            limelightData.aiming = false;
         }
     }
+
 
 
     public static void intake(ServoGoodBot robot) {

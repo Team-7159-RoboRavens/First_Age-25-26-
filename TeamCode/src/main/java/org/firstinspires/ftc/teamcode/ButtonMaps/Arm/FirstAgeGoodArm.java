@@ -43,20 +43,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
         opMode.telemetry.addData("Target Velocity ", targetVel);
 
 
-        //Automatically Aim if there is a tag, this is not currently neccessary.
-        if (opMode.gamepad2.x) {
-            if (limelightData.accurate) {
-                timeSince = opMode.getRuntime();
-                limelightData.aiming = true;
-//                robot.setServosTo(-1, 1, limelightData.directionToTag()[0], robot.aimServo);
-//                robot.setServosTo(-1, 1, limelightData.directionToTag()[1], robot.angleServo);
-                opMode.telemetry.addLine("Aiming");
-            }
-            else{
-                opMode.telemetry.addLine("No Tag");
-                limelightData.aiming = false;
-            }
-        }
             //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
             if (opMode.gamepad2.dpad_down) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -156,6 +142,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.83571 * x + 421.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.91571 * x + 441.14286);
     }
 }

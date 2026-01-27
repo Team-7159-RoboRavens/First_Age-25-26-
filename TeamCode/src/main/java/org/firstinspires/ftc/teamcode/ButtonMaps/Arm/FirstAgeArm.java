@@ -38,20 +38,6 @@ public class FirstAgeArm extends ServoAbstractButtonMap {
         opMode.telemetry.addData("Velocity ", shootVel);
         opMode.telemetry.addData("target velocity = ", targetVel);
 
-        //Automatically Aim if there is a tag
-        if (opMode.gamepad2.x) {
-            if (limelightData.accurate) {
-                timeSince = opMode.getRuntime();
-                limelightData.aiming = true;
-//                robot.setServosTo(-1, 1, limelightData.directionToTag()[0], robot.aimServo);
-//                robot.setServosTo(-1, 1, limelightData.directionToTag()[1], robot.angleServo);
-                opMode.telemetry.addLine("Aiming");
-            }
-            else{
-                opMode.telemetry.addLine("No Tag");
-                limelightData.aiming = false;
-            }
-        }
 //        if (Math.abs(opMode.gamepad2.left_stick_y) > .2) {
 //            robot.Servo1.setPower(opMode.gamepad2.left_stick_y);
 //            robot.Servo2.setPower(-opMode.gamepad2.left_stick_y);

@@ -33,7 +33,7 @@ static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.032, 0, 0);
+    public static PIDControl pid = new PIDControl(0.036, 0, 0);
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
@@ -201,6 +201,4 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 
     }
-
-
 }

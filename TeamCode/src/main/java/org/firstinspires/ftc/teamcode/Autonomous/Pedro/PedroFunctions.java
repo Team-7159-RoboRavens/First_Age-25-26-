@@ -5,7 +5,12 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opM
 import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm.velocityShot;
 
 import static org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood.pid;
+import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -49,7 +54,7 @@ public class PedroFunctions {
 //            }
 //            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
 //        } else {
-            if (Math.abs(velocityShot(199) - shootVel) < 60) {
+            if (Math.abs(velocityShot(192) - shootVel) < 60) {
                 robot.intakeMotor1.setPower(.8);
                 robot.intakeMotor2.setPower(.75);
             }
@@ -57,17 +62,15 @@ public class PedroFunctions {
                 robot.intakeMotor1.setPower(0);
                 robot.intakeMotor2.setPower(-.3);
             }
-            robot.ShootMotor.setVelocity(velocityShot(199));
+            robot.ShootMotor.setVelocity(velocityShot(192));
 //        }
     }
 
     public static void aim(ServoGoodBot robot) {
 
         if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-            limelightData.aiming = true;
             robot.setMotorPowers(new MotorPowers(0, 0, 0, 0));
         } else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
-            limelightData.aiming = false;
             robot.leftFront.setPower(-pid.output());
             robot.leftBack.setPower(-pid.output());
             robot.rightFront.setPower(pid.output());
@@ -87,5 +90,23 @@ public class PedroFunctions {
         robot.intakeMotor2.setPower(0);
         robot.ShootMotor.setPower(0);
 
+    }
+
+    public static PathChain createHeading(Pose startPos, Pose endPos){
+        PathChain drive = follower.pathBuilder()
+                .addPath(new BezierLine(startPos, endPos))
+                .setLinearHeadingInterpolation(startPos.getHeading(), endPos.getHeading())
+                .build();
+        return drive;
+    }
+
+    public static PathChain turn(double degrees, Follower follower){
+        Pose startPos = new Pose (80, 14, Math.toRadians(67.5));
+        Pose endPos = new Pose(79, 14-9.17429/5, Math.toRadians(67.5)-degrees);
+        PathChain drive = follower.pathBuilder()
+                .addPath(new BezierLine(startPos, endPos))
+                .setLinearHeadingInterpolation(startPos.getHeading(), endPos.getHeading())
+                .build();
+        return drive;
     }
 }

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import static org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions.createHeading;
+import static org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions.turn;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
@@ -13,6 +16,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "InfCycleRed")
@@ -35,16 +39,17 @@ public class InfCycleRed extends OpMode {
         PICKLOAD,
         PICKLOAD_TO_PICKLOAD_END,
         PICKLOAD_END_TO_SHOOT,
+        AIM,
         PARK,
         DONE
     }
 
     private AutoState state;
     Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(80, 14, Math.toRadians(64.72));
+    Pose shootPose   = new Pose(80, 14, Math.toRadians(67.5));
     Pose pickLoadPose = new Pose(110, 14, Math.toRadians(0));
-    Pose pickLoadPoseEnd = new Pose(125.277, 8.900, Math.toRadians(0));
-    Pose pickLoadPoseReal = new Pose(125.277, 8.900, Math.toRadians(-12));
+    Pose pickLoadPoseEnd = new Pose(128, 8.900, Math.toRadians(-13));
+//    Pose pickLoadPoseReal = new Pose(125.277, 8.900, Math.toRadians(-12));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
@@ -52,6 +57,7 @@ public class InfCycleRed extends OpMode {
     PathChain shootToPark;
     PathChain pickLoadToPickLoadEnd;
     PathChain pickLoadEndToShoot;
+    PathChain aim;
 
     void buildPaths() {
         startToShoot = follower.pathBuilder()
@@ -75,7 +81,7 @@ public class InfCycleRed extends OpMode {
                 .build();
 
         pickLoadEndToShoot = follower.pathBuilder()
-                .addPath(new BezierLine(pickLoadPoseReal, shootPose))
+                .addPath(new BezierLine(pickLoadPoseEnd, shootPose))
                 .setLinearHeadingInterpolation(pickLoadPoseEnd.getHeading(), shootPose.getHeading())
                 .build();
     }
@@ -86,6 +92,8 @@ public class InfCycleRed extends OpMode {
 
         switch (newState) {
             case START_TO_SHOOT:
+                stateTimer.resetTimer();
+                autoTimer.resetTimer();
                 follower.followPath(startToShoot, true);
                 break;
             case SHOOT:
@@ -103,6 +111,9 @@ public class InfCycleRed extends OpMode {
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadEndToShoot, true);
+                break;
+            case AIM:
+                follower.followPath(aim, true);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -151,18 +162,27 @@ public class InfCycleRed extends OpMode {
 
             case PICKLOAD_TO_PICKLOAD_END:
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy()) {
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 2) {
                     setState(AutoState.PICKLOAD_END_TO_SHOOT);
                 }
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy())
+                if (!follower.isBusy()) {
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower);
+                    setState(AutoState.AIM);
+                }
+                break;
+
+            case AIM:
+                if (!follower.isBusy()) {
                     setState(AutoState.SHOOT);
+                }
                 break;
 
             case PARK:
+                PedroFunctions.reset(robot);
                 if (!follower.isBusy())
                     setState(AutoState.DONE);
                 break;
@@ -181,8 +201,7 @@ public class InfCycleRed extends OpMode {
         buildPaths();
         follower.setPose(startPose);
 
-        stateTimer.resetTimer();
-        autoTimer.resetTimer();
+
 
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
@@ -197,6 +216,8 @@ public class InfCycleRed extends OpMode {
         follower.update();
         updateStateMachine();
         telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
+        robot.runLimelight(24);
         telemetry.update();
     }
 }

@@ -38,22 +38,27 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
         //These coefficients are used in the shooting code later.
         timeSince2 = opMode.getRuntime();
         shootVel = robot.ShootMotor.getVelocity();
-        opMode.telemetry.addData("Velocity ", shootVel);
+//        opMode.telemetry.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
-        opMode.telemetry.addData("Target Velocity ", targetVel);
+//        opMode.telemetry.addData("Target Velocity ", targetVel);
+        robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 
             //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
             if (opMode.gamepad2.dpad_down) {
-                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
-                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
-                    opMode.telemetry.addLine("Shoot medium-short");
-                    robot.ShootMotor.setPower(baseShotPower * 1.45);
-                } else {
-                    opMode.telemetry.addLine("Shoot Short");
-                    robot.ShootMotor.setPower(baseShotPower * 1.35);
-                }
+//                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//
+//                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
+//                    opMode.telemetry.addLine("Shoot medium-short");
+////                    robot.ShootMotor.setPower(baseShotPower * 1.45);
+//                    robot.intakeMotor1.setPower(.8);
+//                    robot.intakeMotor2.setPower(.75);
+//                } else {
+//                    opMode.telemetry.addLine("Shoot Short");
+////                    robot.ShootMotor.setPower(baseShotPower * 1.35);
+//                    robot.intakeMotor1.setPower(0);
+//                    robot.intakeMotor2.setPower(-.3);
+//                }
             } else if (opMode.gamepad2.dpad_up) {
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 if (stage == 0) {

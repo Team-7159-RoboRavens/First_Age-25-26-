@@ -11,11 +11,12 @@ public class HolonomicDrive {
     //https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
     public static MotorPowers fieldOrientedDrive(Gamepad gamepad, double maxMotorPower, IMU imu){
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        if (Double.isNaN(botHeading) || Double.isInfinite(botHeading)) botHeading = 0.0;
         //Provide a deadzone of +-0.1
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
         double rotate = gamepad.right_stick_x > 0.1 || gamepad.right_stick_x < -0.1 ? gamepad.right_stick_x : 0;
-        double rotX = (x * Math.cos(-botHeading) - y * Math.sin(-botHeading)) * 1.1;
+        double rotX = (x * Math.cos(-botHeading) - y * Math.sin(-botHeading))*1.1;
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rotate), 1);
         double frontLeftPower = maxMotorPower*((rotY + rotX + rotate) / denominator);
@@ -42,8 +43,10 @@ public class HolonomicDrive {
         return new MotorPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
     }
     public static MotorPowers fieldOrientedDrive(double x, double y, double turn, double maxMotorPower, double robotAngle, OpMode opmode) {
-        double rotX = x * Math.cos(robotAngle) - y * Math.sin(robotAngle);
-        double rotY = x * Math.sin(robotAngle) + y * Math.cos(robotAngle);
+        if (Double.isNaN(robotAngle) || Double.isInfinite(robotAngle)) robotAngle = 0.0;
+        double angle = -robotAngle;
+        double rotX = (x * Math.cos(angle) - y * Math.sin(angle))*1.1;
+        double rotY = x * Math.sin(angle) + y * Math.cos(angle);
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(turn), 1);
         double frontLeftPower = maxMotorPower * (rotY + rotX + turn) / denominator;
         double backLeftPower = maxMotorPower * (rotY - rotX + turn) / denominator;

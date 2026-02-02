@@ -67,7 +67,6 @@ public class PedroFunctions {
     }
 
     public static void aim(ServoGoodBot robot) {
-
         if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
             robot.setMotorPowers(new MotorPowers(0, 0, 0, 0));
         } else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {

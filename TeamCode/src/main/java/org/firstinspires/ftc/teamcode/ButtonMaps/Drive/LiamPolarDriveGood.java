@@ -37,11 +37,16 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
-
+        IMU imu = robot.lazyImu.get();
+        // FOD resetting
+        if (opMode.gamepad1.back && et.time() > 500) {
+            imu.resetYaw();
+            et.reset();
+        }
         MotorPowers mp;
         mp = getMotorPowers(
                 robot,
-                robot.lazyImu.get(),
+                imu,
                 opMode.gamepad1.dpad_up,
                 opMode.gamepad1.dpad_down,
                 opMode.gamepad1.dpad_left,
@@ -56,10 +61,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
                 opMode.gamepad1.x,
                 opMode);
 
-        //Reset FOD
-        if (opMode.gamepad1.back) {
-            robot.lazyImu.get().resetYaw();
-        }
+
 
         pid.update(limelightData.aprilXDegrees);
 
@@ -89,7 +91,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         mp.rightBack += dpadStrafe(opMode, .8).rightBack;
 
         robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
-        double robotHeading = -robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         opMode.telemetry.addLine("angle: "+robotHeading);
     }
 
@@ -189,15 +191,13 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         }else{
             opMode.telemetry.addData("Drive Motor Mode", "Coast");
         }
-
-        robot.lazyImu.get();
         opMode.telemetry.addLine("forward: "+forward);
         opMode.telemetry.addLine("right: "+right);
         opMode.telemetry.addLine("turn: "+turn);
 
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
 
-        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 
     }

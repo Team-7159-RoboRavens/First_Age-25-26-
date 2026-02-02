@@ -81,7 +81,7 @@ public class ServoGoodBot extends MecanumDrive {
         ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
-        ShootMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ShootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
 //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
@@ -205,7 +205,7 @@ public class ServoGoodBot extends MecanumDrive {
                             double goalHeightCm = 75;
 
                             double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-                            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+                            double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
 
                             //calculate distance
                             double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);

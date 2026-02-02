@@ -200,15 +200,22 @@ public class InfCycleRed extends OpMode {
 
         buildPaths();
         follower.setPose(startPose);
+        robot = new ServoGoodBot(
+                hardwareMap,
+                new Pose2d(startPose.getX(), startPose.getY(), startPose.getHeading()),
+                this
+        );
 
-
-
-        setState(AutoState.START_TO_SHOOT);
-        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
         robot.ShootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
                 new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1.2)
         );
+    }
+    @Override
+    public void start() {
+        stateTimer.resetTimer();
+        autoTimer.resetTimer();
+        setState(AutoState.START_TO_SHOOT);
     }
 
     @Override

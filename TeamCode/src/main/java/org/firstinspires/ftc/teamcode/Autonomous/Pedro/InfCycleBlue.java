@@ -177,10 +177,8 @@ public class InfCycleBlue extends OpMode {
         follower = Constants.createFollower(hardwareMap);
         stateTimer = new Timer();
         autoTimer = new Timer();
-
-        buildPaths();
         follower.setPose(startPose);
-
+        buildPaths();
         robot = new ServoGoodBot(
                 hardwareMap,
                 new Pose2d(startPose.getX(), startPose.getY(), startPose.getHeading()),

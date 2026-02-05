@@ -170,7 +170,7 @@ public class InfCycleRed extends OpMode {
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(67.5));
                     setState(AutoState.AIM);
                 }
                 break;

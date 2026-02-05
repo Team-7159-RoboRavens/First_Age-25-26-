@@ -43,7 +43,7 @@ public class InfCycleBlue extends OpMode {
     private AutoState state;
 
     Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(61, 12, Math.toRadians(112.28));
+    Pose shootPose   = new Pose(61, 14, Math.toRadians(112.28));
     Pose pickLoadPose = new Pose(14.436, 7.5079, Math.toRadians(180));
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
 
@@ -127,8 +127,7 @@ public class InfCycleBlue extends OpMode {
         switch (state) {
             case START_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower);
-                    setState(AutoState.AIM);
+                    setState(AutoState.SHOOT);
                 }
                 break;
 
@@ -157,7 +156,7 @@ public class InfCycleBlue extends OpMode {
 
             case PICKLOAD_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, Math.toRadians(112.28));
                     setState(AutoState.AIM);
                 }
                 break;
@@ -202,6 +201,9 @@ public class InfCycleBlue extends OpMode {
     public void loop() {
         follower.update();
         updateStateMachine();
+        telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
+        robot.runLimelight(20);
         telemetry.update();
     }
 }

@@ -321,6 +321,8 @@ public class WukAutoBlue extends OpMode {
     public void loop() {
         follower.update();
         updateStateMachine();
+        telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
         robot.runLimelight(20);
         telemetry.update();
     }

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ComplexRobots;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.LazyImu;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
@@ -17,6 +18,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpoint;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -36,6 +38,7 @@ public class ServoGoodBot extends MecanumDrive {
         public final DcMotorEx ShootMotor;
         public final DcMotorEx intakeMotor1;
         public final DcMotorEx intakeMotor2;
+        public GoBildaPinpointDriver pinpoint;
     //    public final DcMotorEx ShootMotor2;
 //        public final Servo Servo1;
 //        public final Servo Servo1;
@@ -45,6 +48,10 @@ public class ServoGoodBot extends MecanumDrive {
 
 //    public final Servo turnServo;
     public final Limelight3A limelight;
+
+    public void setPinpoint(GoBildaPinpointDriver pinpoint) {
+        this.pinpoint = pinpoint;
+    }
 
     public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
         super(hardwareMap, pose);
@@ -183,7 +190,7 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 2.5 : fr.getTargetXDegrees() - 1, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 2.2 : fr.getTargetXDegrees() - 1, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
@@ -196,7 +203,7 @@ public class ServoGoodBot extends MecanumDrive {
                             double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = 6.5;
+                            double limelightMountAngleDegrees = 7.6;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

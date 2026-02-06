@@ -16,7 +16,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     private int stage = 1;
 
-    public static double F = 12.1;
+    public static double F = 12.2;
 
     public static double P = 130.7;
 

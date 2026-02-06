@@ -38,9 +38,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
         //These coefficients are used in the shooting code later.
         timeSince2 = opMode.getRuntime();
         shootVel = robot.ShootMotor.getVelocity();
-//        opMode.telemetry.addData("Velocity ", shootVel);
+        opMode.telemetry.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
-//        opMode.telemetry.addData("Target Velocity ", targetVel);
+        opMode.telemetry.addData("Target Velocity ", targetVel);
         robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 
@@ -147,6 +147,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.84571 * x + 375.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.58571 * x + 460.14286);
     }
 }

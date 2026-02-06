@@ -10,5 +10,6 @@ public class GoodTeleOpRed extends GoodTeleOpShared {
         armButtonMap.loop(robot, this);
         robot.runLimelight(24);
         telemetry.update();
+//        pinpoint.update();
     }
 }

@@ -35,8 +35,10 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
 
     public static PIDControl pid = new PIDControl(0.036, 0, 0);
 
+
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
+        limelightData.ImuOffset = 0;
         IMU imu = robot.lazyImu.get();
         // FOD resetting
         if (opMode.gamepad1.back && et.time() > 500) {
@@ -93,6 +95,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
         double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         opMode.telemetry.addLine("angle: "+robotHeading);
+//        opMode.telemetry.addLine("Pinpoint Heading: "+ robot.pinpoint.getHeading(AngleUnit.RADIANS));
     }
 
     public static MotorPowers getMotorPowers(

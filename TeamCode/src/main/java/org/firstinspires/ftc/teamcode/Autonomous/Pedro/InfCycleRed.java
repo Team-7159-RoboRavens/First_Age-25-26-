@@ -27,17 +27,18 @@ public class InfCycleRed extends OpMode {
     private Timer autoTimer;
     private static final double SHOOT_TIME = 4.2;
     private static final double INTAKE_TIME = 1.5;
+    private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;
     ServoGoodBot robot;
-    boolean intaking;
-    boolean shooting;
 
     enum AutoState {
         START_TO_SHOOT,
         SHOOT,
         SHOOT_TO_PICKLOAD,
-        PICKLOAD,
-        PICKLOAD_TO_PICKLOAD_END,
+
+        PICKLOAD_INTAKE1,
+        PICKLOAD_RECOIL,
+        PICKLOAD_RETURN,
         PICKLOAD_END_TO_SHOOT,
         AIM,
         PARK,
@@ -45,17 +46,18 @@ public class InfCycleRed extends OpMode {
     }
 
     private AutoState state;
-    Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(80, 14, Math.toRadians(67.5));
-    Pose pickLoadPose = new Pose(110, 14, Math.toRadians(0));
+
+    Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
+    Pose shootPose = new Pose(80, 14, Math.toRadians(67.5));
     Pose pickLoadPoseEnd = new Pose(128, 8.900, Math.toRadians(-13));
-//    Pose pickLoadPoseReal = new Pose(125.277, 8.900, Math.toRadians(-12));
+    Pose pickLoadPoseRec = new Pose(116, 8.9, -13);
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
     PathChain shootToPark;
-    PathChain pickLoadToPickLoadEnd;
+    PathChain pickLoadEndToRec;
+    PathChain pickLoadRecToPickLoadEnd;
     PathChain pickLoadEndToShoot;
     PathChain aim;
 
@@ -66,8 +68,8 @@ public class InfCycleRed extends OpMode {
                 .build();
 
         shootToPickLoad = follower.pathBuilder()
-                .addPath(new BezierLine(shootPose, pickLoadPose))
-                .setLinearHeadingInterpolation(shootPose.getHeading(), pickLoadPose.getHeading())
+                .addPath(new BezierLine(shootPose, pickLoadPoseEnd))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), pickLoadPoseEnd.getHeading())
                 .build();
 
         shootToPark = follower.pathBuilder()
@@ -75,9 +77,14 @@ public class InfCycleRed extends OpMode {
                 .setLinearHeadingInterpolation(shootPose.getHeading(), parkPose.getHeading())
                 .build();
 
-        pickLoadToPickLoadEnd = follower.pathBuilder()
-                .addPath(new BezierLine(pickLoadPose, pickLoadPoseEnd))
-                .setLinearHeadingInterpolation(pickLoadPose.getHeading(), pickLoadPoseEnd.getHeading())
+        pickLoadEndToRec = follower.pathBuilder()
+                .addPath(new BezierLine(pickLoadPoseEnd, pickLoadPoseRec))
+                .setLinearHeadingInterpolation(pickLoadPoseEnd.getHeading(), pickLoadPoseRec.getHeading())
+                .build();
+
+        pickLoadRecToPickLoadEnd = follower.pathBuilder()
+                .addPath(new BezierLine(pickLoadPoseRec, pickLoadPoseEnd))
+                .setLinearHeadingInterpolation(pickLoadPoseRec.getHeading(), pickLoadPoseEnd.getHeading())
                 .build();
 
         pickLoadEndToShoot = follower.pathBuilder()
@@ -101,13 +108,16 @@ public class InfCycleRed extends OpMode {
             case SHOOT_TO_PICKLOAD:
                 follower.followPath(shootToPickLoad, true);
                 break;
-            case PICKLOAD:
+            case PICKLOAD_INTAKE1:
                 PedroFunctions.intake(robot);
                 break;
-            case PICKLOAD_TO_PICKLOAD_END:
+            case PICKLOAD_RECOIL:
                 PedroFunctions.intake(robot);
-                follower.followPath(pickLoadToPickLoadEnd, true);
+                follower.followPath(pickLoadEndToRec, true);
                 break;
+            case PICKLOAD_RETURN:
+                PedroFunctions.intake(robot);
+                follower.followPath(pickLoadRecToPickLoadEnd, true);
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadEndToShoot, true);
@@ -134,41 +144,39 @@ public class InfCycleRed extends OpMode {
 
         switch (state) {
             case START_TO_SHOOT:
-                if (!follower.isBusy())
-                    setState(AutoState.SHOOT);
+                if (!follower.isBusy()) setState(AutoState.SHOOT);
                 break;
 
             case SHOOT:
-                if (!follower.isBusy()) {
-                    PedroFunctions.shoot(robot);
-                    if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
-                        setState(AutoState.SHOOT_TO_PICKLOAD);
-                        PedroFunctions.reset(robot);
-                    }
+                PedroFunctions.shoot(robot);
+                if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
+                    PedroFunctions.reset(robot);
+                    setState(AutoState.SHOOT_TO_PICKLOAD);
                 }
                 break;
 
             case SHOOT_TO_PICKLOAD:
-                if (!follower.isBusy())
-                    setState(AutoState.PICKLOAD);
+                    if (!follower.isBusy()) setState(AutoState.PICKLOAD_INTAKE1);
                 break;
 
-            case PICKLOAD:
+            case PICKLOAD_INTAKE1:
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy()) {
-                    setState(AutoState.PICKLOAD_TO_PICKLOAD_END);
+                if (stateTimer.getElapsedTimeSeconds() >= INTAKE_BURST_TIME) {
+                    setState(AutoState.PICKLOAD_RECOIL);
                 }
                 break;
 
-            case PICKLOAD_TO_PICKLOAD_END:
-                PedroFunctions.intake(robot);
-                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 2) {
+            case PICKLOAD_RECOIL:
+                if (!follower.isBusy()) setState(AutoState.PICKLOAD_RETURN);
+                break;
+
+            case PICKLOAD_RETURN:
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {
                     setState(AutoState.PICKLOAD_END_TO_SHOOT);
                 }
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
-                PedroFunctions.intake(robot);
                 if (!follower.isBusy()) {
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(67.5));
                     setState(AutoState.AIM);
@@ -176,15 +184,12 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case AIM:
-                if (!follower.isBusy()) {
-                    setState(AutoState.SHOOT);
-                }
+                if (!follower.isBusy()) setState(AutoState.SHOOT);
                 break;
 
             case PARK:
                 PedroFunctions.reset(robot);
-                if (!follower.isBusy())
-                    setState(AutoState.DONE);
+                if (!follower.isBusy()) setState(AutoState.DONE);
                 break;
 
             case DONE:

@@ -202,6 +202,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
         opMode.telemetry.addLine("left stick x: "+left_stick_x+ "\ny: "+left_stick_y);
 
         double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        opMode.telemetry.addLine("FOD: "+robotHeading);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 
     }

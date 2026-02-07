@@ -17,8 +17,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     private double stage = 0;
     private double timeSince;
     private double timeBuffer = 2000;
-    private double timeBuffer2 = 600;
-    private double timeSince2;
+    private double timeBuffer2 = 100;
+    private double timeSince2 = 0;
+    boolean timeDelay = false;
 
 
     //These magic numbers are not final and should be iteratively tested.
@@ -70,9 +71,19 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 }
                 else {
                     if (Math.abs(targetVel - shootVel) < 80) {
-                        robot.intakeMotor1.setPower(.75);
-                        robot.intakeMotor2.setPower(.8);
-                        opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
+                        if (!timeDelay) {
+                            timeSince2 = System.currentTimeMillis();
+                            timeDelay = true;
+                        }
+                        if (System.currentTimeMillis() - timeSince2 > timeBuffer2) {
+                            robot.intakeMotor1.setPower(.75);
+                            robot.intakeMotor2.setPower(.8);
+                            opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
+                        }
+                        else {
+                            opMode.telemetry.addLine("Getting up to speed");
+                        }
+                        timeDelay = false;
 //                        if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
 //                            timeSince2 = System.currentTimeMillis();
 //                            if (servoPosition == 1)
@@ -141,6 +152,11 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             if (opMode.gamepad2.b) {
                 PedroFunctions.intake(robot);
             }
+
+            if(opMode.gamepad2.y) {
+                robot.intakeMotor2.setPower(0.65);
+            }
+
             //The end case where none of the relevent buttons are pressed so the motors don't just keep spinning.
             else if (Math.abs(opMode.gamepad2.left_stick_y) < joystickDeadZone && !opMode.gamepad2.dpad_up) {
                 robot.intakeMotor1.setPower(0);
@@ -148,6 +164,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.58571 * x + 470.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.91571 * x + 455.14286);
     }
 }

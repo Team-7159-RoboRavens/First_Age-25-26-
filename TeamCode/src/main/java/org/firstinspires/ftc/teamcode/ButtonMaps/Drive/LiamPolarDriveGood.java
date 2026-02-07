@@ -27,13 +27,13 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
-static double aimingThreshold = .02;
+static double aimingThreshold = .025;
 
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.036, 0, 0);
+    public static PIDControl pid = new PIDControl(0.039, 0, 0);
 
 
     @Override

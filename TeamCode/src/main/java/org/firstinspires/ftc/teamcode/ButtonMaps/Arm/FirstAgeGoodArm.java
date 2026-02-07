@@ -125,6 +125,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             //Intake balls without feeding them into the launcher.
             else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
                 robot.intakeMotor1.setPower(opMode.gamepad2.left_stick_y);
+                robot.intakeMotor2.setPower(.5);
             }
             //This is for clearing the launcher if something is stuck.
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -147,6 +148,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.58571 * x + 460.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.58571 * x + 470.14286);
     }
 }

@@ -106,6 +106,7 @@ public class InfCycleRed extends OpMode {
             case SHOOT:
                 break;
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.intake(robot);
                 follower.followPath(shootToPickLoad, true);
                 break;
             case PICKLOAD_INTAKE1:
@@ -156,6 +157,7 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.intake(robot);
                     if (!follower.isBusy()) setState(AutoState.PICKLOAD_INTAKE1);
                 break;
 
@@ -167,10 +169,12 @@ public class InfCycleRed extends OpMode {
                 break;
 
             case PICKLOAD_RECOIL:
+                PedroFunctions.intake(robot);
                 if (!follower.isBusy()) setState(AutoState.PICKLOAD_RETURN);
                 break;
 
             case PICKLOAD_RETURN:
+                PedroFunctions.intake(robot);
                 if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {
                     setState(AutoState.PICKLOAD_END_TO_SHOOT);
                 }

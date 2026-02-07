@@ -203,7 +203,7 @@ public class ServoGoodBot extends MecanumDrive {
                             double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = id == 20 ? 7.6 : 6.5;
+                            double limelightMountAngleDegrees = id == 20 ? 7.6 : 6.35;
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

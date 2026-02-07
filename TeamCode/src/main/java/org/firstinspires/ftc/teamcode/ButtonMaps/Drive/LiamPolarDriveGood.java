@@ -27,7 +27,7 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
-static double aimingThreshold = .05;
+static double aimingThreshold = .02;
 
 static private boolean motorBrake = true;
 
@@ -65,7 +65,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
 
 
 
-        pid.update(limelightData.aprilXDegrees);
+
 
         if (opMode.gamepad2.x){
             if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
@@ -86,6 +86,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
         }
+        pid.update(limelightData.aprilXDegrees);
 
         mp.leftFront += dpadStrafe(opMode, .8).leftFront;
         mp.rightFront += dpadStrafe(opMode, .8).rightFront;

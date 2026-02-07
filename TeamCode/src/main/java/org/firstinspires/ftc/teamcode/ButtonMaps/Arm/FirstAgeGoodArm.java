@@ -17,7 +17,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     private double stage = 0;
     private double timeSince;
     private double timeBuffer = 2000;
-    private double timeBuffer2 = 100;
+    private double timeBuffer2 = 75;
     private double timeSince2 = 0;
     boolean timeDelay = false;
 

@@ -17,7 +17,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     private double stage = 0;
     private double timeSince;
     private double timeBuffer = 2000;
-    private double timeBuffer2 = 75;
+    private double timeBuffer2 = 200;
     private double timeSince2 = 0;
     boolean timeDelay = false;
 
@@ -47,6 +47,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
 
             //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
             if (opMode.gamepad2.dpad_down) {
+                robot.ShootMotor.setPower(-.4);
 //                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 //
 //                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -70,20 +71,20 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    if (Math.abs(targetVel - shootVel) < 80) {
-                        if (!timeDelay) {
-                            timeSince2 = System.currentTimeMillis();
-                            timeDelay = true;
-                        }
-                        if (System.currentTimeMillis() - timeSince2 > timeBuffer2) {
+                    if (Math.abs(targetVel - shootVel) < 70) {
+//                        if (!timeDelay) {
+//                            timeSince2 = System.currentTimeMillis();
+//                            timeDelay = true;
+//                        }
+//                        if (System.currentTimeMillis() - timeSince2 > timeBuffer2) {
                             robot.intakeMotor1.setPower(.75);
                             robot.intakeMotor2.setPower(.8);
                             opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
-                        }
-                        else {
-                            opMode.telemetry.addLine("Getting up to speed");
-                        }
-                        timeDelay = false;
+//                        }
+//                        else {
+//                            opMode.telemetry.addLine("Getting up to speed");
+//                        }
+//                        timeDelay = false;
 //                        if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
 //                            timeSince2 = System.currentTimeMillis();
 //                            if (servoPosition == 1)
@@ -105,7 +106,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.ShootMotor.setVelocity(velocityShot(194));
+                    robot.ShootMotor.setVelocity(velocityShot(202));
                 }
                 opMode.telemetry.addLine("Shoot limelight");
                 //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -136,7 +137,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             //Intake balls without feeding them into the launcher.
             else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
                 robot.intakeMotor1.setPower(opMode.gamepad2.left_stick_y);
-                robot.intakeMotor2.setPower(.5);
+//                robot.intakeMotor2.setPower(.5);
             }
             //This is for clearing the launcher if something is stuck.
             else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -164,6 +165,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.91571 * x + 455.14286);
+        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
     }
 }

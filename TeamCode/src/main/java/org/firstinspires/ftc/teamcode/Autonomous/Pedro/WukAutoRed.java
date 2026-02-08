@@ -56,13 +56,13 @@ public class WukAutoRed extends OpMode {
     Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
     Pose shootPose   = new Pose(83, 12, Math.toRadians(67.3));
 
-    Pose pickPPGstart = new Pose(95, 43.3438, Math.toRadians(0));
-    Pose pickPPGend   = new Pose(124, 43.3438, Math.toRadians(0));
+    Pose pickPPGstart = new Pose(90, 39.3438, Math.toRadians(0));
+    Pose pickPPGend   = new Pose(124, 39.3438, Math.toRadians(0));
 
-    Pose pickPGPstart = new Pose(95, 68, Math.toRadians(0));
-    Pose pickPGPend   = new Pose(118, 68, Math.toRadians(0));
+    Pose pickPGPstart = new Pose(90, 65.5, Math.toRadians(0));
+    Pose pickPGPend   = new Pose(118, 65.5, Math.toRadians(0));
 
-    Pose gateClear   = new Pose(120, 69, Math.toRadians(-90));
+    Pose gateClear   = new Pose(120, 68, Math.toRadians(-90));
     Pose loadingZone = new Pose(124, 11, Math.toRadians(0));
     Pose parkPose    = new Pose(92, 27, Math.toRadians(0));
 
@@ -172,6 +172,7 @@ public class WukAutoRed extends OpMode {
                 break;
             case GATE_CLEAR:
                 PedroFunctions.reset(robot);
+
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
@@ -231,7 +232,7 @@ public class WukAutoRed extends OpMode {
             PedroFunctions.shoot(robot);
 //            PedroFunctions.aim(robot);
             if (!follower.isBusy()) {
-                if (stateTimer.getElapsedTimeSeconds() >= 4.8) {
+                if (stateTimer.getElapsedTimeSeconds() >= 4.2) {
                     setState(AutoState.SHOOT_TO_PICKUP_PGP);
                     PedroFunctions.reset(robot);
                 }
@@ -243,17 +244,17 @@ public class WukAutoRed extends OpMode {
             break;
         case PICKUP_PGP_TO_PGPEND:
             PedroFunctions.intake(robot);
-            if (!follower.isBusy()) {
+            if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= .7) {
                 setState(AutoState.PGPEND_TO_GATE);
                 PedroFunctions.reset(robot);
             }
                 break;
         case PGPEND_TO_GATE:
-            if (!follower.isBusy())
+            if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= .7)
                 setState(AutoState.GATE_CLEAR);
             break;
         case GATE_CLEAR:
-            if (stateTimer.getElapsedTimeSeconds() >= 2) {
+            if (stateTimer.getElapsedTimeSeconds() >= .7) {
                 setState(AutoState.GATE_TO_SHOOT);
             }
                 break;

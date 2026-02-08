@@ -59,13 +59,13 @@ public class WukAutoBlue extends OpMode {
     Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
     Pose shootPose   = new Pose(61, 12, Math.toRadians(112.7));
 
-    Pose pickPPGstart = new Pose(40.41798, 35.3438, Math.toRadians(180));
-    Pose pickPPGend   = new Pose(14, 35.3438, Math.toRadians(180));
+    Pose pickPPGstart = new Pose(46.41798, 38.3438, Math.toRadians(180));
+    Pose pickPPGend   = new Pose(14, 38.3438, Math.toRadians(180));
 
-    Pose pickPGPstart = new Pose(41.64277, 60, Math.toRadians(180));
-    Pose pickPGPend   = new Pose(13.5, 60, Math.toRadians(180));
+    Pose pickPGPstart = new Pose(46.64277, 62, Math.toRadians(180));
+    Pose pickPGPend   = new Pose(13.5, 62, Math.toRadians(180));
 
-    Pose gateClear   = new Pose(13.5, 62, Math.toRadians(270));
+    Pose gateClear   = new Pose(13.5, 65, Math.toRadians(270));
     Pose loadingZone = new Pose(12, 11, Math.toRadians(180));
     Pose parkPose    = new Pose(52, 27, Math.toRadians(180));
 
@@ -249,19 +249,18 @@ public class WukAutoBlue extends OpMode {
             }
             break;
         case PICKUP_PGP_TO_PGPEND:
-            if (!follower.isBusy())
+            if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= .7)
                 setState(AutoState.PGPEND_TO_GATE);
             break;
         case PGPEND_TO_GATE:
-            if (!follower.isBusy())
+            if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= .7)
                 setState(AutoState.GATE_CLEAR);
             break;
         case GATE_CLEAR:
-            if (!follower.isBusy()) {
-            if (stateTimer.getElapsedTimeSeconds() >= 2.0) {
+            if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 1) {
                 setState(AutoState.GATE_TO_SHOOT);
                 PedroFunctions.reset(robot);
-            }}
+            }
             break;
         case GATE_TO_SHOOT:
             if (!follower.isBusy())

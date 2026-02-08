@@ -71,7 +71,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    if (Math.abs(targetVel - shootVel) < 70) {
+                    if (limelightData.accurate ? Math.abs(targetVel - shootVel) < 70 : Math.abs(velocityShot(202) - shootVel) < 60) {
 //                        if (!timeDelay) {
 //                            timeSince2 = System.currentTimeMillis();
 //                            timeDelay = true;

@@ -190,20 +190,20 @@ public class ServoGoodBot extends MecanumDrive {
                     for (LLResultTypes.FiducialResult fr : fiducialResults) {
                         opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
                         if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + .3 : fr.getTargetXDegrees() + 4, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 2.2, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
                             opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
                             opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees());
                             opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
                             opMode.telemetry.addData("Direction to Tag", limelightData.aprilXDegrees);
 
 
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees());
+                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                             // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = (id == 20 ? 6.65 : 6.6);
+                            double limelightMountAngleDegrees = (id == 20 ? 2.5 : 2.5);
 
                             // distance from the center of the Limelight lens to the floor (To be Measured)
                             double limelightLensHeightCm = 28.0;

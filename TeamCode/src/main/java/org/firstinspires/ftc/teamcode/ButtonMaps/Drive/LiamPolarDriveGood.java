@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Autonomous.TimeBased.TimeAutoFunctions;
 import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
@@ -27,13 +28,13 @@ static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
 
 static double aimingPower = 1;
-static double aimingThreshold = .015;
+static double aimingThreshold = .004;
 
 static private boolean motorBrake = true;
 
 private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.041, 0, 0);
+    public static PIDControl pid = new PIDControl(0.04, 0, 0);
 
 
     @Override
@@ -85,6 +86,12 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
                 opMode.telemetry.addData("turning value", pid.output());
                 opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
+        }
+        if (opMode.gamepad2.a && limelightData.accurate) {
+            mp.leftFront += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0,.6,opMode.telemetry, robot).leftFront;
+            mp.leftBack += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0,.6,opMode.telemetry, robot).rightFront;
+            mp.rightFront -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0,.6,opMode.telemetry, robot).leftBack;
+            mp.rightBack -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0,.6,opMode.telemetry, robot).rightBack;
         }
         pid.update(limelightData.aprilXDegrees);
 

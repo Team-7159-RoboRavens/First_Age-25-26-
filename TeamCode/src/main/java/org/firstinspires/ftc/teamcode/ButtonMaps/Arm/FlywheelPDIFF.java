@@ -16,7 +16,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     private int stage = 1;
 
-    public static double F = 12.25;
+    public static double F = 13.55;
 
     public static double P = 130.7;
 
@@ -48,12 +48,10 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         }
 
         if (opMode.gamepad2.xWasPressed()) {
-            if (curTargetVelocity == highVelocity) {
-                curTargetVelocity = lowVelocity;
-            }
-            else {
-                curTargetVelocity = highVelocity;
-            }
+            curTargetVelocity += 10;
+        }
+        if (opMode.gamepad2.yWasPressed()) {
+            curTargetVelocity -= 10;
         }
 
         if (opMode.gamepad2.dpadLeftWasPressed()) {
@@ -72,11 +70,13 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
             P -= stepSizes[stepIndex];
         }
 
-        if(opMode.gamepad2.left_stick_y < -.2) {
-            if (Math.abs(curTargetVelocity - robot.ShootMotor.getVelocity()) < 60) {
-                robot.intakeMotor1.setPower(.8);
-                robot.intakeMotor2.setPower(1);
-            }
+        if (opMode.gamepad2.left_stick_y > .1) {
+            robot.intakeMotor1.setPower(.8);
+            robot.intakeMotor2.setPower(.8);
+        }
+        else {
+            robot.intakeMotor1.setPower(0);
+            robot.intakeMotor2.setPower(0);
         }
         //Set new coeficients
 

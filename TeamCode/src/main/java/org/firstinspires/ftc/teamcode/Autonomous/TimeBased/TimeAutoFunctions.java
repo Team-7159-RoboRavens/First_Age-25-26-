@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.TimeBased;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.limelightData;
@@ -52,7 +53,8 @@ public class TimeAutoFunctions {
 
     }
 
-    public static void aim(double desiredAngle, double millisDelay, double motorPower, Telemetry telemetry, MecanumDrive robot) {
+    public static MotorPowers aim(double desiredAngle, double millisDelay, double motorPower, Telemetry telemetry, MecanumDrive robot) {
+        MotorPowers mp = new MotorPowers(0);
         double currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) - 180;
         telemetry.addData("Angle ", currentAngle);
 //        desiredAngle -= 180;
@@ -70,7 +72,7 @@ public class TimeAutoFunctions {
         double angleOffset = Math.min(leftDegrees, rightDegrees);
         telemetry.addData("Angle Offset ", angleOffset);
         telemetry.update();
-        while (angleOffset - millisDelay * 1 > 0) {
+        if (Math.abs(angleOffset) > 0) {
             currentAngle = robot.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             boolean rotateRight = false;
             rightDegrees = desiredAngle - currentAngle;
@@ -86,12 +88,12 @@ public class TimeAutoFunctions {
                 rotateRight = true;
             }
             if (rotateRight) {
-                robot.setMotorPower(-motorPower, motorPower, -motorPower, motorPower);
+                mp = new MotorPowers(-motorPower, motorPower, -motorPower, motorPower);
             } else {
-                robot.setMotorPower(motorPower, -motorPower, motorPower, -motorPower);
+                mp = new MotorPowers(motorPower, -motorPower, motorPower, -motorPower);
             }
         }
-        robot.setMotorPower(0,0,0,0);
+        return mp;
     }
     public static void rotate(double degrees, ServoTempBot robot2){
         double target = robot2.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + degrees;

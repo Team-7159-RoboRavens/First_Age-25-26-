@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     //TODO: Change back to private final when done with dash
     private MotorPowers mp;// = new MotorPowers(0);
-    private double servoPosition = 1;
+    private double pressVelocity;
     private double stage = 0;
     private double timeSince;
     private double timeBuffer = 2000;
@@ -30,6 +30,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
     public static double shootVel;
     public static double targetVel;
     static double joystickDeadZone = .1;
+
 
 
 
@@ -65,33 +66,18 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 if (stage == 0) {
                     timeSince = System.currentTimeMillis();
+                    pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
                 }
+                opMode.telemetry.addData("Press Target Velocity", pressVelocity);
                 stage = 1;
                 if (timeSince + timeBuffer > System.currentTimeMillis()) {
                     opMode.telemetry.addLine("No Balls");
                 }
                 else {
-                    if (limelightData.accurate ? Math.abs(targetVel - shootVel) < 70 : Math.abs(velocityShot(202) - shootVel) < 60) {
-//                        if (!timeDelay) {
-//                            timeSince2 = System.currentTimeMillis();
-//                            timeDelay = true;
-//                        }
-//                        if (System.currentTimeMillis() - timeSince2 > timeBuffer2) {
-                            robot.intakeMotor1.setPower(.75);
-                            robot.intakeMotor2.setPower(.8);
-                            opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
-//                        }
-//                        else {
-//                            opMode.telemetry.addLine("Getting up to speed");
-//                        }
-//                        timeDelay = false;
-//                        if (timeSince2 + timeBuffer2 > System.currentTimeMillis()) {
-//                            timeSince2 = System.currentTimeMillis();
-//                            if (servoPosition == 1)
-//                                servoPosition *= 0;
-//                            else
-//                                servoPosition = 1;
-//                        }
+                    if (Math.abs(pressVelocity - shootVel) < 70) {
+                        robot.intakeMotor1.setPower(.75);
+                        robot.intakeMotor2.setPower(.8);
+                        opMode.telemetry.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                     }
                     else {
                         robot.intakeMotor1.setPower(0);
@@ -106,7 +92,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
                 else {
                     opMode.telemetry.addLine("Shoot far");
                     opMode.telemetry.addLine("Limelight not working");
-                    robot.ShootMotor.setVelocity(velocityShot(202));
+                    robot.ShootMotor.setVelocity(pressVelocity);
                 }
                 opMode.telemetry.addLine("Shoot limelight");
                 //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -165,6 +151,8 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood{
             }
     }
     public static double velocityShot(double x) {
-        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
+        //Old
+//        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
+        return 2.84926 * x + 1213.65423;
     }
 }

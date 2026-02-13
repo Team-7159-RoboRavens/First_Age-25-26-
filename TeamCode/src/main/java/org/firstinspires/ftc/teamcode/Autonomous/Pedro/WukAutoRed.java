@@ -16,12 +16,14 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoRed")
 public class WukAutoRed extends OpMode {
     public DcMotorEx ShootMotor;
+    private final DualLogger dualLogger = new DualLogger(telemetry);
     public DcMotorEx intakeMotor1;
     public DcMotorEx intakeMotor2;
 
@@ -317,7 +319,7 @@ public class WukAutoRed extends OpMode {
         follower.update();
         robot.runLimelight(24);
         updateStateMachine();
-        telemetry.addData("X Degrees", limelightData.aprilXDegrees);
+        dualLogger.addData("X Degrees", limelightData.aprilXDegrees);
         telemetry.update();
     }
 }

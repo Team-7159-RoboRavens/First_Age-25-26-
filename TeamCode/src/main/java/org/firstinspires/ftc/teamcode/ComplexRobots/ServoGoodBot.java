@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.ComplexRobots;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.LazyImu;
@@ -22,6 +24,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpo
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.limelightData;
 
@@ -34,6 +37,7 @@ public class ServoGoodBot extends MecanumDrive {
     enum Direction {
         UP,DOWN
     }
+    private final DualLogger dualLogger = new DualLogger(telemetry);
     OpMode opMode;
         public final DcMotorEx ShootMotor;
         public final DcMotorEx intakeMotor1;
@@ -66,7 +70,7 @@ public class ServoGoodBot extends MecanumDrive {
          */
         limelight.start();
 
-        opMode.telemetry.addData(">", "Robot Ready.  Press Play.");
+        dualLogger.addData(">", "Robot Ready.  Press Play.");
         opMode.telemetry.update();
         limelightData.accurate = false;
 
@@ -161,22 +165,22 @@ public class ServoGoodBot extends MecanumDrive {
                 double captureLatency = result.getCaptureLatency();
                 double targetingLatency = result.getTargetingLatency();
                 double parseLatency = result.getParseLatency();
-                opMode.telemetry.addData("LL Latency", captureLatency + targetingLatency);
-                opMode.telemetry.addData("Parse Latency", parseLatency);
-                opMode.telemetry.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
+                dualLogger.addData("LL Latency", captureLatency + targetingLatency);
+                dualLogger.addData("Parse Latency", parseLatency);
+                dualLogger.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
                 opMode.telemetry.addLine("Limelight Works!");
 
                 if (result.isValid()) {
 
-                    opMode.telemetry.addData("tx", result.getTx());
-                    opMode.telemetry.addData("txnc", result.getTxNC());
-                    opMode.telemetry.addData("ty", result.getTy());
-                    opMode.telemetry.addData("tync", result.getTyNC());
+                    dualLogger.addData("tx", result.getTx());
+                    dualLogger.addData("txnc", result.getTxNC());
+                    dualLogger.addData("ty", result.getTy());
+                    dualLogger.addData("tync", result.getTyNC());
 
-                    opMode.telemetry.addData("Botpose", botpose.toString());
+                    dualLogger.addData("Botpose", botpose.toString());
                     if (limelightData.accurate) {
                         opMode.telemetry.addLine("Correct: ");
-                        opMode.telemetry.addData("Aiming ", limelightData.aiming);
+                        dualLogger.addData("Aiming ", limelightData.aiming);
                     }
                     else
                         opMode.telemetry.addLine("Bad");
@@ -192,11 +196,11 @@ public class ServoGoodBot extends MecanumDrive {
                         if (fr.getFiducialId() == id) {
                         limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 2.2, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                             limelightData.accurate = true;
-                            opMode.telemetry.addData("Correct tag: ", fr.getFiducialId());
-                            opMode.telemetry.addData("X: ", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("y              ", fr.getTargetYDegrees());
-                            opMode.telemetry.addData("\"X: \"", fr.getTargetXDegrees());
-                            opMode.telemetry.addData("Direction to Tag", limelightData.aprilXDegrees);
+                            dualLogger.addData("Correct tag: ", fr.getFiducialId());
+                            dualLogger.addData("X: ", fr.getTargetXDegrees());
+                            dualLogger.addData("y              ", fr.getTargetYDegrees());
+                            dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
+                            dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
 
 
 
@@ -217,11 +221,11 @@ public class ServoGoodBot extends MecanumDrive {
                             //calculate distance
                             double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
                             limelightData.distance = distanceFromLimelightToGoalCm;
-                            opMode.telemetry.addData("Distance: ", distanceFromLimelightToGoalCm);
+                            dualLogger.addData("Distance: ", distanceFromLimelightToGoalCm);
                         }
                         if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
                             limelightData.pattern = fr.getFiducialId();
-                            opMode.telemetry.addData("Pattern, ", fr.getFiducialId());
+                            dualLogger.addData("Pattern, ", fr.getFiducialId());
                         }
                     }
 
@@ -243,7 +247,7 @@ public class ServoGoodBot extends MecanumDrive {
                     limelightData.accurate = false;
                 }
             } else {
-                opMode.telemetry.addData("Limelight", "No data available");
+                dualLogger.addData("Limelight", "No data available");
                 //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
                 limelightData.accurate = false;
             }

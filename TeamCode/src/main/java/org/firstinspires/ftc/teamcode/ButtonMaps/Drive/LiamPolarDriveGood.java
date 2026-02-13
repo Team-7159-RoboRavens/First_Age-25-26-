@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.ButtonMaps.Drive;
 
 //import com.acmerobotics.dashboard.config.Config;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.ButtonMaps.DPadControl.dpadStrafe;
 import static org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDrive.pid;
 
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.HolonomicDrive;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 
 //@Config
@@ -23,6 +25,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
     // defines deadzones for triggers and joystick
     //MAGIC NUMBERS!!!!!
 static double triggerDeadZone = .1;
+private final DualLogger dualLogger = new DualLogger(telemetry);
 static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
 static double joystickDeadZone = .1;
 static double joystickLinearity = 3;
@@ -72,7 +75,7 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
             if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
                 limelightData.aiming = false;
                 opMode.telemetry.addLine("Aimed");
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
+                dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
                 mp = new MotorPowers(0, 0, 0, 0);
                 robot.setMotorPowers(mp);
             }
@@ -83,8 +86,8 @@ private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECO
                 mp.rightFront -= pid.output();
                 mp.rightBack -= pid.output();
                 limelightData.aiming = false;
-                opMode.telemetry.addData("turning value", pid.output());
-                opMode.telemetry.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
+                dualLogger.addData("turning value", pid.output());
+                dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
         }
         if (opMode.gamepad2.a && limelightData.accurate) {

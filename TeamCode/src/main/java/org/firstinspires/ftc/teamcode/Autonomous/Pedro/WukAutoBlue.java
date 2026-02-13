@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions;
@@ -27,6 +28,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions;
 public class WukAutoBlue extends OpMode {
 
     private Follower follower;
+    private final DualLogger dualLogger = new DualLogger(telemetry);
     private Timer stateTimer;
     public DcMotorEx ShootMotor;
     public DcMotorEx intakeMotor1;
@@ -320,8 +322,8 @@ public class WukAutoBlue extends OpMode {
     public void loop() {
         follower.update();
         updateStateMachine();
-        telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
-        telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
+        dualLogger.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        dualLogger.addData("LimelightDegrees", limelightData.aprilXDegrees);
         robot.runLimelight(20);
         telemetry.update();
     }

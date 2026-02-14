@@ -201,9 +201,9 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         }
 
         if (motorBrake) {
-            opMode.telemetry.addData("Drive Motor Mode", "Brake");
+            robot.dualLogger.addData("Drive Motor Mode", "Brake");
         } else {
-            opMode.telemetry.addData("Drive Motor Mode", "Coast");
+            robot.dualLogger.addData("Drive Motor Mode", "Coast");
         }
         robot.dualLogger.addData("forward: ", forward);
         robot.dualLogger.addData("right: ", right);

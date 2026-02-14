@@ -25,6 +25,13 @@ public class DualLogger {
         //"tag" is used to help find the intended logcat name
     }
 
+    public void addData(String caption, String format, Object... args) {
+        telemetry.addData(caption, format, args);
+        //FTC class RobotLog, used to write logs
+        RobotLog.vv("7159RoboRavens", caption + ":" + format, args);
+        //"tag" is used to help find the intended logcat name
+    }
+
     public void addLine(String caption) {
         telemetry.addLine(caption);
         //FTC class RobotLog, used to write logs

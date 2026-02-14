@@ -150,11 +150,11 @@ public class ServoGoodBot extends MecanumDrive {
     public void runLimelight(int id) {
 
         LLStatus status = limelight.getStatus();
-        opMode.telemetry.addData("Name", "%s",
+        dualLogger.addData("Name", "%s",
                 status.getName());
-        opMode.telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
+        dualLogger.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
                 status.getTemp(), status.getCpu(), (int) status.getFps());
-        opMode.telemetry.addData("Pipeline", "Index: %d, Type: %s",
+        dualLogger.addData("Pipeline", "Index: %d, Type: %s",
                 status.getPipelineIndex(), status.getPipelineType());
 
         LLResult result = limelight.getLatestResult();
@@ -167,7 +167,7 @@ public class ServoGoodBot extends MecanumDrive {
             dualLogger.addData("LL Latency", captureLatency + targetingLatency);
             dualLogger.addData("Parse Latency", parseLatency);
             dualLogger.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
-            opMode.telemetry.addLine("Limelight Works!");
+            dualLogger.addLine("Limelight Works!");
 
             if (result.isValid()) {
 
@@ -178,10 +178,10 @@ public class ServoGoodBot extends MecanumDrive {
 
                 dualLogger.addData("Botpose", botpose.toString());
                 if (limelightData.accurate) {
-                    opMode.telemetry.addLine("Correct: ");
+                    dualLogger.addLine("Correct: ");
                     dualLogger.addData("Aiming ", limelightData.aiming);
                 } else
-                    opMode.telemetry.addLine("Bad");
+                    dualLogger.addLine("Bad");
 
                 // Access fiducial results (April Tags)
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
@@ -190,7 +190,7 @@ public class ServoGoodBot extends MecanumDrive {
                     limelightData.accurate = false;
                 }
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
-                    opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+                    dualLogger.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                     if (fr.getFiducialId() == id) {
                         limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 2.2, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                         limelightData.accurate = true;

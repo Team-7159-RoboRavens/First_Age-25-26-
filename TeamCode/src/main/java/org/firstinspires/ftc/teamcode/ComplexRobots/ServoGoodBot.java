@@ -35,14 +35,15 @@ import java.util.List;
 @Config
 public class ServoGoodBot extends MecanumDrive {
     enum Direction {
-        UP,DOWN
+        UP, DOWN
     }
-    private final DualLogger dualLogger = new DualLogger(telemetry);
+
     OpMode opMode;
-        public final DcMotorEx ShootMotor;
-        public final DcMotorEx intakeMotor1;
-        public final DcMotorEx intakeMotor2;
-        public GoBildaPinpointDriver pinpoint;
+    public final DualLogger dualLogger;
+    public final DcMotorEx ShootMotor;
+    public final DcMotorEx intakeMotor1;
+    public final DcMotorEx intakeMotor2;
+    public GoBildaPinpointDriver pinpoint;
     //    public final DcMotorEx ShootMotor2;
 //        public final Servo Servo1;
 //        public final Servo Servo1;
@@ -50,15 +51,16 @@ public class ServoGoodBot extends MecanumDrive {
 //        public final DcMotorEx intakeMotor;
 
 
-//    public final Servo turnServo;
+    //    public final Servo turnServo;
     public final Limelight3A limelight;
 
     public void setPinpoint(GoBildaPinpointDriver pinpoint) {
         this.pinpoint = pinpoint;
     }
 
-    public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode) {
+    public ServoGoodBot(HardwareMap hardwareMap, Pose2d pose, OpMode opMode, DualLogger dualLogger) {
         super(hardwareMap, pose);
+        this.dualLogger = dualLogger;
         this.opMode = opMode;
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
@@ -70,7 +72,7 @@ public class ServoGoodBot extends MecanumDrive {
          */
         limelight.start();
 
-        dualLogger.addData(">", "Robot Ready.  Press Play.");
+        dualLogger.addLine("Robot Ready. Press Play.");
         opMode.telemetry.update();
         limelightData.accurate = false;
 
@@ -110,12 +112,10 @@ public class ServoGoodBot extends MecanumDrive {
         if (!limelightData.hasImu) {
             lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
                     RevHubOrientationOnRobot.LogoFacingDirection.LEFT, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
-        }
-        else {
+        } else {
             lazyImu = limelightData.imu;
         }
         limelightData.setIMU(lazyImu);
-
 
 
         //Initialize Output Servo
@@ -127,7 +127,7 @@ public class ServoGoodBot extends MecanumDrive {
 
 
     public MotorPowers setAllMotorPowers(int i) {
-        return new MotorPowers(0,0,0,0);
+        return new MotorPowers(0, 0, 0, 0);
     }
 
 
@@ -136,100 +136,97 @@ public class ServoGoodBot extends MecanumDrive {
             while (motor.getCurrentPosition() <= targetPos) {
                 motor.setPower(power);
             }
-        }
-        else if (motor.getCurrentPosition() > targetPos) {
+        } else if (motor.getCurrentPosition() > targetPos) {
             while (motor.getCurrentPosition() >= targetPos) {
                 motor.setPower(-power);
             }
         }
     }
 
-    public static double yOffset(double x){
+    public static double yOffset(double x) {
         return (0.00000149143 * Math.pow(x, 4) - 0.0000406469 * Math.pow(x, 3) + 0.00156737 * Math.pow(x, 2) - 0.0680153 * x);
     }
 
-    public void runLimelight(int id){
+    public void runLimelight(int id) {
 
-            LLStatus status = limelight.getStatus();
-            opMode.telemetry.addData("Name", "%s",
-                    status.getName());
-            opMode.telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
-                    status.getTemp(), status.getCpu(),(int)status.getFps());
-            opMode.telemetry.addData("Pipeline", "Index: %d, Type: %s",
-                    status.getPipelineIndex(), status.getPipelineType());
+        LLStatus status = limelight.getStatus();
+        opMode.telemetry.addData("Name", "%s",
+                status.getName());
+        opMode.telemetry.addData("LL", "Temp: %.1fC, CPU: %.1f%%, FPS: %d",
+                status.getTemp(), status.getCpu(), (int) status.getFps());
+        opMode.telemetry.addData("Pipeline", "Index: %d, Type: %s",
+                status.getPipelineIndex(), status.getPipelineType());
 
-            LLResult result = limelight.getLatestResult();
-            if (result != null) {
-                // Access general information
-                Pose3D botpose = result.getBotpose();
-                double captureLatency = result.getCaptureLatency();
-                double targetingLatency = result.getTargetingLatency();
-                double parseLatency = result.getParseLatency();
-                dualLogger.addData("LL Latency", captureLatency + targetingLatency);
-                dualLogger.addData("Parse Latency", parseLatency);
-                dualLogger.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
-                opMode.telemetry.addLine("Limelight Works!");
+        LLResult result = limelight.getLatestResult();
+        if (result != null) {
+            // Access general information
+            Pose3D botpose = result.getBotpose();
+            double captureLatency = result.getCaptureLatency();
+            double targetingLatency = result.getTargetingLatency();
+            double parseLatency = result.getParseLatency();
+            dualLogger.addData("LL Latency", captureLatency + targetingLatency);
+            dualLogger.addData("Parse Latency", parseLatency);
+            dualLogger.addData("PythonOutput", java.util.Arrays.toString(result.getPythonOutput()));
+            opMode.telemetry.addLine("Limelight Works!");
 
-                if (result.isValid()) {
+            if (result.isValid()) {
 
-                    dualLogger.addData("tx", result.getTx());
-                    dualLogger.addData("txnc", result.getTxNC());
-                    dualLogger.addData("ty", result.getTy());
-                    dualLogger.addData("tync", result.getTyNC());
+                dualLogger.addData("tx", result.getTx());
+                dualLogger.addData("txnc", result.getTxNC());
+                dualLogger.addData("ty", result.getTy());
+                dualLogger.addData("tync", result.getTyNC());
 
-                    dualLogger.addData("Botpose", botpose.toString());
-                    if (limelightData.accurate) {
-                        opMode.telemetry.addLine("Correct: ");
-                        dualLogger.addData("Aiming ", limelightData.aiming);
-                    }
-                    else
-                        opMode.telemetry.addLine("Bad");
+                dualLogger.addData("Botpose", botpose.toString());
+                if (limelightData.accurate) {
+                    opMode.telemetry.addLine("Correct: ");
+                    dualLogger.addData("Aiming ", limelightData.aiming);
+                } else
+                    opMode.telemetry.addLine("Bad");
 
-                    // Access fiducial results (April Tags)
-                    List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
-                    if (fiducialResults.isEmpty()) {
-                        //This makes sure that if there are no detected april tags, it will not take old data
-                        limelightData.accurate = false;
-                    }
-                    for (LLResultTypes.FiducialResult fr : fiducialResults) {
-                        opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(),fr.getTargetXDegrees(), fr.getTargetYDegrees());
-                        if (fr.getFiducialId() == id) {
+                // Access fiducial results (April Tags)
+                List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
+                if (fiducialResults.isEmpty()) {
+                    //This makes sure that if there are no detected april tags, it will not take old data
+                    limelightData.accurate = false;
+                }
+                for (LLResultTypes.FiducialResult fr : fiducialResults) {
+                    opMode.telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+                    if (fr.getFiducialId() == id) {
                         limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 2.2, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
-                            limelightData.accurate = true;
-                            dualLogger.addData("Correct tag: ", fr.getFiducialId());
-                            dualLogger.addData("X: ", fr.getTargetXDegrees());
-                            dualLogger.addData("y              ", fr.getTargetYDegrees());
-                            dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
-                            dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
+                        limelightData.accurate = true;
+                        dualLogger.addData("Correct tag: ", fr.getFiducialId());
+                        dualLogger.addData("X: ", fr.getTargetXDegrees());
+                        dualLogger.addData("y              ", fr.getTargetYDegrees());
+                        dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
+                        dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
 
 
+                        double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
-                            double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
+                        // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
+                        double limelightMountAngleDegrees = (id == 20 ? 2.5 : 2.5);
 
-                            // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                            double limelightMountAngleDegrees = (id == 20 ? 2.5 : 2.5);
+                        // distance from the center of the Limelight lens to the floor (To be Measured)
+                        double limelightLensHeightCm = 28.0;
 
-                            // distance from the center of the Limelight lens to the floor (To be Measured)
-                            double limelightLensHeightCm = 28.0;
+                        // distance from the target to the floor
+                        double goalHeightCm = 75;
 
-                            // distance from the target to the floor
-                            double goalHeightCm = 75;
+                        double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+                        double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
 
-                            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-                            double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
-
-                            //calculate distance
-                            double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
-                            limelightData.distance = distanceFromLimelightToGoalCm;
-                            dualLogger.addData("Distance: ", distanceFromLimelightToGoalCm);
-                        }
-                        if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
-                            limelightData.pattern = fr.getFiducialId();
-                            dualLogger.addData("Pattern, ", fr.getFiducialId());
-                        }
+                        //calculate distance
+                        double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
+                        limelightData.distance = distanceFromLimelightToGoalCm;
+                        dualLogger.addData("Distance: ", distanceFromLimelightToGoalCm);
                     }
+                    if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
+                        limelightData.pattern = fr.getFiducialId();
+                        dualLogger.addData("Pattern, ", fr.getFiducialId());
+                    }
+                }
 
-                    // Access color results
+                // Access color results
 //                    List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
 //                    int temp = 0;
 //                    LLResultTypes.ColorResult colorResult = colorResults.get(0);
@@ -242,15 +239,14 @@ public class ServoGoodBot extends MecanumDrive {
 //                    if (colorResult.getTargetXPixels() > 120)
 //                        telemetry.addData("Largest Yellow Object", String.valueOf(colorResult.getTargetXDegrees()), String.valueOf(colorResult.getTargetYDegrees()));
 //
-                }
-                else {
-                    limelightData.accurate = false;
-                }
             } else {
-                dualLogger.addData("Limelight", "No data available");
-                //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
                 limelightData.accurate = false;
             }
+        } else {
+            dualLogger.addData("Limelight", "No data available");
+            //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
+            limelightData.accurate = false;
+        }
 
 //            opMode.telemetry.update();
     }

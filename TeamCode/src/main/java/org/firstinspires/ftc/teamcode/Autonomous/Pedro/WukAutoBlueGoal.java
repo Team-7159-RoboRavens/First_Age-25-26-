@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "WukAutoBlueGoal")
@@ -38,17 +39,17 @@ public class WukAutoBlueGoal extends OpMode {
 
     private AutoState state;
 
-    Pose startPose   = new Pose(124, 122, Math.toRadians(35));
-    Pose shootPose   = new Pose(94.2826, 93.2522, Math.toRadians(50));
+    Pose startPose = new Pose(124, 122, Math.toRadians(35));
+    Pose shootPose = new Pose(94.2826, 93.2522, Math.toRadians(50));
 
     Pose pickPPGstart = new Pose(42, 83.463, Math.toRadians(180));
-    Pose pickPPGend   = new Pose(16, 83.463, Math.toRadians(0));
+    Pose pickPPGend = new Pose(16, 83.463, Math.toRadians(0));
 
     Pose pickPGPstart = new Pose(42, 60, Math.toRadians(0));
-    Pose pickPGPend   = new Pose(16, 60, Math.toRadians(0));
+    Pose pickPGPend = new Pose(16, 60, Math.toRadians(0));
 
-    Pose gateClear   = new Pose(13.5, 62, Math.toRadians(-90));
-    Pose parkPose    = new Pose(39, 65, Math.toRadians(180));
+    Pose gateClear = new Pose(13.5, 62, Math.toRadians(-90));
+    Pose parkPose = new Pose(39, 65, Math.toRadians(180));
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;
@@ -158,64 +159,65 @@ public class WukAutoBlueGoal extends OpMode {
                 break;
         }
     }
+
     void updateStateMachine() {
         switch (state) {
-        case START_TO_SHOOT:
-            if (!follower.isBusy())
-                setState(AutoState.SHOOT_1);
-            break;
-        case SHOOT_1:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_PICKUP_PPG);
-            break;
-        case SHOOT_TO_PICKUP_PPG:
-            if (!follower.isBusy())
-                setState(AutoState.PICKUP_PPG_TO_PPGEND);
-            break;
-        case PICKUP_PPG_TO_PPGEND:
-            if (!follower.isBusy())
-                setState(AutoState.PICKUP_PPGEND_TO_SHOOT);
-            break;
-        case PICKUP_PPGEND_TO_SHOOT:
-            if (!follower.isBusy())
-                setState(AutoState.SHOOT_2);
-            break;
-        case SHOOT_2:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.SHOOT_TO_PICKUP_PGP);
-            break;
-        case SHOOT_TO_PICKUP_PGP:
-            if (!follower.isBusy())
-                setState(AutoState.PICKUP_PGP_TO_PGPEND);
-            break;
-        case PICKUP_PGP_TO_PGPEND:
-            if (!follower.isBusy())
-                setState(AutoState.PGPEND_TO_GATE);
-            break;
-        case PGPEND_TO_GATE:
-            if (!follower.isBusy())
-                setState(AutoState.GATE_CLEAR);
-            break;
-        case GATE_CLEAR:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.GATE_TO_SHOOT);
-            break;
-        case GATE_TO_SHOOT:
-            if (!follower.isBusy())
-                setState(AutoState.SHOOT_3);
-            break;
-        case SHOOT_3:
-            if (stateTimer.getElapsedTimeSeconds() > 3.0)
-                setState(AutoState.PARK);
-            break;
-        case PARK:
-            if (!follower.isBusy())
-                setState(AutoState.DONE);
-            break;
-        case DONE:
-            break;
+            case START_TO_SHOOT:
+                if (!follower.isBusy())
+                    setState(AutoState.SHOOT_1);
+                break;
+            case SHOOT_1:
+                if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                    setState(AutoState.SHOOT_TO_PICKUP_PPG);
+                break;
+            case SHOOT_TO_PICKUP_PPG:
+                if (!follower.isBusy())
+                    setState(AutoState.PICKUP_PPG_TO_PPGEND);
+                break;
+            case PICKUP_PPG_TO_PPGEND:
+                if (!follower.isBusy())
+                    setState(AutoState.PICKUP_PPGEND_TO_SHOOT);
+                break;
+            case PICKUP_PPGEND_TO_SHOOT:
+                if (!follower.isBusy())
+                    setState(AutoState.SHOOT_2);
+                break;
+            case SHOOT_2:
+                if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                    setState(AutoState.SHOOT_TO_PICKUP_PGP);
+                break;
+            case SHOOT_TO_PICKUP_PGP:
+                if (!follower.isBusy())
+                    setState(AutoState.PICKUP_PGP_TO_PGPEND);
+                break;
+            case PICKUP_PGP_TO_PGPEND:
+                if (!follower.isBusy())
+                    setState(AutoState.PGPEND_TO_GATE);
+                break;
+            case PGPEND_TO_GATE:
+                if (!follower.isBusy())
+                    setState(AutoState.GATE_CLEAR);
+                break;
+            case GATE_CLEAR:
+                if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                    setState(AutoState.GATE_TO_SHOOT);
+                break;
+            case GATE_TO_SHOOT:
+                if (!follower.isBusy())
+                    setState(AutoState.SHOOT_3);
+                break;
+            case SHOOT_3:
+                if (stateTimer.getElapsedTimeSeconds() > 3.0)
+                    setState(AutoState.PARK);
+                break;
+            case PARK:
+                if (!follower.isBusy())
+                    setState(AutoState.DONE);
+                break;
+            case DONE:
+                break;
+        }
     }
-}
 
 
     @Override
@@ -225,7 +227,7 @@ public class WukAutoBlueGoal extends OpMode {
         buildPaths();
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
-        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0, 0, 0), this, new DualLogger(telemetry));
     }
 
     @Override

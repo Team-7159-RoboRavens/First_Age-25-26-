@@ -16,17 +16,17 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     private int stage = 1;
 
-    public static double F = 13.55;
+    public static double F = 13.75;
 
-    public static double P = 130.7;
+    public static double P = 120.7;
 
     public double highVelocity = 1920;
 
-    public  double lowVelocity = 1500;
+    public double lowVelocity = 1500;
 
     public double curTargetVelocity = highVelocity;
 
-    double[] stepSizes = {10.0, 1.0 , 0.1, .001, .0001};
+    double[] stepSizes = {10.0, 1.0, 0.1, .001, .0001};
 
     int stepIndex = 1;
 
@@ -73,8 +73,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         if (opMode.gamepad2.left_stick_y > .1) {
             robot.intakeMotor1.setPower(.8);
             robot.intakeMotor2.setPower(.8);
-        }
-        else {
+        } else {
             robot.intakeMotor1.setPower(0);
             robot.intakeMotor2.setPower(0);
         }

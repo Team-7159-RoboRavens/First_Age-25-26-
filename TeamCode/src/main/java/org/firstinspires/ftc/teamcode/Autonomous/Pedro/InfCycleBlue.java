@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -46,8 +47,8 @@ public class InfCycleBlue extends OpMode {
 
     private AutoState state;
 
-    Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(61, 14, Math.toRadians(107.28));
+    Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
+    Pose shootPose = new Pose(61, 14, Math.toRadians(107.28));
     Pose pickLoadPoseEnd = new Pose(12, 9, Math.toRadians(190));
     Pose pickLoadPoseRec = new Pose(45, 13, 180);
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
@@ -220,7 +221,8 @@ public class InfCycleBlue extends OpMode {
         robot = new ServoGoodBot(
                 hardwareMap,
                 new Pose2d(startPose.getX(), startPose.getY(), startPose.getHeading()),
-                this
+                this,
+                new DualLogger(telemetry)
         );
 
         robot.ShootMotor.setPIDFCoefficients(

@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -160,9 +161,9 @@ public class InfCycleRed extends OpMode {
 
             case SHOOT_TO_PICKLOAD:
                 PedroFunctions.intake(robot);
-                    if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {
-                        setState(AutoState.PICKLOAD_INTAKE1);
-                    }
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {
+                    setState(AutoState.PICKLOAD_INTAKE1);
+                }
                 break;
 
             case PICKLOAD_INTAKE1:
@@ -219,7 +220,8 @@ public class InfCycleRed extends OpMode {
         robot = new ServoGoodBot(
                 hardwareMap,
                 new Pose2d(startPose.getX(), startPose.getY(), startPose.getHeading()),
-                this
+                this,
+                new DualLogger(telemetry)
         );
 
         robot.ShootMotor.setPIDFCoefficients(
@@ -227,6 +229,7 @@ public class InfCycleRed extends OpMode {
                 new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1.2)
         );
     }
+
     @Override
     public void start() {
         stateTimer.resetTimer();

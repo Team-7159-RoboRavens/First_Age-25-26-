@@ -9,8 +9,9 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Drive.LiamPolarDriveGood;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
+import org.firstinspires.ftc.teamcode.DualLogger;
 
-@TeleOp(name="PIDFF TeloOp")
+@TeleOp(name = "PIDFF TeloOp")
 public class PIDFFTeleOp extends OpMode {
     //Global Variables
     ServoGoodBot robot;
@@ -23,7 +24,7 @@ public class PIDFFTeleOp extends OpMode {
     public void init() {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
-        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0, 0, 0), this, new DualLogger(telemetry));
         driveButtonMap = new LiamPolarDriveGood();
         armButtonMap = new FlywheelPDIFF();
         telemetry.addLine("Ready.");

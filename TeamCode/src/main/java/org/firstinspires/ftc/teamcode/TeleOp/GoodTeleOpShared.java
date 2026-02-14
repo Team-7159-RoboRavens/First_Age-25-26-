@@ -15,8 +15,9 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ButtonMaps.ServoAbstractButtonMapGood;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoTempBot;
+import org.firstinspires.ftc.teamcode.DualLogger;
 
-public abstract class GoodTeleOpShared extends OpMode{
+public abstract class GoodTeleOpShared extends OpMode {
     //Global Variables
     ServoGoodBot robot;
 
@@ -27,18 +28,22 @@ public abstract class GoodTeleOpShared extends OpMode{
 
     @Override
     public void init() {
-//        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        DualLogger dualLogger;
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        dualLogger = new DualLogger(telemetry);
 
         // Set the location of the robot - this should be the place you are starting the robot from
-//        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, 0));
-        telemetry.addLine("Initializing, please wait...");
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, 0));
+        dualLogger.addLine("Initializing, please wait...");
         telemetry.update();
-//        robot.pinpoint.resetPosAndIMU();
-        robot = new ServoGoodBot(hardwareMap, new Pose2d(0,0,0), this);
-//        robot.setPinpoint(pinpoint);
+        pinpoint.resetPosAndIMU();
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        pinpoint.setOffsets(2.5, -7.5, DistanceUnit.INCH);
+        robot = new ServoGoodBot(hardwareMap, new Pose2d(0, 0, 0), this, dualLogger);
+        robot.setPinpoint(pinpoint);
         driveButtonMap = new LiamPolarDriveGood();
         armButtonMap = new FirstAgeGoodArm();
-        telemetry.addLine("Ready.");
+        dualLogger.addLine("Ready.");
 
         // Configure the sensor
 

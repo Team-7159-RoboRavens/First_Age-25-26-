@@ -58,13 +58,13 @@ public class WukAutoRed extends OpMode {
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
     Pose shootPose = new Pose(83, 12, Math.toRadians(67.3));
 
-    Pose pickPPGstart = new Pose(90, 39.3438, Math.toRadians(0));
-    Pose pickPPGend = new Pose(124, 39.3438, Math.toRadians(0));
+    Pose pickPPGstart = new Pose(90, 36.8438, Math.toRadians(0));
+    Pose pickPPGend = new Pose(127, 36.8438, Math.toRadians(0));
 
-    Pose pickPGPstart = new Pose(90, 65.5, Math.toRadians(0));
-    Pose pickPGPend = new Pose(118, 65.5, Math.toRadians(0));
+    Pose pickPGPstart = new Pose(90, 58.5, Math.toRadians(0));
+    Pose pickPGPend = new Pose(118, 58.5, Math.toRadians(0));
 
-    Pose gateClear = new Pose(120, 68, Math.toRadians(-90));
+    Pose gateClear = new Pose(124, 65, Math.toRadians(-90));
     Pose loadingZone = new Pose(124, 11, Math.toRadians(0));
     Pose parkPose = new Pose(92, 27, Math.toRadians(0));
 
@@ -186,7 +186,7 @@ public class WukAutoRed extends OpMode {
                 follower.followPath(shootToLoad, true);
                 break;
             case LOAD_TO_SHOOT:
-                PedroFunctions.reset(robot);
+                PedroFunctions.intake(robot);
                 follower.followPath(loadToShoot, true);
                 break;
             case SHOOT_4:

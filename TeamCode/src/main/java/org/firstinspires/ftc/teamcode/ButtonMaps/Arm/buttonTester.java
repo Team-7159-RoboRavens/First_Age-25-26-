@@ -32,12 +32,12 @@ public class buttonTester extends NoWheelsAbstractButtonMap {
     @Override
     public void loop(ShootOnlyBot robot, OpMode opMode) {
         if (opMode.gamepad2.y) {
-            robot.intakeMotor1.setPower(-1);
+
             opMode.telemetry.addLine("Intake1");
         }
 
         if (opMode.gamepad2.x) {
-            robot.intakeMotor2.setPower(-1);
+
             opMode.telemetry.addLine("Intake2");
         }
     }

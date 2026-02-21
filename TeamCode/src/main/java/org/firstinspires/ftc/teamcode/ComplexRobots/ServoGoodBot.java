@@ -199,6 +199,11 @@ public class ServoGoodBot extends MecanumDrive {
                         dualLogger.addData("y              ", fr.getTargetYDegrees());
                         dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
                         dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
+                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
+                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
+                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
+
+
 
 
                         double targetOffsetAngle_Vertical = fr.getTargetYDegrees();

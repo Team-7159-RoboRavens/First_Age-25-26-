@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.buttonTester;
 import org.firstinspires.ftc.teamcode.ButtonMaps.NoWheelsAbstractButtonMap;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ShootOnlyBot;
 
-@TeleOp(name="TestIntake")
-public class testIntakeTeleOp extends OpMode {
+@TeleOp(name="Test Double Shoot Motors")
+public class TestShootTeleOp extends OpMode {
     //Global Variables
     ShootOnlyBot robot;
 
@@ -22,7 +22,7 @@ public class testIntakeTeleOp extends OpMode {
         telemetry.addLine("Initializing, please wait...");
         telemetry.update();
         robot = new ShootOnlyBot(hardwareMap, new Pose2d(0,0,0), this);
-        driveButtonMap = new buttonTester();
+        driveButtonMap = new GoodArmNoWheels();
         telemetry.addLine("Ready.");
         telemetry.update();
     }
@@ -30,7 +30,6 @@ public class testIntakeTeleOp extends OpMode {
     @Override
     public void loop() {
         driveButtonMap.loop(robot, this);
-        robot.runLimelight(20);
         telemetry.update();
     }
 }

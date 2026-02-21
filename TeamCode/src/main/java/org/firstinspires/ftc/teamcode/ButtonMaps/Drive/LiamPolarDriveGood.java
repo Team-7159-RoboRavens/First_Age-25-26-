@@ -49,6 +49,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         IMU imu = robot.lazyImu.get();
         // FOD resetting
         if (opMode.gamepad1.back && et.time() > 500) {
+            robot.pinpoint.resetPosAndIMU();
             imu.resetYaw();
             et.reset();
         }
@@ -68,7 +69,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
                 opMode.gamepad1.left_stick_x,
                 opMode.gamepad1.right_stick_x,
                 opMode.gamepad1.x,
-                opMode);
+                opMode, position);
 
 
         if (opMode.gamepad2.x) {
@@ -126,7 +127,8 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             double left_stick_x,
             double right_stick_x,
             boolean x,
-            OpMode opMode) {
+            OpMode opMode,
+            Pose2D position) {
         double right = 0;
         double forward = 0;
         double turn = 0;
@@ -213,7 +215,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         robot.dualLogger.addLine("left stick y: " + left_stick_y);
         robot.dualLogger.addLine("right stick x: " + right_stick_x);
 
-        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = position.getHeading(AngleUnit.RADIANS);
         robot.dualLogger.addLine("FOD: " + robotHeading);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 

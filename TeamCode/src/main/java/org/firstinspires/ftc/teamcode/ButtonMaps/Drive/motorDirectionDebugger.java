@@ -59,6 +59,10 @@ public class motorDirectionDebugger extends WheelTestAbstractButtonMap {
         opMode.telemetry.addData("RightFront Vel", robot.rightFront.getVelocity());
         opMode.telemetry.addData("RightBack Vel", robot.rightBack.getVelocity());
 
+        opMode.telemetry.addData("Left Stick y", opMode.gamepad1.left_stick_y + " x: " + opMode.gamepad1.left_stick_x);
+        opMode.telemetry.addData("Right Stick y", opMode.gamepad1.right_stick_y + " x: " + opMode.gamepad1.right_stick_x);
+
+
         opMode.telemetry.update();
 
         robot.setMotorPowers(mp);

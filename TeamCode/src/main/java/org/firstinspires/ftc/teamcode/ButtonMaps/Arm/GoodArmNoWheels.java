@@ -32,7 +32,7 @@ public class GoodArmNoWheels extends NoWheelsAbstractButtonMap {
     @Override
     public void loop(ShootOnlyBot robot, OpMode opMode) {
         if (opMode.gamepad1.dpad_up) {
-            targetVel = velocityShot(200) * 2;
+            targetVel = velocityShot(280);
             opMode.telemetry.addData("Target Velocity", targetVel);
 
             robot.ShootMotor.setVelocity(targetVel);

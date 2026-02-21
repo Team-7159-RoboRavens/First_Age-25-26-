@@ -57,7 +57,7 @@ public class ShootOnlyBot extends MecanumDriveNoMotors {
         // Reset the motor encoder so that it reads zero ticks
         ShootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ShootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F * 1.5));
+        ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P - 20, 0, 0, FlywheelPDIFF.F / 5));
 
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
@@ -69,8 +69,8 @@ public class ShootOnlyBot extends MecanumDriveNoMotors {
 //        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         // Reset the motor encoder so that it reads zero ticks
         ShootMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ShootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ShootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F * 1.5));
+        ShootMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ShootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P - 20, 0, 0, FlywheelPDIFF.F / 5));
 
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER

@@ -11,25 +11,18 @@ import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
-import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
 
 public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     //TODO: Change back to private final when done with dash
-    private MotorPowers mp;// = new MotorPowers(0);
     private double pressVelocity;
     private double stage = 0;
     private double timeSince;
-    private double timeBuffer = 2000;
-    private double timeBuffer2 = 200;
-    private double timeSince2 = 0;
-    boolean timeDelay = false;
+    private final double timeBuffer = 2000;
+//    boolean timeDelay = false;
 
 
     //These magic numbers are not final and should be iteratively tested.
     public static double baseShotPower = .40;
-    public static double limelightPowerMultiplier = 1.18;
-    public static double limelightBaseDistance = 100;
-    public static double nonLinearPower = 1.0028;
     public static double shootVel;
     public static double targetVel;
     static double joystickDeadZone = .1;
@@ -39,12 +32,14 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public void loop(ServoGoodBot robot, OpMode opMode) {
 
         //These coefficients are used in the shooting code later.
-        timeSince2 = opMode.getRuntime();
+        //    private final double timeBuffer2 = 100;
+        double timeSince2 = opMode.getRuntime();
         shootVel = robot.ShootMotor.getVelocity();
         robot.dualLogger.addData("Velocity ", shootVel);
         targetVel = velocityShot(limelightData.distance);
         robot.dualLogger.addData("Target Velocity ", targetVel);
         robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        robot.dualLogger.addData("Angle to Tag ", limelightData.aprilXDegrees);
 
 
         //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
@@ -72,28 +67,28 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             robot.dualLogger.addData("Press Target Velocity", pressVelocity);
             stage = 1;
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
-                opMode.telemetry.addLine("No Balls");
+//                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 70) {
+                if (Math.abs(pressVelocity - shootVel) < 50) {
                     robot.intakeMotor1.setPower(.75);
                     robot.intakeMotor2.setPower(.8);
-                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
+//                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                 } else {
                     robot.intakeMotor1.setPower(0);
                     robot.intakeMotor2.setPower(-.4);
                 }
             }
             if (limelightData.accurate) {
-                robot.ShootMotor.setVelocity(targetVel);
-                robot.dualLogger.addLine("Limelight passes in shot");
+                robot.ShootMotor.setVelocity(pressVelocity);
+//                robot.dualLogger.addLine("Limelight passes in shot");
             }
             //This allows you to shoot the ball far even if the limelight disconnects or misses the tag.
             else {
-                robot.dualLogger.addLine("Shoot far");
-                robot.dualLogger.addLine("Limelight not working");
+//                robot.dualLogger.addLine("Shoot far");
+//                robot.dualLogger.addLine("Limelight not working");
                 robot.ShootMotor.setVelocity(pressVelocity);
             }
-            opMode.telemetry.addLine("Shoot limelight");
+//            opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
             //A PIDFF controller may want to be implemented.
 
@@ -153,6 +148,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
-        return 2.84926 * x + 1233.65423;
+        return 2.84926 * x + 1235.65423;
     }
 }

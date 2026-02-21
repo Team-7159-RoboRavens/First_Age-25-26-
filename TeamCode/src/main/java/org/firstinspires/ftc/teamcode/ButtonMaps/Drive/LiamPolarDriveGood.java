@@ -44,7 +44,6 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
     @Override
     public void loop(ServoGoodBot robot, OpMode opMode) {
-        position = robot.pinpoint.getPosition();
         limelightData.ImuOffset = 0;
         IMU imu = robot.lazyImu.get();
         // FOD resetting
@@ -53,6 +52,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             imu.resetYaw();
             et.reset();
         }
+        position = robot.pinpoint.getPosition();
         MotorPowers mp;
         mp = getMotorPowers(
                 robot,

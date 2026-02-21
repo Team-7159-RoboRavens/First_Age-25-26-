@@ -16,8 +16,7 @@ public class LM1TeleOpRed extends LM1TeleOpShared {
     public void loop() {
         driveButtonMap.loop(robot, this);
         armButtonmap.loop(robot, this);
-        robot.runLimelight(24);
         telemetry.addData("Offset ", limelightData.ImuOffset);
-        telemetry.update();
+        robot.runLimelight(24);
     }
 }

@@ -53,7 +53,12 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         if (opMode.gamepad2.yWasPressed()) {
             curTargetVelocity -= 10;
         }
-
+        if (opMode.gamepad2.rightBumperWasPressed()) {
+            curTargetVelocity += 1000;
+        }
+        if (opMode.gamepad2.leftBumperWasPressed()) {
+            curTargetVelocity -= 1000;
+        }
         if (opMode.gamepad2.dpadLeftWasPressed()) {
             F -= stepSizes[stepIndex];
         }

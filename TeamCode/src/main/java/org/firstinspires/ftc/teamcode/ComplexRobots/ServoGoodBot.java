@@ -179,9 +179,10 @@ public class ServoGoodBot extends MecanumDrive {
                 dualLogger.addData("Botpose", botpose.toString());
                 if (limelightData.accurate) {
                     dualLogger.addLine("Correct: ");
-                    dualLogger.addData("Aiming ", limelightData.aiming);
-                } else
-                    dualLogger.addLine("Bad");
+//                    dualLogger.addData("Aiming ", limelightData.aiming);
+                }
+//                else
+//                    dualLogger.addLine("Bad");
 
                 // Access fiducial results (April Tags)
                 List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
@@ -197,11 +198,11 @@ public class ServoGoodBot extends MecanumDrive {
                         dualLogger.addData("Correct tag: ", fr.getFiducialId());
                         dualLogger.addData("X: ", fr.getTargetXDegrees());
                         dualLogger.addData("y              ", fr.getTargetYDegrees());
-                        dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
+//                        dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
                         dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
-                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
-                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
-                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
+//                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
+//                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
+//                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
 
 
 
@@ -252,6 +253,7 @@ public class ServoGoodBot extends MecanumDrive {
             //Makes sure that we are only using data that is exists at the right moment, not old data or missing data.
             limelightData.accurate = false;
         }
+        dualLogger.addLine("________________________________________________");
 
 //            opMode.telemetry.update();
     }

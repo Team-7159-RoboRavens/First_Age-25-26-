@@ -318,7 +318,7 @@ public class WukAutoBlue extends OpMode {
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0, 0, 0), this, new DualLogger(telemetry));
-        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+        robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
 
     }
 
@@ -326,7 +326,7 @@ public class WukAutoBlue extends OpMode {
     public void loop() {
         follower.update();
         updateStateMachine();
-        dualLogger.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        dualLogger.addData("Shoot Velocity", robot.shootMotor.getVelocity());
         dualLogger.addData("LimelightDegrees", limelightData.aprilXDegrees);
         robot.runLimelight(20);
         telemetry.update();

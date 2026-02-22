@@ -38,7 +38,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
             PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
 
             robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-            robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+//            robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         }
 
@@ -88,12 +88,12 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-        robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+//        robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
 
         //set velocity
         robot.shootMotor.setVelocity(curTargetVelocity);
-        robot.shootMotor2.setVelocity(curTargetVelocity);
+//        robot.shootMotor2.setVelocity(curTargetVelocity);
 
 
         double curVelocity = robot.shootMotor.getVelocity();

@@ -45,7 +45,7 @@ public class PedroFunctions {
         shootVel = robot.shootMotor.getVelocity();
         targetVel = velocityShot(limelightData.distance);
         robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
 //            robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
 //        if (limelightData.accurate) {
@@ -64,7 +64,7 @@ public class PedroFunctions {
                 robot.intakeMotor2.setPower(-.3);
             }
             robot.shootMotor.setVelocity(velocityShot(278));
-            robot.shootMotor2.setVelocity(velocityShot(278));
+//            robot.shootMotor2.setVelocity(velocityShot(278));
 //        }
     }
 
@@ -90,7 +90,7 @@ public class PedroFunctions {
         robot.intakeMotor1.setPower(0);
         robot.intakeMotor2.setPower(0);
         robot.shootMotor.setPower(0);
-        robot.shootMotor2.setPower(0);
+//        robot.shootMotor2.setPower(0);
 
     }
 

@@ -224,7 +224,7 @@ public class InfCycleRed extends OpMode {
                 new DualLogger(telemetry)
         );
 
-        robot.ShootMotor.setPIDFCoefficients(
+        robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
                 new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1.2)
         );
@@ -241,7 +241,7 @@ public class InfCycleRed extends OpMode {
     public void loop() {
         follower.update();
         updateStateMachine();
-        telemetry.addData("Shoot Velocity", robot.ShootMotor.getVelocity());
+        telemetry.addData("Shoot Velocity", robot.shootMotor.getVelocity());
         telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
         telemetry.addData("IMU Degrees", follower.getPose());
 

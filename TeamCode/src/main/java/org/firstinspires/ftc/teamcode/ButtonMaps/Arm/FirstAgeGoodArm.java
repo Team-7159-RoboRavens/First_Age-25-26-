@@ -39,14 +39,14 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         targetVel = velocityShot(limelightData.distance);
         robot.dualLogger.addData("Target Velocity ", targetVel);
         robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         robot.dualLogger.addData("Angle to Tag ", limelightData.aprilXDegrees);
 
 
         //This shoots short to test launcher power, they should be changed to relevent velocity shots for easier testing.
         if (opMode.gamepad2.dpad_down) {
             robot.shootMotor.setPower(-.4);
-            robot.shootMotor2.setPower(-.4);
+//            robot.shootMotor2.setPower(-.4);
 //                robot.ShootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 //
 //                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -62,7 +62,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
 //                }
         } else if (opMode.gamepad2.dpad_up) {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
                 pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
@@ -83,7 +83,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             }
             if (limelightData.accurate) {
                 robot.shootMotor.setVelocity(pressVelocity);
-                robot.shootMotor2.setVelocity(pressVelocity);
+//                robot.shootMotor2.setVelocity(pressVelocity);
 //                robot.dualLogger.addLine("Limelight passes in shot");
             }
             //This allows you to shoot the ball far even if the limelight disconnects or misses the tag.
@@ -91,7 +91,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
 //                robot.dualLogger.addLine("Shoot far");
 //                robot.dualLogger.addLine("Limelight not working");
                 robot.shootMotor.setVelocity(pressVelocity);
-                robot.shootMotor2.setVelocity(pressVelocity);
+//                robot.shootMotor2.setVelocity(pressVelocity);
             }
 //            opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -100,22 +100,22 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             //These are just modes for testing launcher power.
         } else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (opMode.gamepad2.dpad_up) {
                 opMode.telemetry.addLine("Shoot medium-long");
                 robot.shootMotor.setPower(baseShotPower * 1.55);
-                robot.shootMotor2.setPower(baseShotPower * 1.55);
+//                robot.shootMotor2.setPower(baseShotPower * 1.55);
             } else {
                 opMode.telemetry.addLine("Shoot medium");
                 robot.shootMotor.setPower(baseShotPower * 1.5);
-                robot.shootMotor2.setPower(baseShotPower * 1.5);
+//                robot.shootMotor2.setPower(baseShotPower * 1.5);
             }
             //This slows the launcher down again when you stop shooting,
         } else {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             robot.shootMotor.setPower(0);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.shootMotor2.setPower(0);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            robot.shootMotor2.setPower(0);
             stage = 0;
         }
 

@@ -41,7 +41,7 @@ public class ServoGoodBot extends MecanumDrive {
     OpMode opMode;
     public final DualLogger dualLogger;
     public final DcMotorEx shootMotor;
-    public final DcMotorEx shootMotor2;
+//    public final DcMotorEx shootMotor2;
     public final DcMotorEx intakeMotor1;
     public final DcMotorEx intakeMotor2;
     public GoBildaPinpointDriver pinpoint;
@@ -86,23 +86,23 @@ public class ServoGoodBot extends MecanumDrive {
 
         //Initialize Motors
         shootMotor = hardwareMap.get(DcMotorEx.class, "shootMotor");
-        shootMotor2 = hardwareMap.get(DcMotorEx.class, "shootMotor2");
+//        shootMotor2 = hardwareMap.get(DcMotorEx.class, "shootMotor2");
         shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        shootMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+//        shootMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 //        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         // Reset the motor encoder so that it reads zero ticks
         shootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        shootMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        shootMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         shootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shootMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        shootMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
-        shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+//        shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
         //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");

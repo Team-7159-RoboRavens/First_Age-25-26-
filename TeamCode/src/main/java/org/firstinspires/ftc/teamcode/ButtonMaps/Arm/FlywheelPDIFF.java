@@ -37,7 +37,9 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         if (stage == 1) {
             PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
 
-            robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+            robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+            robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
         }
 
         //Normal opmode code
@@ -85,12 +87,16 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
         //Set new coeficients
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
-        robot.ShootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        robot.shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
 
         //set velocity
-        robot.ShootMotor.setVelocity(curTargetVelocity);
+        robot.shootMotor.setVelocity(curTargetVelocity);
+        robot.shootMotor2.setVelocity(curTargetVelocity);
 
-        double curVelocity = robot.ShootMotor.getVelocity();
+
+        double curVelocity = robot.shootMotor.getVelocity();
         double error = curTargetVelocity - curVelocity;
 
         opMode.telemetry.addData("F", F);

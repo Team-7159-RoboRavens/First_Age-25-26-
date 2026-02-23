@@ -54,19 +54,18 @@ public class WukAutoRed extends OpMode {
     }
 
     private AutoState state;
+    Pose startPose   = new Pose(87.8, 8, Math.toRadians(90));
+    Pose shootPose   = new Pose(83, 12, Math.toRadians(67.3));
 
-    Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(83, 12, Math.toRadians(67.3));
+    Pose pickPPGstart = new Pose(102, 35.3438, Math.toRadians(0));
+    Pose pickPPGend   = new Pose(130, 35.3438, Math.toRadians(0));
 
-    Pose pickPPGstart = new Pose(90, 36.8438, Math.toRadians(0));
-    Pose pickPPGend = new Pose(127, 36.8438, Math.toRadians(0));
+    Pose pickPGPstart = new Pose(102, 60, Math.toRadians(0));
+    Pose pickPGPend   = new Pose(130, 60, Math.toRadians(0));
 
-    Pose pickPGPstart = new Pose(90, 58.5, Math.toRadians(0));
-    Pose pickPGPend = new Pose(118, 58.5, Math.toRadians(0));
-
-    Pose gateClear = new Pose(124, 65, Math.toRadians(-90));
-    Pose loadingZone = new Pose(124, 11, Math.toRadians(0));
-    Pose parkPose = new Pose(92, 27, Math.toRadians(0));
+    Pose gateClear   = new Pose(131.5, 62, Math.toRadians(-90));
+    Pose loadingZone = new Pose(132, 11, Math.toRadians(0));
+    Pose parkPose    = new Pose(92, 27, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;

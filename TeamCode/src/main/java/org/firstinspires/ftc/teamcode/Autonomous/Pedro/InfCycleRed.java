@@ -120,6 +120,7 @@ public class InfCycleRed extends OpMode {
             case PICKLOAD_RETURN:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadRecToPickLoadEnd, true);
+                break;
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadEndToShoot, true);

@@ -35,9 +35,9 @@ public class GoodArmNoWheels extends NoWheelsAbstractButtonMap {
             targetVel = velocityShot(280);
             opMode.telemetry.addData("Target Velocity", targetVel);
 
-            robot.ShootMotor.setPower((targetVel - robot.ShootMotor.getVelocity()) / 120);
+            robot.ShootMotor.setPower(1);
 
-            robot.ShootMotor2.setPower((targetVel - robot.ShootMotor2.getVelocity()) / 120);
+            robot.ShootMotor2.setPower(1);
         }
         else {
             robot.ShootMotor.setVelocity(0);

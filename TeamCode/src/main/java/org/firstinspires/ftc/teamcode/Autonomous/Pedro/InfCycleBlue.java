@@ -28,7 +28,7 @@ public class InfCycleBlue extends OpMode {
     private Timer autoTimer;
     public ServoGoodBot robot;
 
-    private static final double SHOOT_TIME = 4.2;
+    private static final double SHOOT_TIME = 3.5;
     private static final double AUTO_END_TIME = 27.0;
 
     enum AutoState {
@@ -49,8 +49,8 @@ public class InfCycleBlue extends OpMode {
 
     Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
     Pose shootPose = new Pose(61, 14, Math.toRadians(107.28));
-    Pose pickLoadPoseEnd = new Pose(12, 9, Math.toRadians(190));
-    Pose pickLoadPoseRec = new Pose(45, 13, 180);
+    Pose pickLoadPoseEnd = new Pose(8, 10, Math.toRadians(193));
+    Pose pickLoadPoseRec = new Pose(25, 10, 193);
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
 
     PathChain startToShoot;

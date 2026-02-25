@@ -20,12 +20,13 @@ import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.limelightData;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "InfCycleRed")
-public class InfCycleRed extends OpMode {
+@Autonomous(name = "InfCycleRedSpike")
+public class InfCycleRedSpike extends OpMode {
 
     private Follower follower;
     private Timer stateTimer;
     private Timer autoTimer;
+    private boolean spikeVisited = false;
     private static final double SHOOT_TIME = 4.2;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
@@ -35,6 +36,9 @@ public class InfCycleRed extends OpMode {
     enum AutoState {
         START_TO_SHOOT,
         SHOOT,
+        SHOOT_TO_SPIKE,
+        SPIKE_TO_END,
+        END_TO_SHOOT,
         SHOOT_TO_PICKLOAD,
 
         PICKLOAD_INTAKE1,
@@ -53,10 +57,15 @@ public class InfCycleRed extends OpMode {
     Pose pickLoadPoseEnd = new Pose(139, 8.900, Math.toRadians(-13));
     Pose pickLoadPoseRec = new Pose(116, 8.9, Math.toRadians(-13));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
+    Pose SpikeStart = new Pose(100, 36.8438, Math.toRadians(0));
+    Pose SpikeEnd = new Pose(127, 36.8438, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
     PathChain shootToPark;
+    PathChain shootToSpike;
+    PathChain spikeToEnd;
+    PathChain endToShoot;
     PathChain pickLoadEndToRec;
     PathChain pickLoadRecToPickLoadEnd;
     PathChain pickLoadEndToShoot;
@@ -66,6 +75,18 @@ public class InfCycleRed extends OpMode {
         startToShoot = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, shootPose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPose.getHeading())
+                .build();
+        shootToSpike = follower.pathBuilder()
+                .addPath(new BezierLine(shootPose, SpikeStart))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), SpikeStart.getHeading())
+                .build();
+        spikeToEnd = follower.pathBuilder()
+                .addPath(new BezierLine(SpikeStart, SpikeEnd))
+                .setLinearHeadingInterpolation(SpikeStart.getHeading(), SpikeEnd.getHeading())
+                .build();
+        endToShoot = follower.pathBuilder()
+                .addPath(new BezierLine(SpikeEnd, shootPose))
+                .setLinearHeadingInterpolation(SpikeEnd.getHeading(), shootPose.getHeading())
                 .build();
 
         shootToPickLoad = follower.pathBuilder()
@@ -106,6 +127,17 @@ public class InfCycleRed extends OpMode {
                 break;
             case SHOOT:
                 break;
+            case SHOOT_TO_SPIKE:
+                follower.followPath(shootToSpike, true);
+                break;
+
+            case SPIKE_TO_END:
+                follower.followPath(spikeToEnd, true);
+                break;
+
+            case END_TO_SHOOT:
+                follower.followPath(endToShoot, true);
+                break;
             case SHOOT_TO_PICKLOAD:
                 PedroFunctions.intake(robot);
                 follower.followPath(shootToPickLoad, true);
@@ -120,6 +152,7 @@ public class InfCycleRed extends OpMode {
             case PICKLOAD_RETURN:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadRecToPickLoadEnd, true);
+                break;
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadEndToShoot, true);
@@ -155,10 +188,32 @@ public class InfCycleRed extends OpMode {
                 PedroFunctions.shoot(robot);
                 if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
                     PedroFunctions.reset(robot);
-                    setState(AutoState.SHOOT_TO_PICKLOAD);
+                    if (!spikeVisited) {
+                        setState(AutoState.SHOOT_TO_SPIKE);
+                    } else {
+                        setState(AutoState.SHOOT_TO_PICKLOAD);
+                    }
+                }
+                break;
+            case SHOOT_TO_SPIKE:
+                if (!follower.isBusy()) {
+                    setState(AutoState.SPIKE_TO_END);
                 }
                 break;
 
+            case SPIKE_TO_END:
+                PedroFunctions.intake(robot);
+                if (!follower.isBusy()) {
+                    setState(AutoState.END_TO_SHOOT);
+                }
+                break;
+
+            case END_TO_SHOOT:
+                if (!follower.isBusy()) {
+                    spikeVisited = true;
+                    setState(AutoState.SHOOT);
+                }
+                break;
             case SHOOT_TO_PICKLOAD:
                 PedroFunctions.intake(robot);
                 if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {

@@ -26,7 +26,7 @@ public class InfCycleRed extends OpMode {
     private Follower follower;
     private Timer stateTimer;
     private Timer autoTimer;
-    private static final double SHOOT_TIME = 4.2;
+    private static final double SHOOT_TIME = 3.5;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;
@@ -49,9 +49,15 @@ public class InfCycleRed extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
+<<<<<<< HEAD
     Pose shootPose = new Pose(80, 14, Math.toRadians(70.5));
     Pose pickLoadPoseEnd = new Pose(139, 8.900, Math.toRadians(-13));
     Pose pickLoadPoseRec = new Pose(116, 8.9, Math.toRadians(-13));
+=======
+    Pose shootPose = new Pose(80, 14, Math.toRadians(68.7));
+    Pose pickLoadPoseEnd = new Pose(137, 10, Math.toRadians(-13));
+    Pose pickLoadPoseRec = new Pose(116, 10, -13);
+>>>>>>> bb349f8eeb31ac575e39904447a807ce1b0dbbb8
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;
@@ -120,6 +126,7 @@ public class InfCycleRed extends OpMode {
             case PICKLOAD_RETURN:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadRecToPickLoadEnd, true);
+                break;
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.intake(robot);
                 follower.followPath(pickLoadEndToShoot, true);
@@ -187,7 +194,7 @@ public class InfCycleRed extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(67.5));
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(68.7));
                     setState(AutoState.SHOOT);
                 }
                 break;

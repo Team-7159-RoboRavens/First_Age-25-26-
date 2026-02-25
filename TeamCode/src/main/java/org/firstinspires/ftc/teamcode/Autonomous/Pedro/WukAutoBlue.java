@@ -59,18 +59,19 @@ public class WukAutoBlue extends OpMode {
 
     private AutoState state;
 
-    Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(61, 12, Math.toRadians(112.7));
+    Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
+    Pose shootPose   = new Pose(61, 12, Math.toRadians(112.7));
 
-    Pose pickPPGstart = new Pose(46.41798, 30.3438, Math.toRadians(180));
-    Pose pickPPGend = new Pose(17, 30.3438, Math.toRadians(180));
+    Pose pickPPGstart = new Pose(40.41798, 35.3438, Math.toRadians(180));
+    Pose pickPPGend   = new Pose(14, 35.3438, Math.toRadians(180));
 
-    Pose pickPGPstart = new Pose(46.64277, 55, Math.toRadians(180));
-    Pose pickPGPend = new Pose(17.5, 55, Math.toRadians(180));
+    Pose pickPGPstart = new Pose(41.64277, 60, Math.toRadians(180));
+    Pose pickPGPend   = new Pose(13.5, 60, Math.toRadians(180));
 
-    Pose gateClear = new Pose(13.5, 60, Math.toRadians(270));
+    Pose gateClear   = new Pose(13, 62, Math.toRadians(270));
     Pose loadingZone = new Pose(12, 11, Math.toRadians(180));
-    Pose parkPose = new Pose(52, 27, Math.toRadians(180));
+    Pose parkPose    = new Pose(52, 27, Math.toRadians(0));
+
 
     PathChain startToShoot;
     PathChain shootToPickupPPG;

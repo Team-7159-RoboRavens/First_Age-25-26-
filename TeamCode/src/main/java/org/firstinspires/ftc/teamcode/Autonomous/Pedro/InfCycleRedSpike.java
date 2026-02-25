@@ -53,9 +53,9 @@ public class InfCycleRedSpike extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(80, 14, Math.toRadians(70.5));
-    Pose pickLoadPoseEnd = new Pose(139, 8.900, Math.toRadians(-13));
-    Pose pickLoadPoseRec = new Pose(116, 8.9, Math.toRadians(-13));
+    Pose shootPose = new Pose(80, 14, Math.toRadians(68.7));
+    Pose pickLoadPoseEnd = new Pose(137, 10, Math.toRadians(-13));
+    Pose pickLoadPoseRec = new Pose(116, 10, Math.toRadians(-13));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
     Pose SpikeStart = new Pose(100, 36.8438, Math.toRadians(0));
     Pose SpikeEnd = new Pose(127, 36.8438, Math.toRadians(0));

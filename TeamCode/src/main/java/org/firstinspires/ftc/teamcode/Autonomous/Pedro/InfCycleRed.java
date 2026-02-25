@@ -49,15 +49,9 @@ public class InfCycleRed extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
-<<<<<<< HEAD
-    Pose shootPose = new Pose(80, 14, Math.toRadians(70.5));
-    Pose pickLoadPoseEnd = new Pose(139, 8.900, Math.toRadians(-13));
-    Pose pickLoadPoseRec = new Pose(116, 8.9, Math.toRadians(-13));
-=======
     Pose shootPose = new Pose(80, 14, Math.toRadians(68.7));
     Pose pickLoadPoseEnd = new Pose(137, 10, Math.toRadians(-13));
-    Pose pickLoadPoseRec = new Pose(116, 10, -13);
->>>>>>> bb349f8eeb31ac575e39904447a807ce1b0dbbb8
+    Pose pickLoadPoseRec = new Pose(116, 10, Math.toRadians(-13));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
 
     PathChain startToShoot;

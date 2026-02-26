@@ -49,7 +49,7 @@ public class InfCycleRed extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(80, 14, Math.toRadians(68.7));
+    Pose shootPose = new Pose(80, 14, Math.toRadians(67.7));
     Pose pickLoadPoseEnd = new Pose(137, 10, Math.toRadians(-13));
     Pose pickLoadPoseRec = new Pose(116, 10, Math.toRadians(-13));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
@@ -188,8 +188,8 @@ public class InfCycleRed extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(68.7));
-                    setState(AutoState.SHOOT);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                    setState(AutoState.AIM);
                 }
                 break;
 

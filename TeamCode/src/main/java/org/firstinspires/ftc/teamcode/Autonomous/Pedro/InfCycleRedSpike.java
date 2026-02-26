@@ -27,7 +27,7 @@ public class InfCycleRedSpike extends OpMode {
     private Timer stateTimer;
     private Timer autoTimer;
     private boolean spikeVisited = false;
-    private static final double SHOOT_TIME = 4.2;
+    private static final double SHOOT_TIME = 3.5;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;
@@ -53,12 +53,12 @@ public class InfCycleRedSpike extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(87.8, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(80, 14, Math.toRadians(68.7));
+    Pose shootPose = new Pose(80, 14, Math.toRadians(67.7));
     Pose pickLoadPoseEnd = new Pose(137, 10, Math.toRadians(-13));
     Pose pickLoadPoseRec = new Pose(116, 10, Math.toRadians(-13));
     Pose parkPose = new Pose(95.9161, 22.407, Math.toRadians(0));
-    Pose SpikeStart = new Pose(100, 36.8438, Math.toRadians(0));
-    Pose SpikeEnd = new Pose(127, 36.8438, Math.toRadians(0));
+    Pose SpikeStart = new Pose(94, 34.8438, Math.toRadians(0));
+    Pose SpikeEnd = new Pose(124, 34.8438, Math.toRadians(0));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
@@ -132,6 +132,7 @@ public class InfCycleRedSpike extends OpMode {
                 break;
 
             case SPIKE_TO_END:
+                spikeVisited = true;
                 follower.followPath(spikeToEnd, true);
                 break;
 
@@ -210,8 +211,9 @@ public class InfCycleRedSpike extends OpMode {
 
             case END_TO_SHOOT:
                 if (!follower.isBusy()) {
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                    setState(AutoState.AIM);
                     spikeVisited = true;
-                    setState(AutoState.SHOOT);
                 }
                 break;
             case SHOOT_TO_PICKLOAD:
@@ -242,8 +244,8 @@ public class InfCycleRedSpike extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, Math.toRadians(67.5));
-                    setState(AutoState.SHOOT);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                    setState(AutoState.AIM);
                 }
                 break;
 
@@ -281,7 +283,7 @@ public class InfCycleRedSpike extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1.2)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1)
         );
     }
 

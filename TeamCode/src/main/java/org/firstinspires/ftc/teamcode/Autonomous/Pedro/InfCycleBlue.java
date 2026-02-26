@@ -48,7 +48,7 @@ public class InfCycleBlue extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(61, 14, Math.toRadians(107.28));
+    Pose shootPose = new Pose(61, 14, Math.toRadians(108.28));
     Pose pickLoadPoseEnd = new Pose(8, 10, Math.toRadians(193));
     Pose pickLoadPoseRec = new Pose(25, 10, Math.toRadians(193));
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
@@ -189,7 +189,7 @@ public class InfCycleBlue extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, Math.toRadians(108.75));
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                     setState(AutoState.SHOOT);
                 }
                 break;
@@ -228,7 +228,7 @@ public class InfCycleBlue extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F)
+                new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F + .8)
         );
     }
 

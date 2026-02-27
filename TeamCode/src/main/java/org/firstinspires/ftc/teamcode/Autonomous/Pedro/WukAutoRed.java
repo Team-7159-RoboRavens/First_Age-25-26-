@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import static org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions.turn;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
@@ -10,10 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ComplexRobots.ServoGoodBot;
 import org.firstinspires.ftc.teamcode.DualLogger;
@@ -50,7 +50,10 @@ public class WukAutoRed extends OpMode {
         LOAD_TO_SHOOT,
         SHOOT_4,
         PARK,
-        AIM,
+        AIM_1,
+        AIM_2,
+        AIM_3,
+        AIM_4,
         DONE
     }
 
@@ -191,8 +194,21 @@ public class WukAutoRed extends OpMode {
                 break;
             case SHOOT_4:
                 break;
-            case AIM:
-                
+            case AIM_1:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                follower.followPath(aim, true);
+                break;
+            case AIM_2:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                follower.followPath(aim, true);
+                break;
+            case AIM_3:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                follower.followPath(aim, true);
+                break;
+            case AIM_4:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                follower.followPath(aim, true);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -207,7 +223,10 @@ public class WukAutoRed extends OpMode {
         switch (state) {
             case START_TO_SHOOT:
                 if (!follower.isBusy())
-                    setState(AutoState.SHOOT_1);
+                    setState(AutoState.AIM_1);
+                break;
+            case AIM_1:
+                if (!follower.isBusy()) setState(AutoState.SHOOT_1);
                 break;
             case SHOOT_1:
                 PedroFunctions.shoot(robot);
@@ -231,7 +250,10 @@ public class WukAutoRed extends OpMode {
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 if (!follower.isBusy())
-                    setState(AutoState.SHOOT_2);
+                    setState(AutoState.AIM_2);
+                break;
+            case AIM_2:
+                if (!follower.isBusy()) setState(AutoState.SHOOT_2);
                 break;
             case SHOOT_2:
                 PedroFunctions.shoot(robot);
@@ -265,7 +287,10 @@ public class WukAutoRed extends OpMode {
                 break;
             case GATE_TO_SHOOT:
                 if (!follower.isBusy())
-                    setState(AutoState.SHOOT_3);
+                    setState(AutoState.AIM_3);
+                break;
+            case AIM_3:
+                if (!follower.isBusy()) setState(AutoState.SHOOT_3);
                 break;
             case SHOOT_3:
                 PedroFunctions.shoot(robot);
@@ -283,7 +308,10 @@ public class WukAutoRed extends OpMode {
                 break;
             case LOAD_TO_SHOOT:
                 if (!follower.isBusy())
-                    setState(AutoState.SHOOT_4);
+                    setState(AutoState.AIM_4);
+                break;
+            case AIM_4:
+                if (!follower.isBusy()) setState(AutoState.SHOOT_4);
                 break;
             case SHOOT_4:
                 if (!follower.isBusy()) {

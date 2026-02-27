@@ -159,6 +159,7 @@ public class InfCycleRedSpike extends OpMode {
                 follower.followPath(pickLoadEndToShoot, true);
                 break;
             case AIM:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                 follower.followPath(aim, true);
                 break;
             case PARK:
@@ -204,6 +205,7 @@ public class InfCycleRedSpike extends OpMode {
 
             case SPIKE_TO_END:
                 PedroFunctions.intake(robot);
+                spikeVisited = true;
                 if (!follower.isBusy()) {
                     setState(AutoState.END_TO_SHOOT);
                 }
@@ -211,7 +213,6 @@ public class InfCycleRedSpike extends OpMode {
 
             case END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                     setState(AutoState.AIM);
                     spikeVisited = true;
                 }
@@ -248,8 +249,8 @@ public class InfCycleRedSpike extends OpMode {
                     setState(AutoState.AIM);
                 }
                 break;
-
             case AIM:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                 if (!follower.isBusy()) {
                     setState(AutoState.SHOOT);
                 }

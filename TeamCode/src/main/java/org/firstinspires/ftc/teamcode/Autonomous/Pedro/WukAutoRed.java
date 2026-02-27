@@ -50,6 +50,7 @@ public class WukAutoRed extends OpMode {
         LOAD_TO_SHOOT,
         SHOOT_4,
         PARK,
+        AIM,
         DONE
     }
 
@@ -58,7 +59,7 @@ public class WukAutoRed extends OpMode {
     Pose shootPose   = new Pose(83, 12, Math.toRadians(69.3));
 
     Pose pickPPGstart = new Pose(94, 37.3438, Math.toRadians(0));
-    Pose pickPPGend   = new Pose(128, 37.3438, Math.toRadians(0));
+    Pose pickPPGend   = new Pose(124, 37.3438, Math.toRadians(0));
 
     Pose pickPGPstart = new Pose(94, 63, Math.toRadians(0));
     Pose pickPGPend   = new Pose(121, 62, Math.toRadians(0));
@@ -78,6 +79,7 @@ public class WukAutoRed extends OpMode {
     PathChain shootToLoad;
     PathChain loadToShoot;
     PathChain shootToPark;
+    PathChain aim;
 
     void buildPaths() {
         startToShoot = follower.pathBuilder()
@@ -173,7 +175,6 @@ public class WukAutoRed extends OpMode {
                 break;
             case GATE_CLEAR:
                 PedroFunctions.reset(robot);
-
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
@@ -189,6 +190,9 @@ public class WukAutoRed extends OpMode {
                 follower.followPath(loadToShoot, true);
                 break;
             case SHOOT_4:
+                break;
+            case AIM:
+                
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -207,7 +211,6 @@ public class WukAutoRed extends OpMode {
                 break;
             case SHOOT_1:
                 PedroFunctions.shoot(robot);
-//                PedroFunctions.aim(robot);
                 if (!follower.isBusy()) {
                     if (stateTimer.getElapsedTimeSeconds() > 3.7) {
                         setState(AutoState.SHOOT_TO_PICKUP_PPG);

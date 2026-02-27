@@ -55,7 +55,7 @@ public class PedroFunctions {
 //            }
 //            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
 //        } else {
-            if (Math.abs(velocityShot(270) - shootVel) < 70) {
+            if (Math.abs(velocityShot(270) - shootVel) < 50) {
                 robot.intakeMotor1.setPower(.9);
                 robot.intakeMotor2.setPower(.75);
             }
@@ -104,7 +104,7 @@ public class PedroFunctions {
 
     public static PathChain turn(double degrees, Follower follower, double startX, double startRadians){
         Pose startPos = new Pose (startX, 14, startRadians);
-        Pose endPos = new Pose(startX, 14, startRadians+degrees);
+        Pose endPos = new Pose(startX - 1, 14-9.17429/5, startRadians-degrees);
         PathChain drive = follower.pathBuilder()
                 .addPath(new BezierLine(startPos, endPos))
                 .setLinearHeadingInterpolation(startPos.getHeading(), endPos.getHeading())

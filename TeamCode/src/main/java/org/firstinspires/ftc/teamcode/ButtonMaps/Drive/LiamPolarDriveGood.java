@@ -73,13 +73,14 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
 
         if (opMode.gamepad2.x) {
-            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
-                limelightData.aiming = false;
-                opMode.telemetry.addLine("Aimed");
-                robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
-                mp = new MotorPowers(0, 0, 0, 0);
-                robot.setMotorPowers(mp);
-            } else if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+//            if (Math.abs(limelightData.aprilXDegrees / 20) < aimingThreshold && limelightData.accurate) {
+//                limelightData.aiming = false;
+//                opMode.telemetry.addLine("Aimed");
+//                robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
+//                mp = new MotorPowers(0, 0, 0, 0);
+//                robot.setMotorPowers(mp);
+//            }
+            if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 limelightData.aiming = true;
                 mp.leftFront += pid.output();
                 mp.leftBack += pid.output();
@@ -90,12 +91,12 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
                 robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
             }
         }
-        if (opMode.gamepad2.a && limelightData.accurate) {
-            mp.leftFront += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftFront;
-            mp.leftBack += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightFront;
-            mp.rightFront -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftBack;
-            mp.rightBack -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightBack;
-        }
+//        if (opMode.gamepad2.a && limelightData.accurate) {
+//            mp.leftFront += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftFront;
+//            mp.leftBack += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightFront;
+//            mp.rightFront -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftBack;
+//            mp.rightBack -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightBack;
+//        }
         pid.update(limelightData.aprilXDegrees);
 
         mp.leftFront += dpadStrafe(opMode, .8).leftFront;

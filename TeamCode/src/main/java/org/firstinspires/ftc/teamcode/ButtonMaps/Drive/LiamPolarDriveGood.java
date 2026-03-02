@@ -29,7 +29,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
     static double triggerDeadZone = .1;
     static double triggerLinearity = 1; //1 is linear relation, 2 is quadratic finer controll at lower motor speeds less at high speeds, .2 is opposite controll at high speeds
     static double joystickDeadZone = .1;
-    static double joystickLinearity = 3;
+    static double joystickLinearity = 2;
 
     static double aimingPower = 1;
     static double aimingThreshold = .004;
@@ -141,7 +141,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             robot.dualLogger.addData("RightStick Pressed", turnSpeed);
             turn += turnSpeed;
         }
-        robot.dualLogger.addData("Line 144 Turn", turn);
+//        robot.dualLogger.addData("Line 144 Turn", turn);
 
         //When left bumper is pressed, go backward
         if (left_bumper) {
@@ -156,10 +156,15 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
         // Scales speed so that after DeadZone, it is increasing at a exponential
         // ,rate, so when the joystick is fully pressed the speed is 1
+        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         if (Math.abs(left_stick_y) > joystickDeadZone || Math.abs(left_stick_x) > joystickDeadZone || left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
-//            double angle = Math.atan2(left_stick_y, left_stick_x);
-//            double scalingFactor = Math.max(1, Math.abs(left_stick_x * 1.1));
+//            double angle = Math.atan2(left_stick_y, left_stick_x) + robotHeading;
+//            double scalingFactor = Math.sqrt(left_stick_y * left_stick_y + left_stick_x * left_stick_x);
+//            double xAdj = scalingFactor * Math.cos(angle);
+//            double yAdj = scalingFactor * Math.sin(angle);
             double turnSpeed = Math.pow((right_trigger - triggerDeadZone), triggerLinearity) / Math.pow((1 - triggerDeadZone), triggerLinearity) - Math.pow((left_trigger - triggerDeadZone), triggerLinearity) / Math.pow((1 - triggerDeadZone), triggerLinearity);
+//            double forwardSpeed = yAdj;
+//            double strafeSpeed = xAdj;
             double forwardSpeed = 0;
             double strafeSpeed = 0;
             if (left_stick_y > joystickDeadZone) {
@@ -177,8 +182,13 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             forward -= forwardSpeed;
             right += strafeSpeed;
             turn += turnSpeed;
+
+            if (Math.abs(forward) > .5 && Math.abs(right) > .5){
+                forward = Math.max(1.0,forward * 1.3);
+                right = Math.max(1.0,right * 1.4);
+            }
         }
-        robot.dualLogger.addData("line 181 turn", turn);
+//        robot.dualLogger.addData("line 181 turn", turn);
 
         //Slow strafe while holding x
         if (x) {
@@ -216,8 +226,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         robot.dualLogger.addLine("left stick y: " + left_stick_y);
         robot.dualLogger.addLine("right stick x: " + right_stick_x);
 
-        double robotHeading = position.getHeading(AngleUnit.RADIANS);
-        robot.dualLogger.addLine("FOD: " + robotHeading);
+        robot.dualLogger.addLine("FOD angle: " + robotHeading);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 
     }

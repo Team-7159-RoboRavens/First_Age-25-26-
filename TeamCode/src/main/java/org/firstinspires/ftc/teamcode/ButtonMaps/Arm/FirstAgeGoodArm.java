@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -19,6 +18,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     private double timeSince;
     private final double timeBuffer = 2000;
 //    boolean timeDelay = false;
+
 
 
     //These magic numbers are not final and should be iteratively tested.
@@ -67,6 +67,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
                 timeSince = System.currentTimeMillis();
                 pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
             }
+            if (limelightData.accurate) {
+                pressVelocity += (targetVel - pressVelocity) * .04;
+            }
             robot.dualLogger.addData("Press Target Velocity", pressVelocity);
             stage = 1;
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
@@ -74,7 +77,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             } else {
                 if (Math.abs(pressVelocity - shootVel) < 50) {
                     robot.intakeMotor1.setPower(.75);
-                    robot.intakeMotor2.setPower(.8);
+                    robot.intakeMotor2.setPower(.7);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                 } else {
                     robot.intakeMotor1.setPower(0);
@@ -122,7 +125,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         //Intake balls and shoot them into the launcher.
         if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
             robot.intakeMotor1.setPower(1 * opMode.gamepad2.left_stick_y);
-            robot.intakeMotor2.setPower(1 * opMode.gamepad2.left_stick_y);
+            robot.intakeMotor2.setPower(.7 * opMode.gamepad2.left_stick_y);
         }
         //Intake balls without feeding them into the launcher.
         else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -132,12 +135,12 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         //This is for clearing the launcher if something is stuck.
         else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
             robot.intakeMotor1.setPower(1 * opMode.gamepad2.left_stick_y);
-            robot.intakeMotor2.setPower(1 * opMode.gamepad2.left_stick_y);
+            robot.intakeMotor2.setPower(.7 * opMode.gamepad2.left_stick_y);
         }
         //When you don't want the first intake to move and just want to move artifacts to the launcher
         else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
             robot.intakeMotor1.setPower(0);
-            robot.intakeMotor2.setPower(1 * opMode.gamepad2.left_stick_y);
+            robot.intakeMotor2.setPower(.7 * opMode.gamepad2.left_stick_y);
         }
         //Run both motors without having to turn on the shooting motor.
         if (opMode.gamepad2.b) {
@@ -158,6 +161,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
-        return 2.84926 * x + 1235.65423;
+        return 2.8481 * x + 1230.65423;
     }
 }

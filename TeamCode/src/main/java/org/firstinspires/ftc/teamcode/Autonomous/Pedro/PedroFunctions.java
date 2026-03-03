@@ -55,7 +55,7 @@ public class PedroFunctions {
 //            }
 //            robot.ShootMotor.setVelocity(velocityShot(limelightData.distance));
 //        } else {
-            if (Math.abs(velocityShot(270) - shootVel) < 50) {
+            if (Math.abs(velocityShot(270) - shootVel) < 70) {
                 robot.intakeMotor1.setPower(.9);
                 robot.intakeMotor2.setPower(.75);
             }
@@ -82,14 +82,13 @@ public class PedroFunctions {
 
 
     public static void intake(ServoGoodBot robot) {
-        robot.intakeMotor2.setPower(.2);
         robot.intakeMotor1.setPower(1);
     }
 
     public static void reset(ServoGoodBot robot) {
         robot.intakeMotor1.setPower(0);
         robot.intakeMotor2.setPower(0);
-        robot.shootMotor.setPower(0);
+        robot.shootMotor.setVelocity(0);
 //        robot.shootMotor2.setPower(0);
 
     }

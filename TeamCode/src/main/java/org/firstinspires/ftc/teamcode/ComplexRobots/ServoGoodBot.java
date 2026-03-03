@@ -200,7 +200,7 @@ public class ServoGoodBot extends MecanumDrive {
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
                     dualLogger.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                     if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 2.2, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 3, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                         limelightData.accurate = true;
                         dualLogger.addData("Correct tag: ", fr.getFiducialId());
                         dualLogger.addData("X: ", fr.getTargetXDegrees());

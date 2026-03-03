@@ -66,13 +66,13 @@ public class WukAutoBlue extends OpMode {
     private AutoState state;
 
     Pose startPose   = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose   = new Pose(61, 12, Math.toRadians(112.7));
+    Pose shootPose   = new Pose(61, 12, Math.toRadians(113.7));
 
     Pose pickPPGstart = new Pose(40.41798, 35.3438, Math.toRadians(180));
     Pose pickPPGend   = new Pose(14, 35.3438, Math.toRadians(180));
 
-    Pose pickPGPstart = new Pose(41.64277, 60, Math.toRadians(180));
-    Pose pickPGPend   = new Pose(13.5, 60, Math.toRadians(180));
+    Pose pickPGPstart = new Pose(41.64277, 57, Math.toRadians(180));
+    Pose pickPGPend   = new Pose(13.5, 57, Math.toRadians(180));
 
     Pose gateClear   = new Pose(13, 62, Math.toRadians(270));
     Pose loadingZone = new Pose(12, 11, Math.toRadians(180));
@@ -156,7 +156,6 @@ public class WukAutoBlue extends OpMode {
         switch (newState) {
             case START_TO_SHOOT:
                 follower.followPath(startToShoot, true);
-                PedroFunctions.aim(robot);
                 break;
             case SHOOT_1:
                 break;
@@ -171,7 +170,6 @@ public class WukAutoBlue extends OpMode {
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
                 follower.followPath(pickupPPGendToShoot, true);
-                PedroFunctions.aim(robot);
                 break;
             case SHOOT_2:
                 break;
@@ -190,7 +188,6 @@ public class WukAutoBlue extends OpMode {
                 break;
             case GATE_TO_SHOOT:
                 follower.followPath(gateToShoot, true);
-                PedroFunctions.aim(robot);
                 break;
             case SHOOT_3:
                 break;
@@ -211,19 +208,19 @@ public class WukAutoBlue extends OpMode {
                 follower.breakFollowing();
                 break;
             case AIM_1:
-                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                 follower.followPath(aim, true);
                 break;
             case AIM_2:
-                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                 follower.followPath(aim, true);
                 break;
             case AIM_3:
-                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                 follower.followPath(aim, true);
                 break;
             case AIM_4:
-                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                 follower.followPath(aim, true);
                 break;
         }
@@ -233,19 +230,16 @@ public class WukAutoBlue extends OpMode {
         switch (state) {
             case START_TO_SHOOT:
                 if (!follower.isBusy())
-                    setState(AutoState.AIM_1);
+                    setState(AutoState.SHOOT_1);
                 break;
             case AIM_1:
                 if (!follower.isBusy()) setState(AutoState.SHOOT_1);
                 break;
             case SHOOT_1:
-                if (!follower.isBusy()) {
-                    PedroFunctions.shoot(robot);
-//                PedroFunctions.aim(robot);
-                    if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                PedroFunctions.shoot(robot);
+                    if (stateTimer.getElapsedTimeSeconds() >= 3.7) {
                         setState(AutoState.SHOOT_TO_PICKUP_PPG);
                         PedroFunctions.reset(robot);
-                    }
                 }
                 break;
             case SHOOT_TO_PICKUP_PPG:
@@ -260,6 +254,7 @@ public class WukAutoBlue extends OpMode {
                 }
                 break;
             case PICKUP_PPGEND_TO_SHOOT:
+                PedroFunctions.reset(robot);
                 if (!follower.isBusy())
                     setState(AutoState.AIM_2);
                 break;
@@ -267,13 +262,10 @@ public class WukAutoBlue extends OpMode {
                 if (!follower.isBusy()) setState(AutoState.SHOOT_2);
                 break;
             case SHOOT_2:
-                if (!follower.isBusy()) {
                     PedroFunctions.shoot(robot);
-//                PedroFunctions.aim(robot);
-                    if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                    if (stateTimer.getElapsedTimeSeconds() >= 3.7) {
                         setState(AutoState.SHOOT_TO_PICKUP_PGP);
                         PedroFunctions.reset(robot);
-                    }
                 }
                 break;
             case SHOOT_TO_PICKUP_PGP:
@@ -305,34 +297,30 @@ public class WukAutoBlue extends OpMode {
                 if (!follower.isBusy()) setState(AutoState.SHOOT_3);
                 break;
             case SHOOT_3:
-                if (!follower.isBusy()) {
                     PedroFunctions.shoot(robot);
-//                PedroFunctions.aim(robot);
-                    if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                    if (stateTimer.getElapsedTimeSeconds() >= 3.7) {
                         setState(AutoState.SHOOT_TO_LOAD);
                         PedroFunctions.reset(robot);
-                    }
                 }
                 break;
             case SHOOT_TO_LOAD:
-                if (!follower.isBusy())
+                PedroFunctions.intake(robot);
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= .5)
                     setState(AutoState.LOAD_TO_SHOOT);
                 break;
             case LOAD_TO_SHOOT:
+                PedroFunctions.reset(robot);
                 if (!follower.isBusy())
-                    setState(AutoState.AIM_4);
+                    setState(AutoState.SHOOT_4);
                 break;
             case AIM_4:
                 if (!follower.isBusy()) setState(AutoState.SHOOT_4);
                 break;
             case SHOOT_4:
-                if (!follower.isBusy()) {
                     PedroFunctions.shoot(robot);
-//                PedroFunctions.aim(robot);
-                    if (stateTimer.getElapsedTimeSeconds() >= 3.0) {
+                    if (stateTimer.getElapsedTimeSeconds() >= 3.7) {
                         setState(AutoState.PARK);
                         PedroFunctions.reset(robot);
-                    }
                 }
                 break;
             case PARK:
@@ -354,7 +342,7 @@ public class WukAutoBlue extends OpMode {
         follower.setPose(startPose);
         setState(AutoState.START_TO_SHOOT);
         robot = new ServoGoodBot(hardwareMap, new Pose2d(0, 0, 0), this, new DualLogger(telemetry));
-        robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F + .8));
+        robot.shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F + .5));
 
     }
 

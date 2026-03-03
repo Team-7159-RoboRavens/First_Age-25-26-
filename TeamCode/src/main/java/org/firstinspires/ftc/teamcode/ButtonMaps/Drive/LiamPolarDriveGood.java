@@ -157,33 +157,23 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         // Scales speed so that after DeadZone, it is increasing at a exponential
         // ,rate, so when the joystick is fully pressed the speed is 1
         if (Math.abs(left_stick_y) > joystickDeadZone || Math.abs(left_stick_x) > joystickDeadZone || left_trigger > triggerDeadZone || right_trigger > triggerDeadZone) {
-            //calculate angle
-            double angle = Math.atan2(left_stick_y, left_stick_x); //-1/2 pi to 1/2 pi; 0 is forward
-           // if (left_stick_y < 0){ //rotates angle by 180 if y is negative
-           //     angle += Math.PI;
-           //
-            // }
-            double magnitude = Math.sqrt((Math.pow(left_stick_y, 2)+Math.pow(left_stick_x, 2))); //hyponenuse therom GO
-            magnitude = Math.min(magnitude, 1); //caps magnitude at 1. ask controls if ts is max
-            //uncoment when polar has worked
-//            magnitude = Math.pow((magnitude - joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity); //praying ts works
+//            double angle = Math.atan2(left_stick_y, left_stick_x);
+//            double scalingFactor = Math.max(1, Math.abs(left_stick_x * 1.1));
             double turnSpeed = Math.pow((right_trigger - triggerDeadZone), triggerLinearity) / Math.pow((1 - triggerDeadZone), triggerLinearity) - Math.pow((left_trigger - triggerDeadZone), triggerLinearity) / Math.pow((1 - triggerDeadZone), triggerLinearity);
             double forwardSpeed = 0;
             double strafeSpeed = 0;
-            forwardSpeed = magnitude*Math.sin(angle);
-            strafeSpeed = magnitude*Math.cos(angle);
-//            if (left_stick_y > joystickDeadZone) {
-//                forwardSpeed = Math.pow((left_stick_y - joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity);
-//            }
-//            if (left_stick_x > joystickDeadZone) {
-//                strafeSpeed = Math.pow((left_stick_x - joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity);
-//            }
-//            if (left_stick_y < -joystickDeadZone) {
-//                forwardSpeed = -Math.abs(Math.pow((left_stick_y + joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity)); //congrats you got the the end of this line of code, would you like to see more :3
-//            }
-//            if (left_stick_x < -joystickDeadZone) {
-//                strafeSpeed = -Math.abs(Math.pow((left_stick_x + joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity));
-//            }
+            if (left_stick_y > joystickDeadZone) {
+                forwardSpeed = Math.pow((left_stick_y - joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity);
+            }
+            if (left_stick_x > joystickDeadZone) {
+                strafeSpeed = Math.pow((left_stick_x - joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity);
+            }
+            if (left_stick_y < -joystickDeadZone) {
+                forwardSpeed = -Math.abs(Math.pow((left_stick_y + joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity)); //congrats you got the the end of this line of code, would you like to see more :3
+            }
+            if (left_stick_x < -joystickDeadZone) {
+                strafeSpeed = -Math.abs(Math.pow((left_stick_x + joystickDeadZone), joystickLinearity) / Math.pow((1 - joystickDeadZone), joystickLinearity));
+            }
             forward -= forwardSpeed;
             right += strafeSpeed;
             turn += turnSpeed;

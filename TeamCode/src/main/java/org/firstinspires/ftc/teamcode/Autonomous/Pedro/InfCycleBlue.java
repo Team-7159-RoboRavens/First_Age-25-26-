@@ -28,7 +28,7 @@ public class InfCycleBlue extends OpMode {
     private Timer autoTimer;
     public ServoGoodBot robot;
 
-    private static final double SHOOT_TIME = 3.5;
+    private static final double SHOOT_TIME = 4;
     private static final double AUTO_END_TIME = 27.0;
 
     enum AutoState {
@@ -48,9 +48,9 @@ public class InfCycleBlue extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(61, 14, Math.toRadians(108.28));
+    Pose shootPose = new Pose(61, 14, Math.toRadians(113.28));
     Pose pickLoadPoseEnd = new Pose(8, 10, Math.toRadians(193));
-    Pose pickLoadPoseRec = new Pose(25, 10, Math.toRadians(193));
+    Pose pickLoadPoseRec = new Pose(38, 10, Math.toRadians(199));
     Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
 
     PathChain startToShoot;
@@ -154,21 +154,21 @@ public class InfCycleBlue extends OpMode {
             case SHOOT:
                 PedroFunctions.shoot(robot);
                 if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
-                    PedroFunctions.reset(robot);
                     setState(AutoState.SHOOT_TO_PICKLOAD);
                 }
                 break;
 
             case SHOOT_TO_PICKLOAD:
+                PedroFunctions.reset(robot);
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 1.3) {
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 1) {
                     setState(AutoState.PICKLOAD_INTAKE1);
                 }
                 break;
 
             case PICKLOAD_INTAKE1:
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy()) {
+                if (stateTimer.getElapsedTimeSeconds() >= .4) {
                     setState(AutoState.PICKLOAD_RECOIL);
                 }
                 break;
@@ -189,7 +189,7 @@ public class InfCycleBlue extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
+                    aim = turn(Math.toRadians(-limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                     setState(AutoState.SHOOT);
                 }
                 break;
@@ -228,7 +228,7 @@ public class InfCycleBlue extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F + .8)
+                new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F)
         );
     }
 

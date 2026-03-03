@@ -27,7 +27,7 @@ public class InfCycleRedSpike extends OpMode {
     private Timer stateTimer;
     private Timer autoTimer;
     private boolean spikeVisited = false;
-    private static final double SHOOT_TIME = 3.5;
+    private static final double SHOOT_TIME = 3.7;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;

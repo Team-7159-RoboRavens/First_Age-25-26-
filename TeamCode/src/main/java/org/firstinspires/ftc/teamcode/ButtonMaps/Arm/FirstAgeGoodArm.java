@@ -158,6 +158,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
-        return 2.84926 * x + 1235.65423;
+        return 2.84926 * x + 1250.65423;
     }
 }

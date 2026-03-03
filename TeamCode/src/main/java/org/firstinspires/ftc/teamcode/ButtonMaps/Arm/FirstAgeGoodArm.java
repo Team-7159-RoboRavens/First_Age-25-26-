@@ -75,7 +75,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
 //                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 100) {
+                if (Math.abs(pressVelocity - shootVel) < 50) {
                     robot.intakeMotor1.setPower(.75);
                     robot.intakeMotor2.setPower(.7);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
@@ -160,7 +160,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
 
     public static double velocityShot(double x) {
         //Old
-//        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);
-        return (2.849 * x + 1250.65423); //* 1.2;
+//        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);d
+        return 2.8481 * x + 1230.65423;
     }
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm.velocityShot;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,11 +22,11 @@ public class PIDFFTeleOp extends OpMode {
     ShootOnlyBot robot;
     private int stage = 1;
 
-    public static double F = 13.75;
+    public static double F = 13.5;
 
-    public static double P = 120.7;
+    public static double P = 100;
 
-    public double highVelocity = 1920;
+    public double highVelocity = velocityShot(280);
 
     public double lowVelocity = 1500;
 

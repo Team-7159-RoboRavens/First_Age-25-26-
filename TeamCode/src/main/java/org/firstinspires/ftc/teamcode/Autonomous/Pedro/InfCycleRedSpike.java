@@ -245,7 +245,6 @@ public class InfCycleRedSpike extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                     setState(AutoState.AIM);
                 }
                 break;

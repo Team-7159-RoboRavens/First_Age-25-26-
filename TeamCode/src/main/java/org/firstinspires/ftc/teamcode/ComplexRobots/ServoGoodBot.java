@@ -101,7 +101,7 @@ public class ServoGoodBot extends MecanumDrive {
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
         shootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        shootMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
+        shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(13.75, 0, 0,130));
 //        shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F));
         //        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        ShootMotor2 = hardwareMap.get(DcMotorEx.class, "ShootMotor2");

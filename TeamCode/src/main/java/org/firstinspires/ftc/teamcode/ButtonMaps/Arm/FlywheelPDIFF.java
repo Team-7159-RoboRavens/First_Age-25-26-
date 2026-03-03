@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.ButtonMaps.Arm;
 
+import static org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FirstAgeGoodArm.velocityShot;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,7 +22,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     public static double P = 120.7;
 
-    public double highVelocity = 1920;
+    public double highVelocity = velocityShot(280);
 
     public double lowVelocity = 1500;
 

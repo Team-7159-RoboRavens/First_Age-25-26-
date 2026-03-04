@@ -242,11 +242,14 @@ public class InfCycleBlue extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        robot.runLimelight(20);
+        if (limelightData.accurate) {
+            turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
+        }
         updateStateMachine();
         telemetry.addData("Shoot Velocity", robot.shootMotor.getVelocity());
         telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
         telemetry.addData("IMU Degrees", follower.getPose());
-        robot.runLimelight(20);
         telemetry.update();
     }
 }

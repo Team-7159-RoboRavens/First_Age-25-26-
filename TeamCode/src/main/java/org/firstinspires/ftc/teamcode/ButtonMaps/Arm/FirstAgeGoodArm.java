@@ -75,13 +75,13 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
 //                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 50) {
-                    robot.intakeMotor1.setPower(.75);
-                    robot.intakeMotor2.setPower(.7);
+                if (Math.abs(pressVelocity - shootVel) < 60) {
+                    robot.intakeMotor1.setPower(.85);
+                    robot.intakeMotor2.setPower(.95);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                 } else {
                     robot.intakeMotor1.setPower(0);
-                    robot.intakeMotor2.setPower(-.4);
+                    robot.intakeMotor2.setPower(.25);
                 }
             }
             if (limelightData.accurate) {
@@ -125,7 +125,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         //Intake balls and shoot them into the launcher.
         if (opMode.gamepad2.left_stick_y > joystickDeadZone && opMode.gamepad2.dpad_up) {
             robot.intakeMotor1.setPower(1 * opMode.gamepad2.left_stick_y);
-            robot.intakeMotor2.setPower(.7 * opMode.gamepad2.left_stick_y);
+            robot.intakeMotor2.setPower(.8 * opMode.gamepad2.left_stick_y);
         }
         //Intake balls without feeding them into the launcher.
         else if (opMode.gamepad2.left_stick_y > joystickDeadZone && !opMode.gamepad2.dpad_up) {
@@ -135,7 +135,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         //This is for clearing the launcher if something is stuck.
         else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && !opMode.gamepad2.dpad_up) {
             robot.intakeMotor1.setPower(1 * opMode.gamepad2.left_stick_y);
-            robot.intakeMotor2.setPower(.7 * opMode.gamepad2.left_stick_y);
+            robot.intakeMotor2.setPower(.8 * opMode.gamepad2.left_stick_y);
         }
         //When you don't want the first intake to move and just want to move artifacts to the launcher
         else if (opMode.gamepad2.left_stick_y < -joystickDeadZone && opMode.gamepad2.dpad_up) {
@@ -161,6 +161,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);d
-        return 2.8481 * x + 1230.65423;
+        return 2.8481 * x + 1250.65423;
     }
 }

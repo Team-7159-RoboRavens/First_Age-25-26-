@@ -213,6 +213,7 @@ public class InfCycleBlueSpike extends OpMode {
 
             case END_TO_SHOOT:
                 if (!follower.isBusy()) {
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
                     spikeVisited = true;
                 }
@@ -245,7 +246,7 @@ public class InfCycleBlueSpike extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(-limelightData.aprilXDegrees), follower, 64, follower.getHeading());
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
                 }
                 break;
@@ -297,11 +298,15 @@ public class InfCycleBlueSpike extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        robot.runLimelight(20);
+        if (limelightData.accurate) {
+            turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
+        }
+
         updateStateMachine();
         telemetry.addData("Shoot Velocity", robot.shootMotor.getVelocity());
         telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);
         telemetry.addData("IMU Degrees", follower.getPose());
-        robot.runLimelight(20);
         telemetry.update();
     }
 }

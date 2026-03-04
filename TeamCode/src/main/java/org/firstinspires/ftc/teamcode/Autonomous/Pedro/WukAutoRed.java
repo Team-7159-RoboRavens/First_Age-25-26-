@@ -349,6 +349,9 @@ public class WukAutoRed extends OpMode {
     public void loop() {
         follower.update();
         robot.runLimelight(24);
+        if (limelightData.accurate) {
+            turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
+        }
         updateStateMachine();
         dualLogger.addData("X Degrees", limelightData.aprilXDegrees);
         telemetry.update();

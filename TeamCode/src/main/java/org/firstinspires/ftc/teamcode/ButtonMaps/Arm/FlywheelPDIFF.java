@@ -20,7 +20,7 @@ public class FlywheelPDIFF extends ServoAbstractButtonMapGood {
 
     public static double F = 13.75;
 
-    public static double P = 120.7;
+    public static double P = 140.7;
 
     public double highVelocity = velocityShot(280);
 

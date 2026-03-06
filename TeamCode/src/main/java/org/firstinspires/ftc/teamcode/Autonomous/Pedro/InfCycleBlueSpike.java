@@ -30,7 +30,7 @@ public class InfCycleBlueSpike extends OpMode {
     private static final double SHOOT_TIME = 4;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
-    private static final double AUTO_END_TIME = 28.0;
+    private static final double AUTO_END_TIME = 27.0;
     ServoGoodBot robot;
 
     enum AutoState {
@@ -53,12 +53,12 @@ public class InfCycleBlueSpike extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(56.2, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(64, 14, Math.toRadians(115.28));
+    Pose shootPose = new Pose(64, 14, Math.toRadians(117.28));
     Pose pickLoadPoseEnd = new Pose(7, 10, Math.toRadians(193));
     Pose pickLoadPoseRec = new Pose(28, 10, Math.toRadians(199));
     Pose parkPose = new Pose(48.0839, 22.407, Math.toRadians(180));
-    Pose SpikeStart = new Pose(50, 34.8438, Math.toRadians(180));
-    Pose SpikeEnd = new Pose(20, 34.8438, Math.toRadians(180));
+    Pose SpikeStart = new Pose(55, 32.8438, Math.toRadians(180));
+    Pose SpikeEnd = new Pose(20, 32.8438, Math.toRadians(180));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
@@ -181,6 +181,7 @@ public class InfCycleBlueSpike extends OpMode {
 
         switch (state) {
             case START_TO_SHOOT:
+                PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
                     setState(AutoState.SHOOT);
                 }
@@ -204,6 +205,7 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
 
             case SPIKE_TO_END:
+
                 PedroFunctions.intake(robot);
                 spikeVisited = true;
                 if (!follower.isBusy()) {
@@ -212,7 +214,9 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
 
             case END_TO_SHOOT:
-                if (!follower.isBusy()) {
+
+                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
+                    PedroFunctions.shoot(robot);
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
                     spikeVisited = true;
@@ -245,12 +249,14 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
-                if (!follower.isBusy()) {
+                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
+                    PedroFunctions.shoot(robot);
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
                 }
                 break;
             case AIM:
+                PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
                     if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
                         setState(AutoState.SHOOT);
@@ -287,7 +293,7 @@ public class InfCycleBlueSpike extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F +.4)
         );
     }
 

@@ -256,7 +256,7 @@ public class WukAutoBlue extends OpMode {
             case PICKUP_PPGEND_TO_SHOOT:
                 PedroFunctions.reset(robot);
                 if (!follower.isBusy())
-                    setState(AutoState.AIM_2);
+                    setState(AutoState.SHOOT_2);
                 break;
             case AIM_2:
                 if (!follower.isBusy()) setState(AutoState.SHOOT_2);

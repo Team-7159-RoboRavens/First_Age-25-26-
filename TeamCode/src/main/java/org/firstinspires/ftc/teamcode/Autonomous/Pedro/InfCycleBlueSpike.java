@@ -252,7 +252,10 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
             case AIM:
                 if (!follower.isBusy()) {
-                    setState(AutoState.SHOOT);
+                    if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
+                        setState(AutoState.SHOOT);
+                    }
+                    setState(AutoState.AIM);
                 }
                 break;
 

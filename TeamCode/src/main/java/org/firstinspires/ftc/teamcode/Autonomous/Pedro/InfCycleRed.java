@@ -195,7 +195,10 @@ public class InfCycleRed extends OpMode {
 
             case AIM:
                 if (!follower.isBusy()) {
-                    setState(AutoState.SHOOT);
+                    if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
+                        setState(AutoState.SHOOT);
+                    }
+                    setState(tate.AIM);
                 }
                 break;
 

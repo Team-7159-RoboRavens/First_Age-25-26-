@@ -251,7 +251,10 @@ public class InfCycleRedSpike extends OpMode {
             case AIM:
                 aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                 if (!follower.isBusy()) {
-                    setState(AutoState.SHOOT);
+                    if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
+                        setState(AutoState.SHOOT);
+                    }
+                    setState(AutoState.AIM);
                 }
                 break;
 

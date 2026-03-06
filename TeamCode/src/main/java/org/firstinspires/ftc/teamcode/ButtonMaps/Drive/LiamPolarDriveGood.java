@@ -49,7 +49,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         limelightData.ImuOffset = 0;
         IMU imu = robot.lazyImu.get();
         // FOD resetting
-        if (opMode.gamepad1.back && et.time() > 500) {
+        if (opMode.gamepad1.backWasPressed() && et.time() > 500) {
             robot.pinpoint.resetPosAndIMU();
             imu.resetYaw();
             et.reset();
@@ -85,7 +85,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
                 if (stage == 1) {
                     stage++;
-                    pressXDegrees = limelightData.aprilXDegrees;
+                    pressXDegrees = position.getHeading(AngleUnit.DEGREES) + limelightData.aprilXDegrees;
                 }
                 limelightData.aiming = true;
                 mp.leftFront += pid.output();
@@ -99,16 +99,11 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             }
             else{
                 stage = 1;
-                pressXDegrees = limelightData.aprilXDegrees;
+                pressXDegrees = position.getHeading(AngleUnit.DEGREES) + limelightData.aprilXDegrees;
             }
         }
-//        if (opMode.gamepad2.a && limelightData.accurate) {
-//            mp.leftFront += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftFront;
-//            mp.leftBack += TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightFront;
-//            mp.rightFront -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftBack;
-//            mp.rightBack -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightBack;
-//        }
-        pid.update(pressXDegrees);
+//        pid.update(pressXDegrees);
+        pid.update(limelightData.aprilXDegrees);
 
         mp.leftFront += dpadStrafe(opMode, .8).leftFront;
         mp.rightFront += dpadStrafe(opMode, .8).rightFront;

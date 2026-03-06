@@ -11,7 +11,8 @@ import org.firstinspires.ftc.teamcode.DualLogger;
 import org.firstinspires.ftc.teamcode.ShootingFunctions;
 import org.firstinspires.ftc.teamcode.limelightData;
 
-public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
+public class
+FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     //TODO: Change back to private final when done with dash
     private double pressVelocity;
     private double stage = 0;
@@ -39,7 +40,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         targetVel = velocityShot(limelightData.distance);
         robot.dualLogger.addData("Target Velocity ", targetVel);
         robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 //        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         robot.dualLogger.addData("Angle to Tag ", limelightData.aprilXDegrees);
@@ -49,9 +50,9 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         if (opMode.gamepad2.dpad_down) {
             robot.shootMotor.setPower(-.4);
 
-            robot.shootMotor2.setPower(-.4);
+//            robot.shootMotor2.setPower(-.4);
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 //
 //                if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
@@ -67,7 +68,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
 //                }
         } else if (opMode.gamepad2.dpad_up) {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (stage == 0) {
                 timeSince = System.currentTimeMillis();
                 pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
@@ -80,7 +81,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
 //                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 45) {
+                if (Math.abs(pressVelocity - shootVel) < 60) {
                     robot.intakeMotor1.setPower(.85);
                     robot.intakeMotor2.setPower(.95);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
@@ -91,7 +92,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             }
             if (limelightData.accurate) {
                 robot.shootMotor.setVelocity(pressVelocity);
-                robot.shootMotor2.setVelocity(pressVelocity);
+//                robot.shootMotor2.setVelocity(pressVelocity);
 //                robot.dualLogger.addLine("Limelight passes in shot");
             }
             //This allows you to shoot the ball far even if the limelight disconnects or misses the tag.
@@ -99,7 +100,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
 //                robot.dualLogger.addLine("Shoot far");
 //                robot.dualLogger.addLine("Limelight not working");
                 robot.shootMotor.setVelocity(pressVelocity);
-                robot.shootMotor2.setVelocity(pressVelocity);
+//                robot.shootMotor2.setVelocity(pressVelocity);
             }
 //            opMode.telemetry.addLine("Shoot limelight");
             //This is meant to shoot according to the distance to the april tag if the limelight is accurate.
@@ -112,7 +113,7 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             if (opMode.gamepad2.dpad_up) {
                 opMode.telemetry.addLine("Shoot medium-long");
                 robot.shootMotor.setPower(baseShotPower * 1.55);
-                robot.shootMotor2.setPower(baseShotPower * 1.55);
+//                robot.shootMotor2.setPower(baseShotPower * 1.55);
             } else {
                 opMode.telemetry.addLine("Shoot medium");
                 robot.shootMotor.setPower(baseShotPower * 1.5);
@@ -122,8 +123,8 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
         } else {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             robot.shootMotor.setPower(0);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.shootMotor2.setPower(0);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            robot.shootMotor2.setPower(0);
             stage = 0;
         }
 
@@ -166,6 +167,6 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);d
-        return 2.8481 * x + 1250.65423;
+        return (2.8481 * x + 1250.65423);
     }
 }

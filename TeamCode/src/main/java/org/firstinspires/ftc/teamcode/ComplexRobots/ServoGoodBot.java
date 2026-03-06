@@ -68,7 +68,7 @@ public class ServoGoodBot extends MecanumDrive {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
 
-//        limelight.pipelineSwitch(0);
+        limelight.pipelineSwitch(0);
 
         /*
          * Starts polling for data.  If you neglect to call start(), getLatestResult() will return null.
@@ -96,7 +96,7 @@ public class ServoGoodBot extends MecanumDrive {
         // Reset the motor encoder so that it reads zero ticks
         shootMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shootMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(PIDFFTeleOp.P, 0, 0, PIDFFTeleOp.F));
+        shootMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P * 2, 0, 0, FlywheelPDIFF.F));
 
 //        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
@@ -109,7 +109,7 @@ public class ServoGoodBot extends MecanumDrive {
         // Reset the motor encoder so that it reads zero ticks
         shootMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shootMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(PIDFFTeleOp.P, 0, 0, PIDFFTeleOp.F));
+        shootMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(FlywheelPDIFF.P * 2, 0, 0, FlywheelPDIFF.F));
         intakeMotor1 = hardwareMap.get(DcMotorEx.class, "intakeMotor1");
         intakeMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -161,7 +161,6 @@ public class ServoGoodBot extends MecanumDrive {
 
     public void runLimelight(int id) {
 
-
         LLStatus status = limelight.getStatus();
         dualLogger.addData("Name", "%s",
                 status.getName());
@@ -171,10 +170,9 @@ public class ServoGoodBot extends MecanumDrive {
                 status.getPipelineIndex(), status.getPipelineType());
 
         LLResult result = limelight.getLatestResult();
-//        double robotYaw = lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-//        limelight.updateRobotOrientation(robotYaw);
         if (result != null) {
             // Access general information
+            Pose3D botpose = result.getBotpose();
             double captureLatency = result.getCaptureLatency();
             double targetingLatency = result.getTargetingLatency();
             double parseLatency = result.getParseLatency();
@@ -189,14 +187,8 @@ public class ServoGoodBot extends MecanumDrive {
                 dualLogger.addData("txnc", result.getTxNC());
                 dualLogger.addData("ty", result.getTy());
                 dualLogger.addData("tync", result.getTyNC());
-//                Pose3D botpose_mt2 = result.getBotpose_MT2();
-//                if (botpose_mt2 != null) {
-//                    limelightData.botpose = botpose_mt2;
-//                    double x = botpose_mt2.getPosition().x;
-//                    double y = botpose_mt2.getPosition().y;
-//                    dualLogger.addData("MT2 Location:", "(" + x + ", " + y + ")");
-//                }
 
+                dualLogger.addData("Botpose", botpose.toString());
                 if (limelightData.accurate) {
                     dualLogger.addLine("Correct: ");
 //                    dualLogger.addData("Aiming ", limelightData.aiming);
@@ -220,10 +212,9 @@ public class ServoGoodBot extends MecanumDrive {
                         dualLogger.addData("y              ", fr.getTargetYDegrees());
 //                        dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
                         dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
-                        dualLogger.addData("Distance From Tag", result.getBotpose());
-                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
-                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
-                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
+//                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
+//                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
+//                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
 
 
 
@@ -285,4 +276,3 @@ public class ServoGoodBot extends MecanumDrive {
 //        servo.setPosition(scaledVal);
 //    }
 }
-

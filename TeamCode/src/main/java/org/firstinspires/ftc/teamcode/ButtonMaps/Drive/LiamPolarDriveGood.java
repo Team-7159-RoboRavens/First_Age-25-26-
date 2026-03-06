@@ -36,10 +36,12 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
     static private boolean motorBrake = true;
     private Pose2D position;
+    private int stage = 1;
+    private double pressXDegrees;
 
     private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.4, 0, 0);
+    public static PIDControl pid = new PIDControl(0.04, 0, 0);
 
 
     @Override
@@ -81,6 +83,10 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 //                robot.setMotorPowers(mp);
 //            }
             if ((Math.abs(limelightData.aprilXDegrees / 20) >= aimingThreshold) && limelightData.accurate) {
+                if (stage == 1) {
+                    stage++;
+                    pressXDegrees = limelightData.aprilXDegrees;
+                }
                 limelightData.aiming = true;
                 mp.leftFront += pid.output();
                 mp.leftBack += pid.output();
@@ -89,6 +95,11 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
                 limelightData.aiming = false;
                 robot.dualLogger.addData("turning value", pid.output());
                 robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
+                robot.dualLogger.addData("Press X Degrees:", pressXDegrees);
+            }
+            else{
+                stage = 1;
+                pressXDegrees = limelightData.aprilXDegrees;
             }
         }
 //        if (opMode.gamepad2.a && limelightData.accurate) {
@@ -97,7 +108,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 //            mp.rightFront -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).leftBack;
 //            mp.rightBack -= TimeAutoFunctions.aim(limelightData.aprilXDegrees, 0, .6, opMode.telemetry, robot).rightBack;
 //        }
-        pid.update(limelightData.aprilXDegrees);
+        pid.update(pressXDegrees);
 
         mp.leftFront += dpadStrafe(opMode, .8).leftFront;
         mp.rightFront += dpadStrafe(opMode, .8).rightFront;

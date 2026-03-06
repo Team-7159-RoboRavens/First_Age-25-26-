@@ -190,7 +190,7 @@ public class InfCycleBlue extends OpMode {
 
             case PICKLOAD_END_TO_SHOOT:
                 PedroFunctions.shoot(robot);
-                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
+                if (!follower.isBusy()) {
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
                     setState(AutoState.AIM);
                 }
@@ -198,10 +198,11 @@ public class InfCycleBlue extends OpMode {
 
             case AIM:
                 if (!follower.isBusy()) {
-                    if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
+                    if (Math.abs(limelightData.aprilXDegrees) <= 1.5) {
                         setState(AutoState.SHOOT);
                     }
-                    setState(AutoState.AIM);
+                    else
+                        setState(AutoState.AIM);
                 }
                 break;
 

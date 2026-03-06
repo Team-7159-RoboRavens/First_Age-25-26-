@@ -45,7 +45,7 @@ public class PedroFunctions {
         shootVel = robot.shootMotor.getVelocity();
         targetVel = velocityShot(limelightData.distance);
         robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//        robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         //This is meant to shoot according to the distance to the april tag if the limelight is accurate            //All of these variables are yet to be tested and should be iterated on
         //robot.ShootMotor.setPower(limelightData.accurate ? limelightPowerMultiplier * Math.pow(nonLinearPower, limelightData.distance) * baseShotPower : baseShotPower * 1.5);
 //        if (limelightData.accurate) {
@@ -64,7 +64,7 @@ public class PedroFunctions {
                 robot.intakeMotor2.setPower(.2);
             }
             robot.shootMotor.setVelocity(velocityShot(275));
-            robot.shootMotor2.setVelocity(velocityShot(275));
+//            robot.shootMotor2.setVelocity(velocityShot(275));
 //        }
     }
 
@@ -89,7 +89,7 @@ public class PedroFunctions {
         robot.intakeMotor1.setPower(0);
         robot.intakeMotor2.setPower(0);
         robot.shootMotor.setVelocity(0);
-        robot.shootMotor2.setPower(0);
+//        robot.shootMotor2.setPower(0);
 
     }
 
@@ -103,7 +103,7 @@ public class PedroFunctions {
 
     public static PathChain turn(double degrees, Follower follower, double startX, double startRadians){
         Pose startPos = new Pose (startX, 14, startRadians);
-        Pose endPos = new Pose(startX - 1, 14-9.17429/5, startRadians-Math.toRadians(limelightData.aprilXDegrees));
+        Pose endPos = new Pose(startX - 1, 14 + (9.17429/5 * (limelightData.aprilXDegrees) / Math.abs(limelightData.aprilXDegrees)), startRadians-Math.toRadians(limelightData.aprilXDegrees));
         PathChain drive = follower.pathBuilder()
                 .addPath(new BezierLine(startPos, endPos))
                 .setLinearHeadingInterpolation(startPos.getHeading(), endPos.getHeading())

@@ -215,7 +215,7 @@ public class InfCycleBlueSpike extends OpMode {
 
             case END_TO_SHOOT:
 
-                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
+                if (!follower.isBusy()) {
                     PedroFunctions.shoot(robot);
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
@@ -249,7 +249,7 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
-                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
+                if (!follower.isBusy()) {
                     PedroFunctions.shoot(robot);
                     aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 64, follower.getHeading());
                     setState(AutoState.AIM);
@@ -258,10 +258,11 @@ public class InfCycleBlueSpike extends OpMode {
             case AIM:
                 PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
-                    if (Math.abs(limelightData.aprilXDegrees) <=  1.5) {
+                    if (Math.abs(limelightData.aprilXDegrees) <= 1.5) {
                         setState(AutoState.SHOOT);
                     }
-                    setState(AutoState.AIM);
+                    else
+                        setState(AutoState.AIM);
                 }
                 break;
 

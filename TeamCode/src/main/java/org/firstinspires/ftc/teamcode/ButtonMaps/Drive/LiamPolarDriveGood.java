@@ -39,7 +39,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
     private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.04, 0, 0);
+    public static PIDControl pid = new PIDControl(0.4, 0, 0);
 
 
     @Override
@@ -141,7 +141,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             robot.dualLogger.addData("RightStick Pressed", turnSpeed);
             turn += turnSpeed;
         }
-        robot.dualLogger.addData("Line 144 Turn", turn);
+//        robot.dualLogger.addData("Line 144 Turn", turn);
 
         //When left bumper is pressed, go backward
         if (left_bumper) {
@@ -178,7 +178,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
             right += strafeSpeed;
             turn += turnSpeed;
         }
-        robot.dualLogger.addData("line 181 turn", turn);
+//        robot.dualLogger.addData("line 181 turn", turn);
 
         //Slow strafe while holding x
         if (x) {
@@ -216,7 +216,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         robot.dualLogger.addLine("left stick y: " + left_stick_y);
         robot.dualLogger.addLine("right stick x: " + right_stick_x);
 
-        double robotHeading = position.getHeading(AngleUnit.RADIANS);
+        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         robot.dualLogger.addLine("FOD: " + robotHeading);
         return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
 

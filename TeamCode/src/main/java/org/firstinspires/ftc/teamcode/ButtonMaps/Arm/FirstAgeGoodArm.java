@@ -68,14 +68,14 @@ public class FirstAgeGoodArm extends ServoAbstractButtonMapGood {
                 pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
             }
             if (limelightData.accurate) {
-                pressVelocity += (targetVel - pressVelocity) * .04;
+                pressVelocity += (targetVel - pressVelocity) * .05;
             }
             robot.dualLogger.addData("Press Target Velocity", pressVelocity);
             stage = 1;
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
 //                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 60) {
+                if (Math.abs(pressVelocity - shootVel) < 45) {
                     robot.intakeMotor1.setPower(.85);
                     robot.intakeMotor2.setPower(.95);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());

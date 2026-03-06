@@ -159,8 +159,9 @@ public class InfCycleRedSpike extends OpMode {
                 follower.followPath(pickLoadEndToShoot, true);
                 break;
             case AIM:
-                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
-                follower.followPath(aim, true);
+                    PedroFunctions.shoot(robot);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
+                    follower.followPath(aim, true);
                 break;
             case PARK:
                 follower.followPath(shootToPark, true);
@@ -181,6 +182,7 @@ public class InfCycleRedSpike extends OpMode {
 
         switch (state) {
             case START_TO_SHOOT:
+                PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
                     setState(AutoState.SHOOT);
                 }
@@ -212,7 +214,7 @@ public class InfCycleRedSpike extends OpMode {
                 break;
 
             case END_TO_SHOOT:
-                if (!follower.isBusy()) {
+                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
                     setState(AutoState.AIM);
                     spikeVisited = true;
                 }
@@ -244,11 +246,13 @@ public class InfCycleRedSpike extends OpMode {
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
-                if (!follower.isBusy()) {
+                PedroFunctions.shoot(robot);
+                if ((autoTimer.getElapsedTimeSeconds() > .5) && !follower.isBusy()) {
                     setState(AutoState.AIM);
                 }
                 break;
             case AIM:
+                PedroFunctions.shoot(robot);
                 aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 80, follower.getHeading());
                 if (!follower.isBusy()) {
                     setState(AutoState.SHOOT);
@@ -283,7 +287,7 @@ public class InfCycleRedSpike extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + 1)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F + .5)
         );
     }
 

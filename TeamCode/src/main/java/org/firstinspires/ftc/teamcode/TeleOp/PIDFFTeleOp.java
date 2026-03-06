@@ -22,7 +22,7 @@ public class PIDFFTeleOp extends OpMode {
     ShootOnlyBot robot;
     private int stage = 1;
 
-    public static double F = 13.5;
+    public static double F = 14.5;
 
     public static double P = 100;
 

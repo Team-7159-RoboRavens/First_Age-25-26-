@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.ftc.LazyImu;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+
 // This class is just for storing data from the limelight
 public class limelightData {
 //The ID is meant to
@@ -17,6 +19,7 @@ public class limelightData {
     public static boolean hasImu = false;
     public static double ImuOffset = 0;
     public static double fieldPosOfTag = 0;
+    public static Pose3D botpose;
 
 
 

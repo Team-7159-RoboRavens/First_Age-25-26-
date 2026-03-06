@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpoint;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.ButtonMaps.Arm.FlywheelPDIFF;
 import org.firstinspires.ftc.teamcode.ButtonMaps.MotorPowers;
@@ -156,6 +157,7 @@ public class ServoGoodBot extends MecanumDrive {
 
     public void runLimelight(int id) {
 
+
         LLStatus status = limelight.getStatus();
         dualLogger.addData("Name", "%s",
                 status.getName());
@@ -165,9 +167,10 @@ public class ServoGoodBot extends MecanumDrive {
                 status.getPipelineIndex(), status.getPipelineType());
 
         LLResult result = limelight.getLatestResult();
+//        double robotYaw = lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+//        limelight.updateRobotOrientation(robotYaw);
         if (result != null) {
             // Access general information
-            Pose3D botpose = result.getBotpose();
             double captureLatency = result.getCaptureLatency();
             double targetingLatency = result.getTargetingLatency();
             double parseLatency = result.getParseLatency();
@@ -182,8 +185,14 @@ public class ServoGoodBot extends MecanumDrive {
                 dualLogger.addData("txnc", result.getTxNC());
                 dualLogger.addData("ty", result.getTy());
                 dualLogger.addData("tync", result.getTyNC());
+//                Pose3D botpose_mt2 = result.getBotpose_MT2();
+//                if (botpose_mt2 != null) {
+//                    limelightData.botpose = botpose_mt2;
+//                    double x = botpose_mt2.getPosition().x;
+//                    double y = botpose_mt2.getPosition().y;
+//                    dualLogger.addData("MT2 Location:", "(" + x + ", " + y + ")");
+//                }
 
-                dualLogger.addData("Botpose", botpose.toString());
                 if (limelightData.accurate) {
                     dualLogger.addLine("Correct: ");
 //                    dualLogger.addData("Aiming ", limelightData.aiming);
@@ -207,9 +216,10 @@ public class ServoGoodBot extends MecanumDrive {
                         dualLogger.addData("y              ", fr.getTargetYDegrees());
 //                        dualLogger.addData("\"X: \"", fr.getTargetXDegrees());
                         dualLogger.addData("Direction to Tag", limelightData.aprilXDegrees);
-//                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
-//                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
-//                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
+                        dualLogger.addData("Distance From Tag", result.getBotpose());
+                        dualLogger.addData("Robot Pose Field Space",fr.getRobotPoseFieldSpace());
+                        dualLogger.addData("Robot Pose Target Space",fr.getRobotPoseTargetSpace());
+                        dualLogger.addData("Target Pose Robot Space",fr.getTargetPoseRobotSpace());
 
 
 

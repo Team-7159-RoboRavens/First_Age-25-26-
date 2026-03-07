@@ -32,7 +32,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
     static double joystickLinearity = 3;
 
     static double aimingPower = 1;
-    static double aimingThreshold = .004;
+    static double aimingThreshold = .005;
 
     static private boolean motorBrake = true;
     private Pose2D position;
@@ -41,7 +41,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
     private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.04, 0, 0);
+    public static PIDControl pid = new PIDControl(0.036, 0, 0);
 
 
     @Override
@@ -112,7 +112,6 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
         robot.setMotorPowers(new MotorPowers(-mp.leftFront, -mp.rightFront, -mp.leftBack, -mp.rightBack));
         double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        opMode.telemetry.addLine("angle: " + robotHeading);
         robot.dualLogger.addData("Angle", robotHeading);
         robot.dualLogger.addLine("Pinpoint Heading: " + position.getHeading(AngleUnit.RADIANS));
         robot.dualLogger.addData("Pinpoint X", position.getX(DistanceUnit.CM));
@@ -222,9 +221,13 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         robot.dualLogger.addLine("left stick y: " + left_stick_y);
         robot.dualLogger.addLine("right stick x: " + right_stick_x);
 
-        double robotHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        if (robotHeading == 0)
+            robotHeading = position.getHeading(AngleUnit.RADIANS);
+        else if (position.getHeading(AngleUnit.RADIANS) != 0)
+            robotHeading = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + position.getHeading(AngleUnit.RADIANS)) / 2;;
         robot.dualLogger.addLine("FOD: " + robotHeading);
-        return HolonomicDrive.fieldOrientedDrive(right, forward, turn, maxMotorPower, robotHeading, opMode);
+        return HolonomicDrive.fieldOrientedDrive(right * 1.1, forward, turn, maxMotorPower, robotHeading, opMode);
 
     }
 }

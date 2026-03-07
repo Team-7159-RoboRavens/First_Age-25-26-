@@ -83,11 +83,11 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             } else {
                 if (Math.abs(pressVelocity - shootVel) < 60) {
                     robot.intakeMotor1.setPower(.85);
-                    robot.intakeMotor2.setPower(.95);
+                    robot.intakeMotor2.setPower(1);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                 } else {
-                    robot.intakeMotor1.setPower(0);
-                    robot.intakeMotor2.setPower(.25);
+                    robot.intakeMotor1.setPower(.4);
+                    robot.intakeMotor2.setPower(-.4);
                 }
             }
             if (limelightData.accurate) {
@@ -109,7 +109,7 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             //These are just modes for testing launcher power.
         } else if (opMode.gamepad2.dpad_right || opMode.gamepad2.dpad_left) {
             robot.shootMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+//            robot.shootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             if (opMode.gamepad2.dpad_up) {
                 opMode.telemetry.addLine("Shoot medium-long");
                 robot.shootMotor.setPower(baseShotPower * 1.55);
@@ -117,7 +117,7 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
             } else {
                 opMode.telemetry.addLine("Shoot medium");
                 robot.shootMotor.setPower(baseShotPower * 1.5);
-                robot.shootMotor2.setPower(baseShotPower * 1.5);
+//                robot.shootMotor2.setPower(baseShotPower * 1.5);
             }
             //This slows the launcher down again when you stop shooting,
         } else {
@@ -167,6 +167,6 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);d
-        return (2.8481 * x + 1250.65423);
+        return (2.8474 * x + 1266.65423);
     }
 }

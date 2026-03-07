@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Pedro;
 
+import static org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions.createHeading;
 import static org.firstinspires.ftc.teamcode.Autonomous.Pedro.PedroFunctions.turn;
 
 import com.acmerobotics.roadrunner.Pose2d;
@@ -22,18 +23,22 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 @Autonomous(name = "InfCycleBlue")
 public class InfCycleBlue extends OpMode {
 
-    private static final double INTAKE_TIME = 1;
     private Follower follower;
     private Timer stateTimer;
     private Timer autoTimer;
-    public ServoGoodBot robot;
-
-    private static final double SHOOT_TIME = 4;
+    private boolean spikeVisited = false;
+    private static final double SHOOT_TIME = 2.8;
+    private static final double INTAKE_TIME = 1;
+    private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;
+    ServoGoodBot robot;
 
     enum AutoState {
         START_TO_SHOOT,
         SHOOT,
+        SHOOT_TO_SPIKE,
+        SPIKE_TO_END,
+        END_TO_SHOOT,
         SHOOT_TO_PICKLOAD,
 
         PICKLOAD_INTAKE1,
@@ -47,15 +52,20 @@ public class InfCycleBlue extends OpMode {
 
     private AutoState state;
 
-    Pose startPose = new Pose(56.5, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(61, 14, Math.toRadians(113.28));
-    Pose pickLoadPoseEnd = new Pose(8, 10, Math.toRadians(193));
-    Pose pickLoadPoseRec = new Pose(38, 10, Math.toRadians(199));
-    Pose parkPose = new Pose(48.0849, 22.407, Math.toRadians(180));
+    Pose startPose = new Pose(56.2, 8, Math.toRadians(90));
+    Pose shootPose = new Pose(64, 14, Math.toRadians(117.28));
+    Pose pickLoadPoseEnd = new Pose(7, 10, Math.toRadians(193));
+    Pose pickLoadPoseRec = new Pose(28, 10, Math.toRadians(202));
+    Pose parkPose = new Pose(48.0839, 22.407, Math.toRadians(180));
+    Pose SpikeStart = new Pose(55, 32.8438, Math.toRadians(180));
+    Pose SpikeEnd = new Pose(20, 32.8438, Math.toRadians(180));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
     PathChain shootToPark;
+    PathChain shootToSpike;
+    PathChain spikeToEnd;
+    PathChain endToShoot;
     PathChain pickLoadEndToRec;
     PathChain pickLoadRecToPickLoadEnd;
     PathChain pickLoadEndToShoot;
@@ -121,10 +131,11 @@ public class InfCycleBlue extends OpMode {
                 follower.followPath(pickLoadRecToPickLoadEnd, true);
                 break;
             case PICKLOAD_END_TO_SHOOT:
-                PedroFunctions.intake(robot);
+                PedroFunctions.reset(robot);
                 follower.followPath(pickLoadEndToShoot, true);
                 break;
             case AIM:
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
                 follower.followPath(aim, true);
                 break;
             case PARK:
@@ -154,31 +165,28 @@ public class InfCycleBlue extends OpMode {
 
             case SHOOT:
                 PedroFunctions.shoot(robot);
-                if (stateTimer.getElapsedTimeSeconds() >= SHOOT_TIME) {
-                    setState(AutoState.SHOOT_TO_PICKLOAD);
+                if (stateTimer.getElapsedTimeSeconds() >= 3.6) {
+                    PedroFunctions.reset(robot);
+                        setState(AutoState.SHOOT_TO_PICKLOAD);
                 }
                 break;
-
             case SHOOT_TO_PICKLOAD:
-                PedroFunctions.reset(robot);
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= 1) {
+                if (!follower.isBusy() || stateTimer.getElapsedTimeSeconds() >= INTAKE_TIME) {
                     setState(AutoState.PICKLOAD_INTAKE1);
                 }
                 break;
 
             case PICKLOAD_INTAKE1:
                 PedroFunctions.intake(robot);
-                if (stateTimer.getElapsedTimeSeconds() >= .4) {
+                if (stateTimer.getElapsedTimeSeconds() >= INTAKE_BURST_TIME) {
                     setState(AutoState.PICKLOAD_RECOIL);
                 }
                 break;
 
             case PICKLOAD_RECOIL:
                 PedroFunctions.intake(robot);
-                if (!follower.isBusy()) {
-                    setState(AutoState.PICKLOAD_RETURN);
-                }
+                if (!follower.isBusy()) setState(AutoState.PICKLOAD_RETURN);
                 break;
 
             case PICKLOAD_RETURN:
@@ -189,16 +197,16 @@ public class InfCycleBlue extends OpMode {
                 break;
 
             case PICKLOAD_END_TO_SHOOT:
-                PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
-                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, 61, follower.getHeading());
+                    PedroFunctions.shoot(robot);
+                    aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
                     setState(AutoState.AIM);
                 }
                 break;
-
             case AIM:
+                PedroFunctions.shoot(robot);
                 if (!follower.isBusy()) {
-                    if (Math.abs(limelightData.aprilXDegrees) <= 1.5) {
+                    if (Math.abs(limelightData.aprilXDegrees) <= 1.5 || !limelightData.accurate ) {
                         setState(AutoState.SHOOT);
                     }
                     else
@@ -234,7 +242,7 @@ public class InfCycleBlue extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P, 0, 0, FlywheelPDIFF.F)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F +.4)
         );
     }
 
@@ -250,8 +258,9 @@ public class InfCycleBlue extends OpMode {
         follower.update();
         robot.runLimelight(20);
         if (limelightData.accurate) {
-            turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
+            aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
         }
+
         updateStateMachine();
         telemetry.addData("Shoot Velocity", robot.shootMotor.getVelocity());
         telemetry.addData("LimelightDegrees", limelightData.aprilXDegrees);

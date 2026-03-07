@@ -57,11 +57,11 @@ public class PedroFunctions {
 //        } else {
             if (Math.abs(velocityShot(275) - shootVel) < 60) {
                 robot.intakeMotor1.setPower(.8);
-                robot.intakeMotor2.setPower(.95);
+                robot.intakeMotor2.setPower(1);
             }
             else {
-                robot.intakeMotor1.setPower(0);
-                robot.intakeMotor2.setPower(.2);
+                robot.intakeMotor1.setPower(.4);
+                robot.intakeMotor2.setPower(0);
             }
             robot.shootMotor.setVelocity(velocityShot(275));
 //            robot.shootMotor2.setVelocity(velocityShot(275));

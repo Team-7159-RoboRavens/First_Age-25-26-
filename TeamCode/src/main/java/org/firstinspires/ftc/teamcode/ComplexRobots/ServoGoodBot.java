@@ -205,7 +205,7 @@ public class ServoGoodBot extends MecanumDrive {
                 for (LLResultTypes.FiducialResult fr : fiducialResults) {
                     dualLogger.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
                     if (fr.getFiducialId() == id) {
-                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + 1.4 : fr.getTargetXDegrees() - 3, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
+                        limelightData.setParams(fr.getFiducialId(), fr.getFamily(), id == 24 ? fr.getTargetXDegrees() + .9 : fr.getTargetXDegrees() - 3.3, fr.getTargetYDegrees() - ServoGoodBot.yOffset(fr.getTargetXDegrees()));
                         limelightData.accurate = true;
                         dualLogger.addData("Correct tag: ", fr.getFiducialId());
                         dualLogger.addData("X: ", fr.getTargetXDegrees());
@@ -222,7 +222,7 @@ public class ServoGoodBot extends MecanumDrive {
                         double targetOffsetAngle_Vertical = fr.getTargetYDegrees();
 
                         // how many degrees back is your limelight rotated from perfectly vertical? (To be Measured.
-                        double limelightMountAngleDegrees = (id == 20 ? 2.5 : 2.5);
+                        double limelightMountAngleDegrees = (id == 20 ? 2.6 : 2.6);
 
                         // distance from the center of the Limelight lens to the floor (To be Measured)
                         double limelightLensHeightCm = 28.0;
@@ -235,8 +235,11 @@ public class ServoGoodBot extends MecanumDrive {
 
                         //calculate distance
                         double distanceFromLimelightToGoalCm = (goalHeightCm - limelightLensHeightCm) / Math.tan(angleToGoalRadians);
-                        limelightData.distance = distanceFromLimelightToGoalCm;
-                        dualLogger.addData("Distance: ", distanceFromLimelightToGoalCm);
+                        if (id == 24)
+                            limelightData.distance = distanceFromLimelightToGoalCm - 15;
+                        else
+                            limelightData.distance = distanceFromLimelightToGoalCm - 3;
+                        dualLogger.addData("Distance: ", limelightData.distance);
                     }
                     if (fr.getFiducialId() > 20 && fr.getFiducialId() < 24) {
                         limelightData.pattern = fr.getFiducialId();

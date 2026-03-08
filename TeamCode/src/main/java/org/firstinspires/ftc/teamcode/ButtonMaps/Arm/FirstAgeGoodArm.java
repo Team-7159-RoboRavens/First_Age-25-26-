@@ -74,20 +74,20 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
                 pressVelocity = limelightData.accurate ? targetVel : Math.abs(velocityShot(278));
             }
             if (limelightData.accurate) {
-                pressVelocity += (targetVel - pressVelocity) * .05;
+                pressVelocity += (targetVel - pressVelocity) * .03;
             }
             robot.dualLogger.addData("Press Target Velocity", pressVelocity);
             stage = 1;
             if (timeSince + timeBuffer > System.currentTimeMillis()) {
 //                opMode.telemetry.addLine("No Balls");
             } else {
-                if (Math.abs(pressVelocity - shootVel) < 60) {
+                if (Math.abs(pressVelocity - shootVel) < 50) {
                     robot.intakeMotor1.setPower(.85);
                     robot.intakeMotor2.setPower(1);
 //                    robot.dualLogger.addData("IntakeMotor2 Velocity", robot.intakeMotor2.getVelocity());
                 } else {
-                    robot.intakeMotor1.setPower(.4);
-                    robot.intakeMotor2.setPower(-.4);
+                    robot.intakeMotor1.setPower(.5);
+                    robot.intakeMotor2.setPower(-.2);
                 }
             }
             if (limelightData.accurate) {
@@ -167,6 +167,6 @@ FirstAgeGoodArm extends ServoAbstractButtonMapGood {
     public static double velocityShot(double x) {
         //Old
 //        return (2.07096 * Math.pow(10, -16) * .3 * Math.pow(x, 2) + 7.81571 * x + 470.14286);d
-        return (2.8474 * x + 1266.65423);
+        return (2.847 * x + 1232.65423);
     }
 }

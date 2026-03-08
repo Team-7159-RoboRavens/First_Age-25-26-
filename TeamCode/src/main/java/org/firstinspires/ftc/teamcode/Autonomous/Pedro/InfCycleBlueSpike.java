@@ -27,7 +27,7 @@ public class InfCycleBlueSpike extends OpMode {
     private Timer stateTimer;
     private Timer autoTimer;
     private boolean spikeVisited = false;
-    private static final double SHOOT_TIME = 3.7;
+    private static final double SHOOT_TIME = 3.5;
     private static final double INTAKE_TIME = 1;
     private static final double INTAKE_BURST_TIME = 0.5;
     private static final double AUTO_END_TIME = 27.0;
@@ -53,12 +53,12 @@ public class InfCycleBlueSpike extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(56.2, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(64, 14, Math.toRadians(117.28));
-    Pose pickLoadPoseEnd = new Pose(7, 10, Math.toRadians(193));
-    Pose pickLoadPoseRec = new Pose(28, 10, Math.toRadians(202));
+    Pose shootPose = new Pose(62, 14, Math.toRadians(120.78));
+    Pose pickLoadPoseEnd = new Pose(7, 8, Math.toRadians(193));
+    Pose pickLoadPoseRec = new Pose(28, 12, Math.toRadians(175));
     Pose parkPose = new Pose(48.0839, 22.407, Math.toRadians(180));
-    Pose SpikeStart = new Pose(55, 32.8438, Math.toRadians(180));
-    Pose SpikeEnd = new Pose(20, 32.8438, Math.toRadians(180));
+    Pose SpikeStart = new Pose(58, 32.8438, Math.toRadians(180));
+    Pose SpikeEnd = new Pose(19, 32.8438, Math.toRadians(180));
 
     PathChain startToShoot;
     PathChain shootToPickLoad;
@@ -255,8 +255,9 @@ public class InfCycleBlueSpike extends OpMode {
                 break;
             case AIM:
                 PedroFunctions.shoot(robot);
+                aim = turn(Math.toRadians(limelightData.aprilXDegrees), follower, follower.getPose().getX(), follower.getHeading());
                 if (!follower.isBusy()) {
-                    if (Math.abs(limelightData.aprilXDegrees) <= 1.5 || !limelightData.accurate ) {
+                    if (Math.abs(limelightData.aprilXDegrees) <= 2 || !limelightData.accurate) {
                         setState(AutoState.SHOOT);
                     }
                     else
@@ -292,7 +293,7 @@ public class InfCycleBlueSpike extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F +.4)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F)
         );
     }
 

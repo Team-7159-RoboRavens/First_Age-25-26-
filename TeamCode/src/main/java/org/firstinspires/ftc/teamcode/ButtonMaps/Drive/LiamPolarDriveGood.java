@@ -32,7 +32,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
     static double joystickLinearity = 3;
 
     static double aimingPower = 1;
-    static double aimingThreshold = .005;
+    static double aimingThreshold = .0045;
 
     static private boolean motorBrake = true;
     private Pose2D position;
@@ -41,7 +41,7 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
     private static ElapsedTime et = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-    public static PIDControl pid = new PIDControl(0.036, 0, 0);
+    public static PIDControl pid = new PIDControl(0.038, 0, 0);
 
 
     @Override
@@ -93,9 +93,9 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
                 mp.rightFront -= pid.output();
                 mp.rightBack -= pid.output();
                 limelightData.aiming = false;
-                robot.dualLogger.addData("turning value", pid.output());
-                robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
-                robot.dualLogger.addData("Press X Degrees:", pressXDegrees);
+//                robot.dualLogger.addData("turning value", pid.output());
+//                robot.dualLogger.addData("value is:", String.valueOf(Math.abs(limelightData.aprilXDegrees / 20)));
+//                robot.dualLogger.addData("Press X Degrees:", pressXDegrees);
             }
             else{
                 stage = 1;
@@ -143,9 +143,9 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
 
         if (Math.abs(right_stick_x) > joystickDeadZone) {
             double turnSpeed = Math.pow((right_stick_x - triggerDeadZone), triggerLinearity) / Math.pow((1 - triggerDeadZone), triggerLinearity);
-            robot.dualLogger.addData("RightStick Pressed", turnSpeed);
             turn += turnSpeed;
         }
+//        robot.dualLogger.addData("RightStick Pressed", turnSpeed);
 //        robot.dualLogger.addData("Line 144 Turn", turn);
 
         //When left bumper is pressed, go backward
@@ -224,8 +224,10 @@ public class LiamPolarDriveGood extends ServoAbstractButtonMapGood {
         double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         if (robotHeading == 0)
             robotHeading = position.getHeading(AngleUnit.RADIANS);
-        else if (position.getHeading(AngleUnit.RADIANS) != 0)
-            robotHeading = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + position.getHeading(AngleUnit.RADIANS)) / 2;;
+//        else if (position.getHeading(AngleUnit.RADIANS) != 0)
+//            robotHeading = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + position.getHeading(AngleUnit.RADIANS)) / 2;
+//        if (Math.abs(robotHeading - position.getHeading(AngleUnit.RADIANS)) > .4)
+//            robotHeading = Math.abs(position.getHeading(AngleUnit.RADIANS)) < Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)) ? imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) : position.getHeading(AngleUnit.RADIANS);
         robot.dualLogger.addLine("FOD: " + robotHeading);
         return HolonomicDrive.fieldOrientedDrive(right * 1.1, forward, turn, maxMotorPower, robotHeading, opMode);
 

@@ -53,7 +53,7 @@ public class InfCycleBlue extends OpMode {
     private AutoState state;
 
     Pose startPose = new Pose(56.2, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(64, 14, Math.toRadians(117.28));
+    Pose shootPose = new Pose(64, 14, Math.toRadians(120.28));
     Pose pickLoadPoseEnd = new Pose(7, 10, Math.toRadians(193));
     Pose pickLoadPoseRec = new Pose(28, 10, Math.toRadians(202));
     Pose parkPose = new Pose(48.0839, 22.407, Math.toRadians(180));
@@ -242,7 +242,7 @@ public class InfCycleBlue extends OpMode {
 
         robot.shootMotor.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F +.4)
+                new PIDFCoefficients(FlywheelPDIFF.P + 1.2, 0, 0, FlywheelPDIFF.F)
         );
     }
 
